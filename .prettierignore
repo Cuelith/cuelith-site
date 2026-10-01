@@ -1,0 +1,4 @@
+dist/
+dist-single/
+pnpm-lock.yaml
+src/data/snapshot.json

@@ -1,0 +1,6 @@
+# Script di installazione consentiti: servono a scaricare i programmi di
+# wrangler (anteprima e pubblicazione su Cloudflare) e di sharp (immagini).
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: true

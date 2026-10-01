@@ -1,0 +1,271 @@
+{
+  "lang": "en",
+  "locale": "en-GB",
+  "path": "/en/",
+  "alternate": "/",
+  "meta": {
+    "title": "Cuelith · Live projection software, lightweight and modular",
+    "description": "Cuelith puts lyrics, texts and announcements on the projector, the stage monitor and every other screen. Free and open source, it starts light and grows with the plugins you need."
+  },
+  "nav": {
+    "label": "Page sections",
+    "features": "Features",
+    "plugins": "Plugins",
+    "versions": "Versions",
+    "faq": "FAQ",
+    "download": "Download",
+    "language": "Italiano",
+    "languageLabel": "Leggi questa pagina in italiano"
+  },
+  "hero": {
+    "eyebrow": "Live projection software · free and open source",
+    "title": "Live projection that starts light and grows with you.",
+    "lead": "Cuelith puts lyrics, texts and announcements on the projector, the stage monitor and every other screen. The core does a few things and does them well; you add the rest with plugins, only if you need it.",
+    "primary": "Download for {os}",
+    "primaryGeneric": "Download",
+    "secondary": "See what it does",
+    "meta": "Version {version} · free · Windows and Linux",
+    "shotAlt": "The Cuelith control view: playlist on the left, song slides in the middle, program and preview on the right."
+  },
+  "facts": {
+    "label": "In numbers",
+    "items": [
+      { "value": "< 1%", "label": "of the processor with one slide on air" },
+      { "value": "60 fps", "label": "on the outputs, with no dropped frames" },
+      { "value": "0", "label": "accounts, cookies or tracking" },
+      { "value": "100%", "label": "of releases pass automated tests on the real app" }
+    ],
+    "note": "Processor and frame rate measured on a mid-range laptop with one slide on air."
+  },
+  "pillars": {
+    "eyebrow": "Why Cuelith",
+    "title": "Three choices, taken all the way",
+    "items": [
+      {
+        "tag": "Lightweight",
+        "title": "Install only what you use",
+        "text": "Out of the box, Cuelith is an essential tool: playlist, slides, preview, program and outputs. Songs, protocols and tools are plugins you switch on and off without restarting."
+      },
+      {
+        "tag": "Reliable",
+        "title": "The screen stays on",
+        "text": "Every plugin runs in its own separate space, with only the permissions it declares. If one stops responding, it is restarted automatically and the projection carries on. Your show is saved safely and recovered after a crash."
+      },
+      {
+        "tag": "Open",
+        "title": "Free, with no surprises",
+        "text": "The app is open source and needs no account. It works offline, and your shows, songs and images stay on your computer."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "How you work",
+    "title": "Built for the person at the desk, even working alone",
+    "rows": [
+      {
+        "shot": "regia",
+        "title": "Always see what is on air and what comes next",
+        "text": "Playlist on the left, slides in the middle, program and preview on the right. One click prepares, one key goes live, with the fade you choose.",
+        "points": [
+          "Five layouts: for presenting, for bands, for conferences",
+          "Keyboard shortcuts for everything: next, back, blackout, song sections",
+          "Timer and messages for the people on stage"
+        ],
+        "alt": "Cuelith control view with playlist, slides, program and preview."
+      },
+      {
+        "shot": "uscita-sala",
+        "title": "One piece of content, a different screen for each audience",
+        "text": "Press “Next” once. The room gets large text over the background; the stage gets the text, the next slide, the clock and messages from the desk.",
+        "points": [
+          "As many outputs as your computer can connect",
+          "Blackout and freeze on a single output, leaving the others alone",
+          "Backgrounds per slide, per song or by default, with a dim layer for legibility"
+        ],
+        "alt": "A room output: song lyrics over a warm background."
+      },
+      {
+        "shot": "band",
+        "title": "Songs with sections, ready for a band that improvises",
+        "text": "Verse, Chorus and Bridge become large buttons: when the band goes back to the chorus, you are there in one tap. Songs import and export in the open OpenLyrics and ChordPro formats.",
+        "points": [
+          "Libraries searchable by title, lyrics, author and number",
+          "Projection order kept separate from the lyrics",
+          "Credits and authors always in place"
+        ],
+        "alt": "Band layout: song sections as large buttons."
+      },
+      {
+        "shot": "telecomando",
+        "portrait": true,
+        "title": "As a team, with tablet and phone",
+        "text": "On the same network, a tablet becomes a second control desk and a phone becomes the speaker's remote. It opens in the browser, with nothing to install, and pairs with a code.",
+        "points": [
+          "Different roles: operator, remote, view only",
+          "Works offline, on the venue network alone",
+          "Every device can be revoked with one click"
+        ],
+        "alt": "The remote on a phone: slide on air, next slide, Back and Next."
+      },
+      {
+        "shot": "risorse",
+        "title": "Know in advance whether the computer can cope",
+        "text": "An indicator shows how much the app and the active plugins use, at rest, now and at peak, compared with what your computer actually has.",
+        "points": [
+          "Frames per second for every output",
+          "Usage for every plugin, declared and measured",
+          "One colour to watch: green, yellow, red"
+        ],
+        "alt": "Settings, Resources section: memory, processor and output frame rates."
+      }
+    ]
+  },
+  "audience": {
+    "eyebrow": "Who it is for",
+    "title": "It grows with your event",
+    "items": [
+      {
+        "title": "Churches and communities",
+        "text": "Songs with sections, announcements, texts and backgrounds. One monitor for the musicians and one for the speaker.",
+        "status": "available"
+      },
+      {
+        "title": "Conferences and schools",
+        "text": "A running order of talks, notes, a timer with time colours and messages to the speaker.",
+        "status": "available"
+      },
+      {
+        "title": "Bands and choirs",
+        "text": "Sections as buttons, projection order, lyrics and next slide on stage.",
+        "status": "available"
+      },
+      {
+        "title": "Live streaming and events",
+        "text": "Camera, scenes, lower thirds and streaming will arrive as plugins, on the same app.",
+        "status": "soon"
+      }
+    ]
+  },
+  "plugins": {
+    "eyebrow": "Plugins",
+    "title": "The core does little. You choose the rest.",
+    "lead": "Every plugin installs from inside the app, declares what it can do before you switch it on, and can be turned off at any time. Some add a tool to the control view; others work in the background, like audio and video protocols.",
+    "filterLabel": "What do you need?",
+    "filters": {
+      "all": "Everything",
+      "content": "Songs and texts",
+      "video": "Video and streaming",
+      "audio": "Audio",
+      "control": "Control and lighting",
+      "layouts": "Layouts",
+      "languages": "Languages"
+    },
+    "status": { "available": "Available", "included": "Included", "soon": "Coming" },
+    "sections": { "ready": "Ready today", "soon": "Coming" },
+    "kind": {
+      "tool": "Tool in the control view",
+      "background": "Works in the background",
+      "layout": "Control view layout",
+      "language": "Language"
+    },
+    "version": "Version {version}",
+    "verified": "Verified",
+    "permissionsLabel": "Permissions",
+    "permissions": {
+      "none": "Asks for no permissions: no internet, no files",
+      "storage": "Saves its data on your computer",
+      "network": "Connects to the internet",
+      "networkHost": "Connects only to {host}",
+      "fs:read": "Reads files from the computer",
+      "fs:write": "Writes files to the computer",
+      "devices:video": "Uses cameras and capture cards",
+      "devices:audio": "Uses microphones and audio interfaces",
+      "devices:midi": "Uses MIDI devices",
+      "serial": "Uses serial port devices",
+      "process": "Starts other programs",
+      "addons": "Loads native code",
+      "native": "Native program, with full access to the computer"
+    },
+    "soonNote": "Coming plugins are planned, with no promised date. When they are released they appear here and in the app.",
+    "developers": {
+      "title": "Want to write one?",
+      "text": "The plugin system is open: anyone can add a tool, a protocol or a layout. The source code includes an example plugin to start from.",
+      "action": "Download the source code"
+    }
+  },
+  "download": {
+    "eyebrow": "Download",
+    "title": "Ready in two minutes",
+    "lead": "Free, with no sign-up. Updates arrive on their own and install only when you decide, never while you are on air.",
+    "windows": "Download for Windows",
+    "windowsHint": "Windows 10 and 11, 64-bit · installer",
+    "linux": "Download for Linux",
+    "linuxHint": "x86_64 · AppImage",
+    "version": "Version {version} · {date}",
+    "notesTitle": "Before you install",
+    "notes": [
+      "Windows may ask for confirmation on first launch, because the app is new and does not have a paid signature yet: choose “More info”, then “Run anyway”.",
+      "You do not need to be an administrator of the computer.",
+      "macOS is not available yet.",
+      "8 GB of memory recommended. Integrated graphics are enough for text and images.",
+      "The app interface is currently in Italian; more languages will arrive as plugins."
+    ],
+    "source": "Download the source code (zip)"
+  },
+  "versions": {
+    "eyebrow": "Versions",
+    "title": "All versions",
+    "lead": "Every version stays available, with its notes.",
+    "latest": "Latest",
+    "windows": "Windows",
+    "linux": "Linux",
+    "notes": "Release notes",
+    "empty": "The list of versions is not available right now. The download above always gives you the latest one."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Frequently asked questions",
+    "items": [
+      {
+        "q": "Is it really free?",
+        "a": "Yes. Today everything is free, plugins included. The core app is open source and will stay free."
+      },
+      {
+        "q": "Does it work offline?",
+        "a": "Yes. The internet is only needed to download updates and new plugins. During an event Cuelith does not need it, not even for devices on the local network."
+      },
+      {
+        "q": "Can I use it for live streaming?",
+        "a": "Not yet. Today Cuelith projects texts, songs and images on multiple screens. Camera, scenes and streaming are the next planned plugins."
+      },
+      {
+        "q": "Where does my data go?",
+        "a": "It stays on your computer. Cuelith has no accounts and sends no personal data or content. It connects to the internet only to check for updates and read the list of plugins."
+      },
+      {
+        "q": "I already have my songs. Can I import them?",
+        "a": "Yes, if they are in the open OpenLyrics or ChordPro formats, or as plain text. You can also export them all at once, as a backup."
+      },
+      {
+        "q": "What computer do I need?",
+        "a": "Windows 10 or 11, or Linux, 64-bit. With one slide on air Cuelith uses about 600 MB of memory; each extra output adds about 120. The app itself shows you how much it is using."
+      },
+      {
+        "q": "Is the app available in English?",
+        "a": "Not yet: the interface is in Italian for now. Languages are plugins, and English is one of the next."
+      },
+      {
+        "q": "What happens if a plugin has a problem?",
+        "a": "It is closed and restarted automatically, while the projection carries on. If it stops several times in a row it stays off and tells you."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Live projection, lightweight and modular.",
+    "source": "Source code (zip)",
+    "license": "Free software, Apache 2.0 licence.",
+    "privacy": "This site uses no cookies and does not track visitors.",
+    "top": "Back to top"
+  },
+  "os": { "windows": "Windows", "linux": "Linux" }
+}

@@ -1,0 +1,266 @@
+{
+  "lang": "it",
+  "locale": "it-IT",
+  "path": "/",
+  "alternate": "/en/",
+  "meta": {
+    "title": "Cuelith · Software di proiezione live, leggero e modulare",
+    "description": "Cuelith porta testi, canti e avvisi su proiettore, monitor del palco e altri schermi. Gratuito e open source, parte leggero e cresce con i plugin che ti servono."
+  },
+  "nav": {
+    "label": "Sezioni della pagina",
+    "features": "Funzioni",
+    "plugins": "Plugin",
+    "versions": "Versioni",
+    "faq": "Domande",
+    "download": "Download",
+    "language": "English",
+    "languageLabel": "Read this page in English"
+  },
+  "hero": {
+    "eyebrow": "Software di proiezione live · gratuito e open source",
+    "title": "La proiezione live che parte leggera e cresce con te.",
+    "lead": "Cuelith porta testi, canti e avvisi su proiettore, monitor del palco e ogni altro schermo. Il programma di base fa poche cose e le fa bene; il resto lo aggiungi con i plugin, solo se ti serve.",
+    "primary": "Download per {os}",
+    "primaryGeneric": "Download",
+    "secondary": "Guarda cosa fa",
+    "meta": "Versione {version} · gratuito · Windows e Linux",
+    "shotAlt": "La regia di Cuelith: scaletta a sinistra, slide del canto al centro, programma e anteprima a destra."
+  },
+  "facts": {
+    "label": "In numeri",
+    "items": [
+      { "value": "< 1%", "label": "del processore con una slide in onda" },
+      { "value": "60 fps", "label": "sulle uscite, senza fotogrammi persi" },
+      { "value": "0", "label": "account, cookie o tracciamento" },
+      { "value": "100%", "label": "delle versioni supera prove automatiche sul programma vero" }
+    ],
+    "note": "Processore e fotogrammi misurati su un portatile di fascia media con una slide in onda."
+  },
+  "pillars": {
+    "eyebrow": "Perché Cuelith",
+    "title": "Tre scelte, fatte fino in fondo",
+    "items": [
+      {
+        "tag": "Leggero",
+        "title": "Installi solo ciò che usi",
+        "text": "Appena installato, Cuelith è un programma essenziale: scaletta, slide, anteprima, programma e uscite. Canti, protocolli e strumenti sono plugin che accendi e spegni senza riavviare."
+      },
+      {
+        "tag": "Affidabile",
+        "title": "Lo schermo resta acceso",
+        "text": "Ogni plugin lavora in un suo spazio separato, con i soli permessi che dichiara. Se uno si blocca, viene fatto ripartire da solo e la proiezione continua. Lo show si salva in modo sicuro e si recupera dopo un arresto."
+      },
+      {
+        "tag": "Aperto",
+        "title": "Gratuito, senza sorprese",
+        "text": "Il programma è open source e non chiede account. Funziona senza internet, e i tuoi show, canti e immagini restano sul tuo computer."
+      }
+    ]
+  },
+  "features": {
+    "eyebrow": "Come si lavora",
+    "title": "Pensato per chi sta alla regia, anche da solo",
+    "rows": [
+      {
+        "shot": "regia",
+        "title": "Vedi sempre cosa c'è in onda e cosa viene dopo",
+        "text": "Scaletta a sinistra, slide al centro, programma e anteprima a destra. Un clic prepara, un tasto manda in onda, con la dissolvenza che scegli.",
+        "points": [
+          "Cinque disposizioni della regia: per chi presenta, per le band, per le conferenze",
+          "Tasti rapidi per tutto: avanti, indietro, nero, sezioni del canto",
+          "Timer e messaggi per chi è sul palco"
+        ],
+        "alt": "Regia di Cuelith con scaletta, slide, programma e anteprima."
+      },
+      {
+        "shot": "uscita-sala",
+        "title": "Un contenuto, uno schermo diverso per ogni pubblico",
+        "text": "Premi «Avanti» una volta sola. In sala va il testo grande sullo sfondo; sul palco arrivano il testo, la prossima slide, l'orologio e i messaggi della regia.",
+        "points": [
+          "Tutte le uscite che il computer può collegare",
+          "Nero e blocco su una singola uscita, senza toccare le altre",
+          "Sfondi per slide, per canto o predefiniti, con velo per la leggibilità"
+        ],
+        "alt": "Un'uscita di sala: il testo del canto sopra uno sfondo caldo."
+      },
+      {
+        "shot": "band",
+        "title": "Canti con le sezioni, pronti per chi improvvisa",
+        "text": "Verse, Chorus e Bridge diventano grossi pulsanti: se la band torna al ritornello, ci sei con un tocco. I canti si importano ed esportano nei formati aperti OpenLyrics e ChordPro.",
+        "points": [
+          "Librerie con ricerca per titolo, testo, autore e numero",
+          "Ordine di proiezione separato dal testo",
+          "Crediti e autori sempre a posto"
+        ],
+        "alt": "Disposizione Band: le sezioni del canto come grandi pulsanti."
+      },
+      {
+        "shot": "telecomando",
+        "portrait": true,
+        "title": "In squadra, con tablet e telefono",
+        "text": "Sulla stessa rete, un tablet diventa una seconda regia e un telefono diventa il telecomando di chi parla. Si apre nel browser, senza installare nulla, e si abbina con un codice.",
+        "points": [
+          "Ruoli diversi: operatore, telecomando, solo visualizzazione",
+          "Funziona senza internet, solo con la rete della sala",
+          "Ogni accesso si revoca con un clic"
+        ],
+        "alt": "Il telecomando sul telefono: slide in onda, prossima slide, Indietro e Avanti."
+      },
+      {
+        "shot": "risorse",
+        "title": "Sai prima se il computer regge",
+        "text": "Un indicatore mostra quanto usano il programma e i plugin accesi, a riposo, adesso e al massimo, rispetto a quello che il tuo computer ha davvero.",
+        "points": [
+          "Fotogrammi al secondo di ogni uscita",
+          "Consumo di ogni plugin, dichiarato e misurato",
+          "Un colore solo da guardare: verde, giallo, rosso"
+        ],
+        "alt": "Impostazioni, sezione Risorse: memoria, processore e fotogrammi delle uscite."
+      }
+    ]
+  },
+  "audience": {
+    "eyebrow": "Per chi è",
+    "title": "Cresce con il tuo evento",
+    "items": [
+      {
+        "title": "Chiese e comunità",
+        "text": "Canti con sezioni, avvisi, testi e sfondi. Un monitor per i musicisti e uno per chi parla.",
+        "status": "available"
+      },
+      {
+        "title": "Conferenze e scuole",
+        "text": "Scaletta degli interventi, note, timer con i colori del tempo e messaggi al relatore.",
+        "status": "available"
+      },
+      {
+        "title": "Band e cori",
+        "text": "Sezioni come pulsanti, ordine di proiezione, testo e prossima slide sul palco.",
+        "status": "available"
+      },
+      {
+        "title": "Live streaming ed eventi",
+        "text": "Camera, scene, sottopancia e streaming arriveranno come plugin, sullo stesso programma.",
+        "status": "soon"
+      }
+    ]
+  },
+  "plugins": {
+    "eyebrow": "Plugin",
+    "title": "Il programma fa poco. Il resto lo scegli tu.",
+    "lead": "Ogni plugin si installa dal programma, dichiara cosa può fare prima che tu lo accenda e si può spegnere in qualsiasi momento. Alcuni aggiungono uno strumento alla regia; altri lavorano in background, come i protocolli audio e video.",
+    "filterLabel": "Cosa ti serve?",
+    "filters": {
+      "all": "Tutto",
+      "content": "Canti e testi",
+      "video": "Video e streaming",
+      "audio": "Audio",
+      "control": "Controllo e luci",
+      "layouts": "Disposizioni",
+      "languages": "Lingue"
+    },
+    "status": { "available": "Disponibile", "included": "Incluso", "soon": "In arrivo" },
+    "sections": { "ready": "Da usare oggi", "soon": "In arrivo" },
+    "kind": {
+      "tool": "Strumento nella regia",
+      "background": "Lavora in background",
+      "layout": "Disposizione della regia",
+      "language": "Lingua"
+    },
+    "version": "Versione {version}",
+    "verified": "Verificato",
+    "permissionsLabel": "Permessi",
+    "permissions": {
+      "none": "Non chiede permessi: niente internet, niente file",
+      "storage": "Salva i suoi dati sul tuo computer",
+      "network": "Si collega a internet",
+      "networkHost": "Si collega solo a {host}",
+      "fs:read": "Legge file dal computer",
+      "fs:write": "Scrive file sul computer",
+      "devices:video": "Usa telecamere e schede di acquisizione",
+      "devices:audio": "Usa microfoni e schede audio",
+      "devices:midi": "Usa dispositivi MIDI",
+      "serial": "Usa dispositivi su porta seriale",
+      "process": "Avvia altri programmi",
+      "addons": "Carica codice nativo",
+      "native": "Programma nativo, con accesso completo al computer"
+    },
+    "soonNote": "I plugin in arrivo sono in programma, senza una data promessa. Quando escono compaiono qui e nel programma.",
+    "developers": {
+      "title": "Vuoi scriverne uno?",
+      "text": "Il sistema dei plugin è aperto: chiunque può aggiungere uno strumento, un protocollo o una disposizione. Nel codice sorgente trovi un plugin d'esempio da cui partire.",
+      "action": "Scarica il codice sorgente"
+    }
+  },
+  "download": {
+    "eyebrow": "Download",
+    "title": "Pronto in due minuti",
+    "lead": "Gratuito, senza registrazione. Gli aggiornamenti arrivano da soli e si installano solo quando lo decidi tu, mai mentre sei in onda.",
+    "windows": "Download per Windows",
+    "windowsHint": "Windows 10 e 11, 64 bit · installatore",
+    "linux": "Download per Linux",
+    "linuxHint": "x86_64 · AppImage",
+    "version": "Versione {version} · {date}",
+    "notesTitle": "Prima di installare",
+    "notes": [
+      "Windows può chiedere conferma al primo avvio, perché il programma è nuovo e non ha ancora una firma a pagamento: scegli «Ulteriori informazioni» e poi «Esegui comunque».",
+      "Non serve essere amministratore del computer.",
+      "macOS non è ancora disponibile.",
+      "Consigliati 8 GB di memoria. Una scheda video integrata basta per testi e immagini."
+    ],
+    "source": "Scarica il codice sorgente (zip)"
+  },
+  "versions": {
+    "eyebrow": "Versioni",
+    "title": "Tutte le versioni",
+    "lead": "Ogni versione resta scaricabile, con le sue note.",
+    "latest": "Più recente",
+    "windows": "Windows",
+    "linux": "Linux",
+    "notes": "Note di versione",
+    "empty": "L'elenco delle versioni non è disponibile in questo momento. Il download qui sopra porta sempre alla più recente."
+  },
+  "faq": {
+    "eyebrow": "Domande",
+    "title": "Domande frequenti",
+    "items": [
+      {
+        "q": "È davvero gratuito?",
+        "a": "Sì. Oggi è tutto gratuito, plugin compresi. Il programma principale è open source e resterà gratuito."
+      },
+      {
+        "q": "Funziona senza internet?",
+        "a": "Sì. Internet serve solo per scaricare aggiornamenti e nuovi plugin. Durante un evento Cuelith non ne ha bisogno, nemmeno per le postazioni in rete locale."
+      },
+      {
+        "q": "Posso usarlo per il live streaming?",
+        "a": "Non ancora. Oggi Cuelith proietta testi, canti e immagini su più schermi. Camera, scene e streaming sono i prossimi plugin in programma."
+      },
+      {
+        "q": "Dove finiscono i miei dati?",
+        "a": "Sul tuo computer. Cuelith non ha account e non invia dati personali né contenuti. Si collega a internet solo per controllare gli aggiornamenti e leggere l'elenco dei plugin."
+      },
+      {
+        "q": "Ho già i miei canti. Posso importarli?",
+        "a": "Sì, se sono nei formati aperti OpenLyrics o ChordPro, oppure come testo semplice. Si possono anche esportare tutti insieme, per una copia di sicurezza."
+      },
+      {
+        "q": "Che computer serve?",
+        "a": "Windows 10 o 11, oppure Linux, a 64 bit. Con una slide in onda Cuelith usa circa 600 MB di memoria; ogni uscita in più ne aggiunge circa 120. Il programma stesso ti mostra quanto sta usando."
+      },
+      {
+        "q": "Cosa succede se un plugin ha un problema?",
+        "a": "Viene chiuso e fatto ripartire da solo, mentre la proiezione continua. Se si ferma più volte di seguito resta spento e te lo dice."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Proiezione live, leggera e modulare.",
+    "source": "Codice sorgente (zip)",
+    "license": "Software libero, licenza Apache 2.0.",
+    "privacy": "Questo sito non usa cookie e non traccia chi lo visita.",
+    "top": "Torna su"
+  },
+  "os": { "windows": "Windows", "linux": "Linux" }
+}

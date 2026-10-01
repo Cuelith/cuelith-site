@@ -1,0 +1,24 @@
+{
+  "name": "cuelith-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@12.8.1",
+  "description": "Il sito di Cuelith: presentazione, download, versioni e plugin.",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:preview": "node build.mjs --single",
+    "shots": "node scripts/shots.mjs",
+    "dev": "node build.mjs && wrangler pages dev dist --port 8788",
+    "test": "node --test test/sources.test.mjs test/site.test.mjs",
+    "format": "prettier --write .",
+    "deploy:dev": "node build.mjs && wrangler pages deploy dist --project-name cuelith --branch dev",
+    "deploy": "node build.mjs && wrangler pages deploy dist --project-name cuelith --branch main"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9",
+    "sharp": "0.35.5",
+    "wrangler": "4.146.0"
+  }
+}

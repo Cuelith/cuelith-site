@@ -1,0 +1,341 @@
+{
+  "comment": "Plugin presentati sul sito oltre a quelli del marketplace (che arrivano da soli). status: included = gia' dentro Cuelith; soon = in programma, senza data.",
+  "groups": {
+    "function": "content",
+    "integration": "content",
+    "video": "video",
+    "audio": "audio",
+    "control": "control",
+    "mode": "layouts",
+    "locale": "languages"
+  },
+  "kinds": {
+    "function": "tool",
+    "integration": "tool",
+    "video": "background",
+    "audio": "background",
+    "control": "background",
+    "mode": "layout",
+    "locale": "language"
+  },
+  "overrides": {
+    "cuelith.songs": {
+      "name": {
+        "en": "Songs"
+      },
+      "text": {
+        "en": "Songs with verses, choruses and a projection order. Imports and exports OpenLyrics and ChordPro."
+      }
+    }
+  },
+  "items": [
+    {
+      "id": "locale-it",
+      "status": "included",
+      "group": "languages",
+      "kind": "language",
+      "name": {
+        "it": "Italiano",
+        "en": "Italian"
+      },
+      "text": {
+        "it": "L'interfaccia in italiano, già dentro Cuelith.",
+        "en": "The Italian interface, already inside Cuelith."
+      }
+    },
+    {
+      "id": "locale-en",
+      "status": "soon",
+      "group": "languages",
+      "kind": "language",
+      "name": {
+        "it": "English",
+        "en": "English"
+      },
+      "text": {
+        "it": "L'interfaccia in inglese. Ogni lingua è un plugin: si aggiunge senza toccare il programma.",
+        "en": "The English interface. Every language is a plugin: it is added without touching the app."
+      }
+    },
+    {
+      "id": "bible",
+      "status": "soon",
+      "group": "content",
+      "kind": "tool",
+      "name": {
+        "it": "Bibbia",
+        "en": "Bible"
+      },
+      "text": {
+        "it": "Cerca un passo per riferimento o per parole e mandalo in onda. Più traduzioni, aggiungibili.",
+        "en": "Find a passage by reference or by words and send it on air. Multiple translations, extendable."
+      }
+    },
+    {
+      "id": "chords",
+      "status": "soon",
+      "group": "content",
+      "kind": "tool",
+      "name": {
+        "it": "Accordi",
+        "en": "Chords"
+      },
+      "text": {
+        "it": "Accordi sopra il testo sul monitor dei musicisti, con cambio di tonalità.",
+        "en": "Chords above the lyrics on the musicians' monitor, with transposition."
+      }
+    },
+    {
+      "id": "slides-import",
+      "status": "soon",
+      "group": "content",
+      "kind": "tool",
+      "name": {
+        "it": "Importa presentazioni",
+        "en": "Presentation import"
+      },
+      "text": {
+        "it": "Porta in scaletta le presentazioni preparate con altri programmi.",
+        "en": "Bring presentations prepared with other programs into the playlist."
+      }
+    },
+    {
+      "id": "audience-questions",
+      "status": "soon",
+      "group": "content",
+      "kind": "tool",
+      "name": {
+        "it": "Domande dal pubblico",
+        "en": "Audience questions"
+      },
+      "text": {
+        "it": "Il pubblico scrive dal telefono, la regia sceglie cosa mostrare.",
+        "en": "The audience writes from their phones, the desk chooses what to show."
+      }
+    },
+    {
+      "id": "lower-thirds",
+      "status": "soon",
+      "group": "video",
+      "kind": "tool",
+      "name": {
+        "it": "Sottopancia",
+        "en": "Lower thirds"
+      },
+      "text": {
+        "it": "Nomi e titoli in sovraimpressione, e i testi come fascia in basso per lo streaming.",
+        "en": "Names and titles on screen, and lyrics as a lower band for streaming."
+      }
+    },
+    {
+      "id": "capture",
+      "status": "soon",
+      "group": "video",
+      "kind": "background",
+      "name": {
+        "it": "Camera e schede di cattura",
+        "en": "Camera and capture cards"
+      },
+      "text": {
+        "it": "Telecamere e ingressi video come sorgenti, da combinare con testi e logo.",
+        "en": "Cameras and video inputs as sources, to combine with text and logo."
+      }
+    },
+    {
+      "id": "streaming",
+      "status": "soon",
+      "group": "video",
+      "kind": "background",
+      "name": {
+        "it": "Streaming RTMP e SRT",
+        "en": "RTMP and SRT streaming"
+      },
+      "text": {
+        "it": "La diretta verso le piattaforme di streaming, mentre in sala resta la sola presentazione.",
+        "en": "Live streaming to the major platforms, while the room keeps the presentation alone."
+      }
+    },
+    {
+      "id": "recording",
+      "status": "soon",
+      "group": "video",
+      "kind": "background",
+      "name": {
+        "it": "Registrazione",
+        "en": "Recording"
+      },
+      "text": {
+        "it": "Registra ciò che va in diretta, su file.",
+        "en": "Record what goes live, to a file."
+      }
+    },
+    {
+      "id": "ndi",
+      "status": "soon",
+      "group": "video",
+      "kind": "background",
+      "name": {
+        "it": "NDI",
+        "en": "NDI"
+      },
+      "text": {
+        "it": "Video in rete, in ingresso e in uscita, verso mixer e altri programmi.",
+        "en": "Video over the network, in and out, to mixers and other software."
+      }
+    },
+    {
+      "id": "texture-share",
+      "status": "soon",
+      "group": "video",
+      "kind": "background",
+      "name": {
+        "it": "Syphon e Spout",
+        "en": "Syphon and Spout"
+      },
+      "text": {
+        "it": "Passa l'immagine ad altri programmi sullo stesso computer, senza ritardi.",
+        "en": "Share the picture with other software on the same computer, with no delay."
+      }
+    },
+    {
+      "id": "mapping",
+      "status": "soon",
+      "group": "video",
+      "kind": "tool",
+      "name": {
+        "it": "Projection mapping",
+        "en": "Projection mapping"
+      },
+      "text": {
+        "it": "Adatta la proiezione a superfici e schermi non rettangolari.",
+        "en": "Fit the projection to surfaces and non-rectangular screens."
+      }
+    },
+    {
+      "id": "asio",
+      "status": "soon",
+      "group": "audio",
+      "kind": "background",
+      "name": {
+        "it": "ASIO e CoreAudio",
+        "en": "ASIO and CoreAudio"
+      },
+      "text": {
+        "it": "Schede audio professionali a bassa latenza.",
+        "en": "Professional low-latency audio interfaces."
+      }
+    },
+    {
+      "id": "dante",
+      "status": "soon",
+      "group": "audio",
+      "kind": "background",
+      "name": {
+        "it": "Dante",
+        "en": "Dante"
+      },
+      "text": {
+        "it": "Audio in rete da e verso il mixer della sala.",
+        "en": "Audio over the network to and from the venue mixer."
+      }
+    },
+    {
+      "id": "timecode",
+      "status": "soon",
+      "group": "audio",
+      "kind": "background",
+      "name": {
+        "it": "Timecode LTC",
+        "en": "LTC timecode"
+      },
+      "text": {
+        "it": "Segui il tempo di uno spettacolo sincronizzato.",
+        "en": "Follow the clock of a synchronised show."
+      }
+    },
+    {
+      "id": "midi-osc",
+      "status": "soon",
+      "group": "control",
+      "kind": "background",
+      "name": {
+        "it": "MIDI e OSC",
+        "en": "MIDI and OSC"
+      },
+      "text": {
+        "it": "Comanda Cuelith da pedaliere, controller e altri programmi, o fagli comandare loro.",
+        "en": "Control Cuelith from foot pedals, controllers and other software, or let it control them."
+      }
+    },
+    {
+      "id": "dmx",
+      "status": "soon",
+      "group": "control",
+      "kind": "background",
+      "name": {
+        "it": "DMX, Art-Net e sACN",
+        "en": "DMX, Art-Net and sACN"
+      },
+      "text": {
+        "it": "Le luci seguono la scaletta: una scena per ogni momento.",
+        "en": "Lighting follows the playlist: a scene for every moment."
+      }
+    },
+    {
+      "id": "remote-api",
+      "status": "soon",
+      "group": "control",
+      "kind": "background",
+      "name": {
+        "it": "Pulsantiere e API",
+        "en": "Button decks and API"
+      },
+      "text": {
+        "it": "Tasti fisici programmabili e comandi da altri sistemi della sala.",
+        "en": "Programmable physical buttons and commands from other venue systems."
+      }
+    },
+    {
+      "id": "layout-worship",
+      "status": "soon",
+      "group": "layouts",
+      "kind": "layout",
+      "name": {
+        "it": "Disposizione Culto",
+        "en": "Worship layout"
+      },
+      "text": {
+        "it": "Canti, Bibbia e avvisi a portata di mano, per chi fa tutto da solo.",
+        "en": "Songs, Bible and announcements at hand, for a one-person team."
+      }
+    },
+    {
+      "id": "layout-broadcast",
+      "status": "soon",
+      "group": "layouts",
+      "kind": "layout",
+      "name": {
+        "it": "Disposizione Broadcast",
+        "en": "Broadcast layout"
+      },
+      "text": {
+        "it": "Sala e streaming affiancati, con scene, audio e stato della diretta.",
+        "en": "Room and stream side by side, with scenes, audio and stream status."
+      }
+    },
+    {
+      "id": "layout-vj",
+      "status": "soon",
+      "group": "layouts",
+      "kind": "layout",
+      "name": {
+        "it": "Disposizione Concerto",
+        "en": "Concert layout"
+      },
+      "text": {
+        "it": "Clip a livelli e tempo della musica, per concerti e serate.",
+        "en": "Layered clips and musical tempo, for concerts and club nights."
+      }
+    }
+  ]
+}

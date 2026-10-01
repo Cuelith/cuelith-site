@@ -1,0 +1,22 @@
+{
+  "releases": [
+    {
+      "version": "0.1.0",
+      "date": "2026-10-01T22:22:05Z",
+      "notes": "<p>Prima versione pubblica di Cuelith: le fondamenta. Un nucleo leggero per proiettare testi su più schermi, con tutto il resto installabile come modulo.</p>\n<p>È un'anteprima: funziona ed è provata in automatico, ma mancano ancora camera, scene e diretta (prossima fase).</p>\n<h2>Installazione</h2>\n<ul>\n<li><strong>Windows</strong>: scarica <code>Cuelith-Setup-0.1.0.exe</code> e aprilo. Non serve l'amministratore. Al primo avvio Windows può mostrare l'avviso \"PC protetto da Windows\" perché l'installatore non è firmato: scegli <strong>Ulteriori informazioni → Esegui comunque</strong>.</li>\n<li><strong>Linux</strong>: scarica <code>Cuelith-0.1.0-x86_64.AppImage</code>, rendilo eseguibile e aprilo.</li>\n<li>macOS non è ancora disponibile.</li>\n</ul>\n<p>Gli aggiornamenti arrivano da soli: Cuelith li scarica in background e li installa solo quando lo decidi tu, mai mentre sei in onda.</p>\n<h2>Cosa c'è</h2>\n<ul>\n<li><strong>Scaletta, slide, anteprima e programma</strong>, con dissolvenza e tasti per la regia.</li>\n<li><strong>Più uscite</strong> con aspetti diversi: Sala (testo grande con sfondo) e Palco (testo, prossima slide, orologio, timer, messaggi). Nero e blocco per singola uscita.</li>\n<li><strong>Sfondi immagine</strong> per slide, per elemento o predefiniti, con velo per la leggibilità.</li>\n<li><strong>Librerie</strong> con ricerca, categorie, sigle e numeri; crediti e basi musicali.</li>\n<li><strong>Cinque disposizioni</strong> della regia: Presenta, Band, Conferenza, Regia, Compatta.</li>\n<li><strong>Moduli</strong>: marketplace, installazione e aggiornamento senza riavviare. Ogni modulo gira isolato con i soli permessi che dichiara; se si blocca, le uscite continuano. Disponibile il modulo <strong>Canti</strong> (sezioni, ordine di proiezione, OpenLyrics e ChordPro).</li>\n<li><strong>Postazioni in rete locale</strong>: tablet e telefoni fanno da regia o da telecomando dal browser, abbinati con un codice.</li>\n<li><strong>Contatore delle risorse</strong>: quanto usano Cuelith e i moduli rispetto al computer.</li>\n<li>File <code>.cuelith</code> con salvataggio sicuro, copia automatica e recupero dopo un arresto.</li>\n</ul>\n<h2>Da sapere</h2>\n<ul>\n<li>Il collegamento delle postazioni in rete non è cifrato: usalo su una rete di cui ti fidi.</li>\n<li>Le immagini di sfondo restano nell'archivio del computer: copiando uno show su un altro computer vanno aggiunte di nuovo.</li>\n<li>Interfaccia in italiano; altre lingue arriveranno come moduli.</li>\n</ul>\n<p>Licenza Apache 2.0.</p>"
+    }
+  ],
+  "modules": [
+    {
+      "id": "cuelith.songs",
+      "name": "Canti",
+      "description": "Canti con strofe, ritornelli e ordine di proiezione. Importa ed esporta OpenLyrics e ChordPro.",
+      "family": "function",
+      "verified": true,
+      "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8dGl0bGU+Q2FudGk8L3RpdGxlPgogIDxyZWN0IHg9IjIuNSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0VDRUFFNCIvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTAiIHdpZHRoPSI4IiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0VDRUFFNCIvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTUiIHdpZHRoPSI2IiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0E5QURCNCIvPgogIDxyZWN0IHg9IjE3IiB5PSIzLjUiIHdpZHRoPSIyIiBoZWlnaHQ9IjE0IiByeD0iMSIgZmlsbD0iIzM3RDFCRiIvPgogIDxwYXRoIGQ9Ik0xOSAzLjVjMS42LjYgMi44IDEuOSAyLjggMy44djEuM2MtLjctMS4yLTEuNi0xLjgtMi44LTIuMXoiIGZpbGw9IiMzN0QxQkYiLz4KICA8Y2lyY2xlIGN4PSIxNS4yIiBjeT0iMTcuNiIgcj0iMy4xIiBmaWxsPSIjMzdEMUJGIi8+Cjwvc3ZnPgo=",
+      "version": "0.4.2",
+      "published": "2026-10-01T22:10:41Z",
+      "permissions": []
+    }
+  ]
+}
