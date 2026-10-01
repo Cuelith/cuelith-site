@@ -10,7 +10,7 @@ if (!existsSync(from)) {
   console.error(`Mancano le schermate in ${from}`);
   process.exit(1);
 }
-const wanted = ["regia", "uscita-sala", "band", "telecomando", "risorse"];
+const wanted = ["regia", "uscita-sala", "uscita-palco", "band", "telecomando", "risorse"];
 for (const name of wanted) {
   cpSync(path.join(from, `${name}.png`), path.join(root, "src", "assets", "shots", `${name}.png`));
 }

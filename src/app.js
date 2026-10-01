@@ -47,6 +47,133 @@ const applyFilter = (group) => {
 };
 for (const chip of chips) chip.addEventListener("click", () => applyFilter(chip.dataset.filter));
 
+// ---- movimento ----
+// Ogni sezione entra con un suo ritmo quando arriva sullo schermo, e alcune
+// parti seguono lo scorrimento (la scena d'apertura, le schermate, la linea
+// sotto la barra). Lo decide motion-flag.js: con le animazioni ridotte non
+// succede nulla e la pagina e' gia' tutta visibile.
+const root = document.documentElement;
+const moving = root.classList.contains("js-motion");
+window.CUELITH_MOTION = true;
+
+/** Un numero che sale fino al suo valore, una volta sola. */
+function countUp(el) {
+  const text = el.textContent;
+  const match = /\d+/.exec(text);
+  if (match === null || Number(match[0]) < 10) return;
+  const target = Number(match[0]);
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / 900);
+    el.textContent = text.replace(match[0], String(Math.round(target * (1 - (1 - t) ** 3))));
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+const seen = moving
+  ? new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-in");
+          seen.unobserve(entry.target);
+          const counter = entry.target.querySelector("[data-count]");
+          if (counter) countUp(counter);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+    )
+  : undefined;
+
+/** Mette in fila gli elementi di ogni gruppo e li tiene d'occhio finche' non entrano. */
+function scan() {
+  if (seen === undefined) return;
+  for (const group of document.querySelectorAll("[data-stagger]")) {
+    let index = 0;
+    for (const el of group.querySelectorAll("[data-reveal]")) {
+      if (el.closest("[data-stagger]") !== group) continue;
+      el.style.setProperty("--i", String(Math.min(index++, 7)));
+    }
+  }
+  for (const el of document.querySelectorAll("[data-reveal]:not(.is-in)")) seen.observe(el);
+}
+
+if (moving) {
+  const scene = document.querySelector("[data-scene]");
+  const near = new Set();
+  const watch = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) near.add(entry.target);
+        else near.delete(entry.target);
+      }
+    },
+    { rootMargin: "20% 0px" },
+  );
+  for (const el of document.querySelectorAll("[data-parallax]")) watch.observe(el);
+
+  let queued = false;
+  const frame = () => {
+    queued = false;
+    const height = window.innerHeight;
+    const max = root.scrollHeight - height;
+    root.style.setProperty("--page", max > 0 ? (window.scrollY / max).toFixed(4) : "0");
+    if (scene) scene.style.setProperty("--s", Math.min(1, window.scrollY / height).toFixed(3));
+    for (const el of near) {
+      const box = el.getBoundingClientRect();
+      const offset = (box.top + box.height / 2 - height / 2) / height;
+      el.style.setProperty("--p", Math.max(-1, Math.min(1, offset)).toFixed(3));
+    }
+  };
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(frame);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  frame();
+  scan();
+}
+
+// La voce del menu della sezione che si sta leggendo.
+if ("IntersectionObserver" in window) {
+  const links = new Map(
+    [...document.querySelectorAll('.top__nav a[href^="#"]')].map((link) => [
+      link.getAttribute("href").slice(1),
+      link,
+    ]),
+  );
+  const spy = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const link = links.get(entry.target.id);
+        if (entry.isIntersecting) link.setAttribute("aria-current", "true");
+        else link.removeAttribute("aria-current");
+      }
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+  for (const id of links.keys()) {
+    const section = document.getElementById(id);
+    if (section) spy.observe(section);
+  }
+}
+
+/**
+ * Sostituisce un elenco con i dati del momento. Se chi legge c'e' gia' arrivato
+ * il nuovo contenuto compare fermo, senza rifare l'ingresso.
+ */
+function swap(container, html) {
+  const reached = container.getBoundingClientRect().top < window.innerHeight;
+  container.innerHTML = html;
+  if (reached) {
+    for (const el of container.querySelectorAll("[data-reveal]")) el.classList.add("is-in");
+  }
+  scan();
+}
+
 /** Dati del momento dal sito stesso; se non rispondono resta cio' che c'e' nella pagina. */
 async function refresh() {
   const read = async (path) => {
@@ -58,10 +185,9 @@ async function refresh() {
     const { releases } = await read("/api/releases");
     if (Array.isArray(releases) && releases.length > 0) {
       const latest = releases[0];
-      document.querySelector("[data-versions]").innerHTML = versionList(
-        releases,
-        strings.versions,
-        strings.locale,
+      swap(
+        document.querySelector("[data-versions]"),
+        versionList(releases, strings.versions, strings.locale),
       );
       const meta = document.querySelector("[data-hero-meta]");
       if (meta) meta.textContent = fill(strings.hero.meta, { version: latest.version });
@@ -80,9 +206,9 @@ async function refresh() {
     const { modules } = await read("/api/modules");
     if (Array.isArray(modules) && modules.length > 0) {
       const active = chips.find((chip) => chip.getAttribute("aria-pressed") === "true");
-      document.querySelector("[data-plugins]").innerHTML = pluginCards(
-        pluginList(modules, strings.catalog, strings.lang),
-        strings.plugins,
+      swap(
+        document.querySelector("[data-plugins]"),
+        pluginCards(pluginList(modules, strings.catalog, strings.lang), strings.plugins),
       );
       applyFilter(active?.dataset.filter ?? "all");
     }

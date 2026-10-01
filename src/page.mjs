@@ -71,6 +71,7 @@ export function renderPage({
 <meta property="og:image" content="${SITE}${assets.social}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${assets.icon}" type="image/svg+xml">
+${assets.flag ?? ""}
 ${assets.styles}`;
 
   const body = `<a class="skip" href="#contenuto">${esc(c.nav.features)}</a>
@@ -86,43 +87,53 @@ ${assets.styles}`;
     <a class="top__lang" href="${single ? "#" : c.alternate}" lang="${c.lang === "it" ? "en" : "it"}" aria-label="${esc(c.nav.languageLabel)}">${esc(c.nav.language)}</a>
     <a class="button button--primary button--small" href="#download">${esc(c.nav.download)}</a>
   </div>
+  <span class="top__progress" aria-hidden="true"></span>
 </header>
 
 <main id="contenuto">
 <section class="hero">
-  <div class="wrap">
-    <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
-    <h1>${esc(c.hero.title)}</h1>
-    <p class="lead">${esc(c.hero.lead)}</p>
-    <div class="hero__actions">
-      <a class="button button--primary" href="/download/windows" data-download>${arrow}<span data-download-label>${esc(c.hero.primaryGeneric)}</span></a>
-      <a class="button" href="#funzioni">${esc(c.hero.secondary)}</a>
+  <div class="wrap hero__grid">
+    <div class="hero__text" data-stagger>
+      <p class="eyebrow" data-reveal="up">${esc(c.hero.eyebrow)}</p>
+      <h1 data-reveal="up">${esc(c.hero.title)}</h1>
+      <p class="lead" data-reveal="up">${esc(c.hero.lead)}</p>
+      <div class="hero__actions" data-reveal="up">
+        <a class="button button--primary" href="/download/windows" data-download>${arrow}<span data-download-label>${esc(c.hero.primaryGeneric)}</span></a>
+        <a class="button" href="#funzioni">${esc(c.hero.secondary)}</a>
+      </div>
+      <p class="hero__meta" data-hero-meta data-reveal="fade">${esc(heroMeta)}</p>
     </div>
-    <p class="hero__meta" data-hero-meta>${esc(heroMeta)}</p>
-    <div class="stage">
-      <figure class="window window--main">${shot(shots.regia, c.hero.shotAlt, { eager: true, sizes: "(min-width: 1240px) 1180px, 94vw" })}</figure>
-      <figure class="window window--output" aria-hidden="true">${shot(shots["uscita-sala"], "", { sizes: "(min-width: 900px) 320px, 40vw" })}</figure>
+    <div class="scene" role="img" aria-label="${esc(c.hero.shotAlt)}" data-scene>
+      <div class="scene__piece scene__room">
+        <figure class="window window--live" data-reveal="right">${shot(shots["uscita-sala"], "", { eager: true, sizes: "(min-width: 1000px) 480px, 76vw" })}<figcaption>${esc(c.hero.scene.room)}</figcaption></figure>
+      </div>
+      <div class="scene__piece scene__desk">
+        <figure class="window" data-reveal="up">${shot(shots.regia, "", { eager: true, sizes: "(min-width: 1000px) 420px, 66vw" })}<figcaption>${esc(c.hero.scene.desk)}</figcaption></figure>
+      </div>
+      <div class="scene__piece scene__phone">
+        <figure class="window window--phone" data-reveal="right">${shot(shots.telecomando, "", { eager: true, sizes: "130px" })}<figcaption>${esc(c.hero.scene.remote)}</figcaption></figure>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="facts" aria-label="${esc(c.facts.label)}">
   <div class="wrap">
-    <dl class="facts__grid">
-      ${c.facts.items.map((fact) => `<div><dt>${esc(fact.value)}</dt><dd>${esc(fact.label)}</dd></div>`).join("\n      ")}
+    <dl class="facts__grid" data-stagger>
+      ${c.facts.items.map((fact) => `<div data-reveal="scale"><dt data-count>${esc(fact.value)}</dt><dd>${esc(fact.label)}</dd></div>`).join("\n      ")}
     </dl>
-    <p class="facts__note">${esc(c.facts.note)}</p>
+    <p class="facts__note" data-reveal="fade">${esc(c.facts.note)}</p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <p class="eyebrow">${esc(c.pillars.eyebrow)}</p>
-    <h2>${esc(c.pillars.title)}</h2>
-    <ol class="pillars">
+    <p class="eyebrow" data-reveal="fade">${esc(c.pillars.eyebrow)}</p>
+    <h2 data-reveal="up">${esc(c.pillars.title)}</h2>
+    <ol class="pillars" data-stagger>
       ${c.pillars.items
         .map(
-          (item) => `<li>
+          (item) => `<li data-reveal="draw">
         <span class="pillars__tag">${esc(item.tag)}</span>
         <h3>${esc(item.title)}</h3>
         <p>${esc(item.text)}</p>
@@ -135,31 +146,40 @@ ${assets.styles}`;
 
 <section class="section" id="funzioni">
   <div class="wrap">
-    <p class="eyebrow">${esc(c.features.eyebrow)}</p>
-    <h2>${esc(c.features.title)}</h2>
+    <p class="eyebrow" data-reveal="fade">${esc(c.features.eyebrow)}</p>
+    <h2 data-reveal="up">${esc(c.features.title)}</h2>
     ${c.features.rows
-      .map(
-        (row) => `<article class="feature${row.portrait ? " feature--portrait" : ""}">
-      <div class="feature__text">
-        <h3>${esc(row.title)}</h3>
-        <p>${esc(row.text)}</p>
-        <ul>${row.points.map((point) => `<li>${esc(point)}</li>`).join("")}</ul>
+      .map((row, index) => {
+        // Testo e immagine entrano da lati opposti, alternati riga per riga.
+        const textFrom = index % 2 === 0 ? "left" : "right";
+        const mediaFrom = index % 2 === 0 ? "right" : "left";
+        const inset = row.shot2
+          ? `<figure class="window window--inset" data-reveal="up">${shot(shots[row.shot2], "", { sizes: "(min-width: 1100px) 300px, 46vw" })}</figure>`
+          : "";
+        return `<article class="feature${row.portrait ? " feature--portrait" : ""}">
+      <div class="feature__text" data-stagger>
+        <h3 data-reveal="${textFrom}">${esc(row.title)}</h3>
+        <p data-reveal="${textFrom}">${esc(row.text)}</p>
+        <ul>${row.points.map((point) => `<li data-reveal="up">${esc(point)}</li>`).join("")}</ul>
       </div>
-      <figure class="window${row.portrait ? " window--phone" : ""}">${shot(shots[row.shot], row.alt, row.portrait ? { sizes: "280px" } : undefined)}</figure>
-    </article>`,
-      )
+      <div class="feature__media${row.shot2 ? " feature__media--pair" : ""}" data-parallax>
+        <figure class="window${row.portrait ? " window--phone" : ""}" data-reveal="${mediaFrom}">${shot(shots[row.shot], row.alt, row.portrait ? { sizes: "280px" } : undefined)}</figure>
+        ${inset}
+      </div>
+    </article>`;
+      })
       .join("\n    ")}
   </div>
 </section>
 
 <section class="section section--tint">
   <div class="wrap">
-    <p class="eyebrow">${esc(c.audience.eyebrow)}</p>
-    <h2>${esc(c.audience.title)}</h2>
-    <ul class="audience">
+    <p class="eyebrow" data-reveal="fade">${esc(c.audience.eyebrow)}</p>
+    <h2 data-reveal="up">${esc(c.audience.title)}</h2>
+    <ul class="audience" data-stagger>
       ${c.audience.items
         .map(
-          (item) => `<li>
+          (item) => `<li data-reveal="down">
         <span class="badge badge--${item.status}">${esc(c.plugins.status[item.status])}</span>
         <h3>${esc(item.title)}</h3>
         <p>${esc(item.text)}</p>
@@ -172,10 +192,10 @@ ${assets.styles}`;
 
 <section class="section" id="plugin">
   <div class="wrap">
-    <p class="eyebrow">${esc(c.plugins.eyebrow)}</p>
-    <h2>${esc(c.plugins.title)}</h2>
-    <p class="lead lead--section">${esc(c.plugins.lead)}</p>
-    <div class="filters" role="group" aria-label="${esc(c.plugins.filterLabel)}">
+    <p class="eyebrow" data-reveal="fade">${esc(c.plugins.eyebrow)}</p>
+    <h2 data-reveal="up">${esc(c.plugins.title)}</h2>
+    <p class="lead lead--section" data-reveal="up">${esc(c.plugins.lead)}</p>
+    <div class="filters" data-reveal="up" role="group" aria-label="${esc(c.plugins.filterLabel)}">
       <span class="filters__label">${esc(c.plugins.filterLabel)}</span>
       ${groups
         .map(
@@ -188,7 +208,7 @@ ${assets.styles}`;
 ${pluginCards(plugins, strings.plugins)}
     </div>
     <p class="plugins__note">${esc(c.plugins.soonNote)}</p>
-    <aside class="developers">
+    <aside class="developers" data-reveal="up">
       <div>
         <h3>${esc(c.plugins.developers.title)}</h3>
         <p>${esc(c.plugins.developers.text)}</p>
@@ -200,17 +220,17 @@ ${pluginCards(plugins, strings.plugins)}
 
 <section class="section section--tint" id="download">
   <div class="wrap download">
-    <div>
-      <p class="eyebrow">${esc(c.download.eyebrow)}</p>
-      <h2>${esc(c.download.title)}</h2>
-      <p class="lead lead--section">${esc(c.download.lead)}</p>
-      <div class="download__buttons">
+    <div data-stagger>
+      <p class="eyebrow" data-reveal="fade">${esc(c.download.eyebrow)}</p>
+      <h2 data-reveal="land">${esc(c.download.title)}</h2>
+      <p class="lead lead--section" data-reveal="up">${esc(c.download.lead)}</p>
+      <div class="download__buttons" data-reveal="up">
         <a class="button button--primary button--big" href="/download/windows" data-os="windows">${arrow}<span><strong>${esc(c.download.windows)}</strong><small>${esc(c.download.windowsHint)}</small></span></a>
         <a class="button button--big" href="/download/linux" data-os="linux">${arrow}<span><strong>${esc(c.download.linux)}</strong><small>${esc(c.download.linuxHint)}</small></span></a>
       </div>
-      <p class="download__version" data-download-version>${esc(versionLine)}</p>
+      <p class="download__version" data-download-version data-reveal="fade">${esc(versionLine)}</p>
     </div>
-    <div class="download__notes">
+    <div class="download__notes" data-reveal="right">
       <h3>${esc(c.download.notesTitle)}</h3>
       <ul>${c.download.notes.map((note) => `<li>${esc(note)}</li>`).join("")}</ul>
       <a class="link" href="/download/source">${esc(c.download.source)}</a>
@@ -220,10 +240,10 @@ ${pluginCards(plugins, strings.plugins)}
 
 <section class="section" id="versioni">
   <div class="wrap wrap--narrow">
-    <p class="eyebrow">${esc(c.versions.eyebrow)}</p>
-    <h2>${esc(c.versions.title)}</h2>
-    <p class="lead lead--section">${esc(c.versions.lead)}</p>
-    <div class="versions" data-versions>
+    <p class="eyebrow" data-reveal="fade">${esc(c.versions.eyebrow)}</p>
+    <h2 data-reveal="up">${esc(c.versions.title)}</h2>
+    <p class="lead lead--section" data-reveal="up">${esc(c.versions.lead)}</p>
+    <div class="versions" data-versions data-stagger>
 ${versionList(releases, c.versions, c.locale)}
     </div>
   </div>
@@ -231,10 +251,10 @@ ${versionList(releases, c.versions, c.locale)}
 
 <section class="section section--tint" id="domande">
   <div class="wrap wrap--narrow">
-    <p class="eyebrow">${esc(c.faq.eyebrow)}</p>
-    <h2>${esc(c.faq.title)}</h2>
-    <div class="faq">
-      ${c.faq.items.map((item) => `<details><summary>${esc(item.q)}</summary><p>${esc(item.a)}</p></details>`).join("\n      ")}
+    <p class="eyebrow" data-reveal="fade">${esc(c.faq.eyebrow)}</p>
+    <h2 data-reveal="up">${esc(c.faq.title)}</h2>
+    <div class="faq" data-stagger>
+      ${c.faq.items.map((item) => `<details data-reveal="up"><summary>${esc(item.q)}</summary><p>${esc(item.a)}</p></details>`).join("\n      ")}
     </div>
   </div>
 </section>

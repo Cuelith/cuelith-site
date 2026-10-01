@@ -91,6 +91,9 @@ const script = `(() => {\n"use strict";\n${read("shared.js").replace(/^export /g
 const stamp = (text) => createHash("sha256").update(text).digest("hex").slice(0, 10);
 writeFileSync(path.join(dist, "assets", "site.css"), css);
 writeFileSync(path.join(dist, "assets", "site.js"), script);
+// Piccolo e caricato per primo: decide se le animazioni d'ingresso sono attive.
+const flag = read("motion-flag.js");
+writeFileSync(path.join(dist, "assets", "motion-flag.js"), flag);
 cpSync(path.join(src, "assets", "cuelith-logo.png"), path.join(dist, "assets", "cuelith-logo.png"));
 cpSync(path.join(src, "assets", "cuelith-icon.svg"), path.join(dist, "assets", "cuelith-icon.svg"));
 
@@ -102,6 +105,7 @@ const assets = {
   icon: "/assets/cuelith-icon.svg",
   social: "/assets/social.jpg",
   styles: `<link rel="preload" href="/assets/fonts/${FONTS[0][1]}" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="/assets/site.css?v=${stamp(css)}">`,
+  flag: `<script src="/assets/motion-flag.js?v=${stamp(flag)}"></script>`,
   script: `<script src="/assets/site.js?v=${stamp(script)}" defer></script>`,
 };
 for (const lang of ["it", "en"]) {
@@ -173,7 +177,7 @@ if (single) {
     const title = `<title>Bozzetto sito Cuelith${lang === "it" ? "" : " (EN)"}</title>`;
     writeFileSync(
       path.join(out, `cuelith-${lang}.html`),
-      `${title}\n<style>\n${singleCss}\n</style>\n${body}\n`,
+      `${title}\n<style>\n${singleCss}\n</style>\n<script>\n${flag}</script>\n${body}\n`,
     );
   }
   console.log("dist-single/ pronto");

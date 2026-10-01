@@ -85,14 +85,14 @@ export function pluginCards(plugins, strings) {
   );
   const roadmap = groups
     .map(
-      (group) => `<div class="roadmap__group" data-group="${esc(group)}">
-  <h4>${esc(strings.filters[group])}</h4>
+      (group) => `<div class="roadmap__group" data-group="${esc(group)}" data-stagger>
+  <h4 data-reveal="up">${esc(strings.filters[group])}</h4>
   <ul>
 ${soon
   .filter((plugin) => plugin.group === group)
   .map(
     (plugin) =>
-      `    <li><p class="roadmap__name"><strong>${esc(plugin.name)}</strong><span>${esc(strings.kind[plugin.kind] ?? "")}</span></p><p>${esc(plugin.text)}</p></li>`,
+      `    <li data-reveal="left"><p class="roadmap__name"><strong>${esc(plugin.name)}</strong><span>${esc(strings.kind[plugin.kind] ?? "")}</span></p><p>${esc(plugin.text)}</p></li>`,
   )
   .join("\n")}
   </ul>
@@ -104,7 +104,7 @@ ${soon
       ? ""
       : `<div class="plugins__part" data-section>
 <h3 class="plugins__title">${esc(strings.sections.ready)}</h3>
-<ul class="plugins">
+<ul class="plugins" data-stagger>
 ${readyCards(ready, strings)}
 </ul>
 </div>`
@@ -139,7 +139,7 @@ function readyCards(plugins, strings) {
         plugin.status === "available" && plugin.version
           ? `<span class="plugin__version">${esc(fill(strings.version, { version: plugin.version }))}</span>`
           : "";
-      return `<li class="plugin" data-group="${esc(plugin.group)}">
+      return `<li class="plugin" data-group="${esc(plugin.group)}" data-reveal="scale">
   <div class="plugin__head">
     ${icon}
     <div>
@@ -162,7 +162,7 @@ export function versionList(releases, strings, locale) {
   return releases
     .map((release, index) => {
       const version = esc(release.version);
-      return `<details class="version"${index === 0 ? " open" : ""}>
+      return `<details class="version" data-reveal="up"${index === 0 ? " open" : ""}>
   <summary>
     <span class="version__number">${version}</span>
     ${index === 0 ? `<span class="badge badge--available">${esc(strings.latest)}</span>` : ""}

@@ -15,7 +15,10 @@ const image = {
   files: [{ src: "/assets/shots/x-900.webp", width: 900 }],
 };
 const shots = Object.fromEntries(
-  ["regia", "uscita-sala", "band", "telecomando", "risorse"].map((name) => [name, image]),
+  ["regia", "uscita-sala", "uscita-palco", "band", "telecomando", "risorse"].map((name) => [
+    name,
+    image,
+  ]),
 );
 const assets = {
   logo: "/logo.png",

@@ -23,6 +23,75 @@
   --body: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
   --gutter: clamp(16px, 4vw, 40px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- ingressi ----------
+   Attivi solo con .js-motion (lo mette motion-flag.js, mai con le animazioni
+   ridotte): senza, tutto e' gia' al suo posto. Ogni tipo ha il suo gesto;
+   --i mette in fila gli elementi di uno stesso gruppo. */
+
+.js-motion [data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.75s var(--ease);
+  transition-delay: calc(var(--i, 0) * 85ms);
+}
+
+.js-motion [data-reveal="up"] {
+  transform: translateY(22px);
+}
+
+.js-motion [data-reveal="down"] {
+  transform: translateY(-26px);
+}
+
+.js-motion [data-reveal="left"] {
+  transform: translateX(-34px);
+}
+
+.js-motion [data-reveal="right"] {
+  transform: translateX(34px);
+}
+
+.js-motion [data-reveal="scale"] {
+  transform: scale(0.88);
+}
+
+/* Atterra con un piccolo rimbalzo. */
+.js-motion [data-reveal="land"] {
+  transform: scale(0.84);
+  transform-origin: left center;
+  transition-timing-function: var(--ease), cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* La linea si disegna, poi sale il contenuto. */
+.js-motion [data-reveal="draw"] {
+  opacity: 1;
+}
+
+.js-motion [data-reveal="draw"]::before {
+  transform: scaleX(0);
+}
+
+.js-motion [data-reveal="draw"] > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.55s var(--ease),
+    transform 0.6s var(--ease);
+  transition-delay: calc(var(--i, 0) * 140ms + 250ms);
+}
+
+.js-motion [data-reveal].is-in,
+.js-motion [data-reveal="draw"].is-in > * {
+  opacity: 1;
+  transform: none;
+}
+
+.js-motion [data-reveal="draw"].is-in::before {
+  transform: scaleX(1);
 }
 
 *,
@@ -75,9 +144,9 @@ h3 {
 }
 
 h1 {
-  font: 600 clamp(38px, 6.4vw, 76px) / 1.04 var(--display);
+  font: 600 clamp(36px, 4.7vw, 62px) / 1.05 var(--display);
   letter-spacing: -0.02em;
-  max-width: 17ch;
+  max-width: 15ch;
 }
 
 h2 {
@@ -259,8 +328,38 @@ p {
 }
 
 .top__nav a:hover,
-.top__lang:hover {
+.top__lang:hover,
+.top__nav a[aria-current] {
   color: var(--fg);
+}
+
+.top__nav a {
+  position: relative;
+}
+
+.top__nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -6px;
+  height: 2px;
+  background: var(--cue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+
+.top__nav a[aria-current]::after {
+  transform: scaleX(1);
+}
+
+/* Quanto della pagina e' gia' passato: una linea che avanza con lo scorrimento. */
+.top__progress {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cue), var(--live));
+  transform: scaleX(var(--page, 0));
+  transform-origin: left;
 }
 
 /* ---------- apertura ---------- */
@@ -299,9 +398,101 @@ p {
   font-size: 14px;
 }
 
-.stage {
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+
+/* La scena d'apertura: lo stesso testo in sala, alla regia e sul telefono.
+   I tre schermi scorrono a velocita' diverse (--s va da 0 a 1 con la pagina). */
+.scene {
   position: relative;
-  margin-top: clamp(36px, 6vw, 64px);
+  aspect-ratio: 1 / 0.76;
+  --s: 0;
+  --amp: 1;
+}
+
+.scene__piece {
+  position: absolute;
+  will-change: transform;
+}
+
+.scene__room {
+  top: 0;
+  right: 0;
+  width: 80%;
+  transform: translateY(calc(var(--s) * var(--amp) * -36px));
+}
+
+.scene__desk {
+  left: 0;
+  bottom: 0;
+  width: 66%;
+  transform: translateY(calc(var(--s) * var(--amp) * 26px));
+}
+
+.scene__phone {
+  right: 4%;
+  bottom: -2%;
+  width: 19%;
+  transform: translateY(calc(var(--s) * var(--amp) * -84px));
+}
+
+.scene__room [data-reveal] {
+  --i: 2;
+}
+
+.scene__desk [data-reveal] {
+  --i: 4;
+}
+
+.scene__phone [data-reveal] {
+  --i: 6;
+}
+
+.scene figure {
+  position: relative;
+}
+
+.scene figcaption {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgb(11 12 14 / 0.78);
+  color: var(--fg);
+  font: 500 10px/1.5 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scene__desk figcaption {
+  top: auto;
+  bottom: 8px;
+}
+
+.scene .window--phone {
+  width: 100%;
+  border-width: 4px;
+  border-radius: 16px;
+}
+
+.scene .window--phone figcaption {
+  display: none;
+}
+
+.window--live {
+  border: 2px solid var(--live);
+  border-radius: 10px;
+}
+
+.window--live figcaption {
+  background: var(--live);
+  color: var(--live-ink);
+  font-weight: 700;
 }
 
 .window {
@@ -317,12 +508,23 @@ p {
   width: 100%;
 }
 
-.window--output {
+/* Una seconda uscita appoggiata sopra la prima (sala e palco insieme). */
+.feature__media {
+  position: relative;
+  transform: translateY(calc(var(--p, 0) * 30px));
+  will-change: transform;
+}
+
+.feature__media--pair {
+  padding: 0 0 12% 0;
+}
+
+.window--inset {
   position: absolute;
-  right: clamp(-10px, -1vw, -4px);
-  bottom: -34px;
-  width: min(30%, 340px);
-  border: 2px solid var(--live);
+  right: -3%;
+  bottom: 0;
+  width: 56%;
+  border-color: var(--stage);
   border-radius: 10px;
 }
 
@@ -397,20 +599,32 @@ p {
 }
 
 .pillars li {
-  padding-top: 22px;
-  border-top: 2px solid var(--line-2);
+  position: relative;
+  padding-top: 24px;
+  --rule: var(--line-2);
+}
+
+.pillars li::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--rule);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 140ms);
 }
 
 .pillars li:nth-child(1) {
-  border-color: var(--cue);
+  --rule: var(--cue);
 }
 
 .pillars li:nth-child(2) {
-  border-color: var(--live);
+  --rule: var(--live);
 }
 
 .pillars li:nth-child(3) {
-  border-color: var(--stage);
+  --rule: var(--stage);
 }
 
 .pillars__tag {
@@ -915,8 +1129,24 @@ details[open] > summary::after {
   .feature,
   .feature--portrait,
   .download,
-  .foot__row {
+  .foot__row,
+  .hero__grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scene {
+    max-width: 560px;
+    --amp: 0.3;
+  }
+
+  /* Su schermi stretti gli ingressi laterali diventano verticali: nulla esce di lato. */
+  .js-motion [data-reveal="left"],
+  .js-motion [data-reveal="right"] {
+    transform: translateY(22px);
+  }
+
+  .feature__media {
+    transform: translateY(calc(var(--p, 0) * 14px));
   }
 
   .feature:nth-of-type(even) .feature__text {
@@ -938,10 +1168,6 @@ details[open] > summary::after {
 
   .facts__grid div:nth-child(n + 3) {
     border-top: 1px solid var(--line);
-  }
-
-  .window--output {
-    display: none;
   }
 }
 

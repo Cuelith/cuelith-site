@@ -13,6 +13,15 @@ Il sito di Cuelith (`cuelith.lzrhive.it`). Fonte di verità del progetto: `cueli
   funzioni del sito. Nessun collegamento esterno nella pagina: `test/site.test.mjs` lo verifica.
 - **Niente funzioni finte.** Ciò che non esiste ancora sta solo in «In arrivo», senza date.
   I numeri in evidenza devono essere misure scritte in `cuelith-docs`.
+- **Contenuti dimostrativi neutri.** Cuelith è un software generale: nelle schermate niente testi
+  religiosi o legati a un solo tipo di pubblico (lo show d'esempio è una serata con canzoni
+  originali). Chiese e comunità sono uno dei pubblici, non l'unico né il primo.
+- **Prezzi**: il programma e ciò che è essenziale restano gratuiti; in futuro alcuni plugin
+  avanzati potrebbero avere un prezzo contenuto. Non promettere altro.
+- **Animazioni**: ogni sezione ha un suo ingresso (`data-reveal`, gruppi `data-stagger`) e alcune
+  parti seguono lo scorrimento (`data-scene`, `data-parallax`, linea sotto la barra). Tutto è
+  spento con le animazioni ridotte e senza script la pagina è completa (`src/motion-flag.js`).
+  Su schermi stretti nessun ingresso laterale.
 - **Due lingue**, italiano e inglese, con le stesse voci. I termini inglesi comuni (download,
   plugin, streaming, live, open source, background…) restano in inglese anche in italiano.
 - **Tono**: sicuro ma mai arrogante; niente confronti, niente superlativi.

@@ -5,7 +5,7 @@
   "alternate": "/en/",
   "meta": {
     "title": "Cuelith · Software di proiezione live, leggero e modulare",
-    "description": "Cuelith porta testi, canti e avvisi su proiettore, monitor del palco e altri schermi. Gratuito e open source, parte leggero e cresce con i plugin che ti servono."
+    "description": "Cuelith porta testi, canzoni e annunci su proiettore, monitor del palco e altri schermi. Gratuito e open source, parte leggero e cresce con i plugin che ti servono."
   },
   "nav": {
     "label": "Sezioni della pagina",
@@ -20,20 +20,37 @@
   "hero": {
     "eyebrow": "Software di proiezione live · gratuito e open source",
     "title": "La proiezione live che parte leggera e cresce con te.",
-    "lead": "Cuelith porta testi, canti e avvisi su proiettore, monitor del palco e ogni altro schermo. Il programma di base fa poche cose e le fa bene; il resto lo aggiungi con i plugin, solo se ti serve.",
+    "lead": "Cuelith porta testi, canzoni e annunci su proiettore, monitor del palco e ogni altro schermo. Il programma di base fa poche cose e le fa bene; il resto lo aggiungi con i plugin, solo se ti serve.",
     "primary": "Download per {os}",
     "primaryGeneric": "Download",
     "secondary": "Guarda cosa fa",
     "meta": "Versione {version} · gratuito · Windows e Linux",
-    "shotAlt": "La regia di Cuelith: scaletta a sinistra, slide del canto al centro, programma e anteprima a destra."
+    "shotAlt": "Lo stesso testo su tre schermi: il proiettore in sala, la regia di Cuelith e il telecomando sul telefono.",
+    "scene": {
+      "room": "In sala",
+      "desk": "Regia",
+      "remote": "Telecomando"
+    }
   },
   "facts": {
     "label": "In numeri",
     "items": [
-      { "value": "< 1%", "label": "del processore con una slide in onda" },
-      { "value": "60 fps", "label": "sulle uscite, senza fotogrammi persi" },
-      { "value": "0", "label": "account, cookie o tracciamento" },
-      { "value": "100%", "label": "delle versioni supera prove automatiche sul programma vero" }
+      {
+        "value": "< 1%",
+        "label": "del processore con una slide in onda"
+      },
+      {
+        "value": "60 fps",
+        "label": "sulle uscite, senza fotogrammi persi"
+      },
+      {
+        "value": "0",
+        "label": "account, cookie o tracciamento"
+      },
+      {
+        "value": "100%",
+        "label": "delle versioni supera prove automatiche sul programma vero"
+      }
     ],
     "note": "Processore e fotogrammi misurati su un portatile di fascia media con una slide in onda."
   },
@@ -80,9 +97,10 @@
         "points": [
           "Tutte le uscite che il computer può collegare",
           "Nero e blocco su una singola uscita, senza toccare le altre",
-          "Sfondi per slide, per canto o predefiniti, con velo per la leggibilità"
+          "Sfondi per slide, per elemento o predefiniti, con velo per la leggibilità"
         ],
-        "alt": "Un'uscita di sala: il testo del canto sopra uno sfondo caldo."
+        "alt": "Due uscite con lo stesso contenuto: in sala il testo sullo sfondo, sul palco il testo con la prossima slide e l'orologio.",
+        "shot2": "uscita-palco"
       },
       {
         "shot": "band",
@@ -125,18 +143,18 @@
     "title": "Cresce con il tuo evento",
     "items": [
       {
-        "title": "Chiese e comunità",
-        "text": "Canti con sezioni, avvisi, testi e sfondi. Un monitor per i musicisti e uno per chi parla.",
-        "status": "available"
-      },
-      {
         "title": "Conferenze e scuole",
         "text": "Scaletta degli interventi, note, timer con i colori del tempo e messaggi al relatore.",
         "status": "available"
       },
       {
-        "title": "Band e cori",
+        "title": "Concerti e band",
         "text": "Sezioni come pulsanti, ordine di proiezione, testo e prossima slide sul palco.",
+        "status": "available"
+      },
+      {
+        "title": "Chiese e comunità",
+        "text": "Canti con sezioni, avvisi, testi e sfondi. Un monitor per i musicisti e uno per chi parla.",
         "status": "available"
       },
       {
@@ -160,8 +178,15 @@
       "layouts": "Disposizioni",
       "languages": "Lingue"
     },
-    "status": { "available": "Disponibile", "included": "Incluso", "soon": "In arrivo" },
-    "sections": { "ready": "Da usare oggi", "soon": "In arrivo" },
+    "status": {
+      "available": "Disponibile",
+      "included": "Incluso",
+      "soon": "In arrivo"
+    },
+    "sections": {
+      "ready": "Da usare oggi",
+      "soon": "In arrivo"
+    },
     "kind": {
       "tool": "Strumento nella regia",
       "background": "Lavora in background",
@@ -227,7 +252,11 @@
     "items": [
       {
         "q": "È davvero gratuito?",
-        "a": "Sì. Oggi è tutto gratuito, plugin compresi. Il programma principale è open source e resterà gratuito."
+        "a": "Sì. Il programma è open source e resterà gratuito, insieme a tutto ciò che serve per usarlo. Oggi sono gratuiti anche tutti i plugin."
+      },
+      {
+        "q": "Ci saranno plugin a pagamento?",
+        "a": "In futuro alcuni plugin avanzati potrebbero avere un prezzo, che vogliamo tenere contenuto. Non riguarderà ciò che è essenziale per usare Cuelith: il programma e le funzioni di base restano gratuiti. Se succederà, lo diremo con chiarezza prima."
       },
       {
         "q": "Funziona senza internet?",
@@ -262,5 +291,8 @@
     "privacy": "Questo sito non usa cookie e non traccia chi lo visita.",
     "top": "Torna su"
   },
-  "os": { "windows": "Windows", "linux": "Linux" }
+  "os": {
+    "windows": "Windows",
+    "linux": "Linux"
+  }
 }
