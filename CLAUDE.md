@@ -24,6 +24,10 @@ Il sito di Cuelith (`cuelith.lzrhive.it`). Fonte di verità del progetto: `cueli
   Su schermi stretti nessun ingresso laterale.
 - **Due lingue**, italiano e inglese, con le stesse voci. I termini inglesi comuni (download,
   plugin, streaming, live, open source, background…) restano in inglese anche in italiano.
+- **L'inglese è tutto in inglese**: schermate comprese. Le serie sono due
+  (`src/assets/shots/` e `src/assets/shots/en/`), fatte dal programma nelle due lingue con uno
+  show nella stessa lingua. Le note di versione arrivano già nelle due lingue: nel testo pubblicato
+  una riga `---` divide l'italiano (prima) dall'inglese.
 - **Tono**: sicuro ma mai arrogante; niente confronti, niente superlativi.
 - **Telefono in verticale**: ogni modifica va guardata anche a 400 px di larghezza.
 - Il sito dice «plugin»; il programma dice «moduli». Le note di versione arrivano dal
