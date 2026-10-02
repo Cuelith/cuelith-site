@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "0.2.0",
+      "date": "2026-10-02T08:20:39Z",
+      "notes": {
+        "it": "<p>Cuelith parla inglese, e i moduli si chiamano plugin.</p>\n<h2>Novità</h2>\n<ul>\n<li><strong>Interfaccia in inglese</strong>, inclusa nel programma accanto all'italiano. Al primo avvio Cuelith segue la lingua del computer.</li>\n<li><strong>Scelta della lingua</strong> in Impostazioni → Generale: cambia subito, senza riavviare, per tutte le postazioni, e resta al prossimo avvio.</li>\n<li><strong>Plugin</strong>: quelli che finora si chiamavano «moduli» ora si chiamano plugin, in tutto il programma.</li>\n<li>Un plugin non ancora tradotto in una lingua mostra i suoi testi nella lingua che ha.</li>\n<li>Plugin <strong>Canti 0.5.0</strong>, anche in inglese.</li>\n<li>Il pannello di un plugin appena installato compare subito: su alcuni computer la prima apertura restava vuota per una decina di secondi.</li>\n</ul>\n<h2>Da sapere</h2>\n<ul>\n<li>Dopo l'aggiornamento, chi ha installato Canti 0.4 deve aggiornarlo dal marketplace (Plugin → Marketplace → Aggiorna): la versione vecchia non si carica con Cuelith 0.2.</li>\n</ul>\n<p>Licenza Apache 2.0.</p>",
+        "en": "<p>Cuelith speaks English, and modules are now called plugins.</p>\n<h2>What is new</h2>\n<ul>\n<li><strong>English interface</strong>, included in the app next to Italian. At first launch Cuelith follows the language of the computer.</li>\n<li><strong>Language choice</strong> in Settings → General: it changes at once, without restarting, for every station, and is kept at the next launch.</li>\n<li><strong>Plugins</strong>: what used to be called \"modules\" is now called plugins, throughout the app.</li>\n<li>A plugin not yet translated into a language shows its texts in the language it has.</li>\n<li><strong>Songs 0.5.0</strong> plugin, in English too.</li>\n<li>The panel of a plugin you have just installed appears at once: on some computers the first opening stayed empty for about ten seconds.</li>\n</ul>\n<h2>Good to know</h2>\n<ul>\n<li>After updating, if you installed Songs 0.4 update it from the marketplace (Plugins → Marketplace → Update): the old version does not load with Cuelith 0.2.</li>\n</ul>\n<p>Apache 2.0 licence.</p>"
+      }
+    },
+    {
       "version": "0.1.0",
       "date": "2026-10-02T00:05:08Z",
       "notes": {
