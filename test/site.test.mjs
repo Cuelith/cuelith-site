@@ -43,6 +43,9 @@ for (const lang of ["it", "en"]) {
       "https://cuelith.lzrhive.it",
       "https://ko-fi.com/mlhive",
       "https://lzrhive.it/",
+      // Identificatori dei dati strutturati per i motori di ricerca: non sono collegamenti.
+      "https://schema.org",
+      "https://www.apache.org/licenses/LICENSE-2.0",
     ];
     const external = [...html.matchAll(/https?:\/\/[^"'\s<)]+/g)]
       .map((match) => match[0])
