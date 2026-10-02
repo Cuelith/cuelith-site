@@ -75,6 +75,23 @@ export function renderPage({
 <meta property="og:image" content="${SITE}${assets.social}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${assets.icon}" type="image/svg+xml">
+${
+  single
+    ? ""
+    : `<script type="application/ld+json">${JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: "Cuelith",
+        applicationCategory: "MultimediaApplication",
+        operatingSystem: "Windows, Linux",
+        description: c.meta.description,
+        url: `${SITE}${c.path}`,
+        inLanguage: c.lang,
+        license: "https://www.apache.org/licenses/LICENSE-2.0",
+        ...(version === "" ? {} : { softwareVersion: version }),
+        offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+      }).replace(/</g, "\\u003c")}</script>`
+}
 ${assets.flag ?? ""}
 ${assets.styles}`;
 
