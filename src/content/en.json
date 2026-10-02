@@ -232,8 +232,7 @@
       "Windows may ask for confirmation on first launch, because the app is new and does not have a paid signature yet: choose “More info”, then “Run anyway”.",
       "You do not need to be an administrator of the computer.",
       "macOS is not available yet.",
-      "8 GB of memory recommended. Integrated graphics are enough for text and images.",
-      "The app interface is currently in Italian; more languages will arrive as plugins."
+      "8 GB of memory recommended. Integrated graphics are enough for text and images."
     ],
     "source": "Download the source code (zip)"
   },
@@ -280,8 +279,8 @@
         "a": "Windows 10 or 11, or Linux, 64-bit. With one slide on air Cuelith uses about 600 MB of memory; each extra output adds about 120. The app itself shows you how much it is using."
       },
       {
-        "q": "Is the app available in English?",
-        "a": "Not yet: the interface is in Italian for now. Languages are plugins, and English is one of the next."
+        "q": "Which languages is the app available in?",
+        "a": "English and Italian, both included. At first launch Cuelith follows the language of your computer, and you can change it in Settings → General. More languages will arrive as plugins."
       },
       {
         "q": "What happens if a plugin has a problem?",

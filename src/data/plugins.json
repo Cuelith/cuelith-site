@@ -1,5 +1,5 @@
 {
-  "comment": "Plugin presentati sul sito oltre a quelli del marketplace (che arrivano da soli). status: included = gia' dentro Cuelith; soon = in programma, senza data.",
+  "comment": "Plugin presentati sul sito oltre a quelli del marketplace (che arrivano da soli). status: included = gia' dentro Cuelith; soon = in programma, senza data. Ogni altra lingua e' un plugin: la sua voce qui porta l'id del modulo, cosi' sparisce da sola quando arriva nel marketplace.",
   "groups": {
     "function": "content",
     "integration": "content",
@@ -45,7 +45,7 @@
     },
     {
       "id": "locale-en",
-      "status": "soon",
+      "status": "included",
       "group": "languages",
       "kind": "language",
       "name": {
@@ -53,8 +53,8 @@
         "en": "English"
       },
       "text": {
-        "it": "L'interfaccia in inglese. Ogni lingua è un plugin: si aggiunge senza toccare il programma.",
-        "en": "The English interface. Every language is a plugin: it is added without touching the app."
+        "it": "L'interfaccia in inglese, già dentro Cuelith.",
+        "en": "The English interface, already inside Cuelith."
       }
     },
     {

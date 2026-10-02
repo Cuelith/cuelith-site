@@ -153,7 +153,8 @@ if ("IntersectionObserver" in window) {
         else link.removeAttribute("aria-current");
       }
     },
-    { rootMargin: "-45% 0px -50% 0px" },
+    // Una linea a meta' schermo: la sezione che la attraversa e' quella in lettura.
+    { rootMargin: "-50% 0px -50% 0px" },
   );
   for (const id of links.keys()) {
     const section = document.getElementById(id);

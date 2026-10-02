@@ -279,6 +279,10 @@
         "a": "Windows 10 o 11, oppure Linux, a 64 bit. Con una slide in onda Cuelith usa circa 600 MB di memoria; ogni uscita in più ne aggiunge circa 120. Il programma stesso ti mostra quanto sta usando."
       },
       {
+        "q": "In che lingue è disponibile?",
+        "a": "Italiano e inglese, entrambi inclusi. Al primo avvio Cuelith segue la lingua del computer, e la cambi da Impostazioni → Generale. Altre lingue arriveranno come plugin."
+      },
+      {
         "q": "Cosa succede se un plugin ha un problema?",
         "a": "Viene chiuso e fatto ripartire da solo, mentre la proiezione continua. Se si ferma più volte di seguito resta spento e te lo dice."
       }

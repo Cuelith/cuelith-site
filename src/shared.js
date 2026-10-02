@@ -156,6 +156,13 @@ function readyCards(plugins, strings) {
     .join("\n");
 }
 
+/** Le note nella lingua della pagina; se mancano in quella lingua, in italiano. */
+function notesFor(release, locale) {
+  const notes = release.notes;
+  if (typeof notes === "string") return notes;
+  return notes?.[locale.slice(0, 2)] ?? notes?.it ?? "";
+}
+
 /** Le versioni pubblicate: la piu' recente aperta, le altre richiudibili. */
 export function versionList(releases, strings, locale) {
   if (releases.length === 0) return `<p class="versions__empty">${esc(strings.empty)}</p>`;
@@ -173,7 +180,7 @@ export function versionList(releases, strings, locale) {
       <a class="button button--small" href="/download/${version}/windows">${esc(strings.windows)}</a>
       <a class="button button--small" href="/download/${version}/linux">${esc(strings.linux)}</a>
     </div>
-    <div class="version__notes" aria-label="${esc(strings.notes)}">${release.notes}</div>
+    <div class="version__notes" aria-label="${esc(strings.notes)}">${notesFor(release, locale)}</div>
   </div>
 </details>`;
     })

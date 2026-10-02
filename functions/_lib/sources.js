@@ -60,7 +60,18 @@ export function cleanNotes(html) {
     .trim();
 }
 
-/** Le versioni pubblicate, dalla piu' recente: numero, data e note. */
+/**
+ * Le note di una versione nelle due lingue. Nel testo pubblicato una riga di
+ * separazione (---) divide l'italiano, che viene prima, dall'inglese; senza
+ * separazione c'e' solo l'italiano e la pagina inglese mostra quello.
+ */
+export function splitNotes(html) {
+  const [it, en] = html.split(/<hr\s*\/?>/i);
+  const english = en === undefined ? "" : cleanNotes(en);
+  return english === "" ? { it: cleanNotes(it) } : { it: cleanNotes(it), en: english };
+}
+
+/** Le versioni pubblicate, dalla piu' recente: numero, data e note per lingua. */
 export function parseReleases(feed) {
   const releases = [];
   for (const [, entry] of feed.matchAll(/<entry>([\s\S]*?)<\/entry>/g)) {
@@ -68,7 +79,7 @@ export function parseReleases(feed) {
     const date = /<updated>([^<]+)<\/updated>/.exec(entry)?.[1];
     const content = /<content[^>]*>([\s\S]*?)<\/content>/.exec(entry)?.[1] ?? "";
     if (tag === undefined || !VERSION.test(tag) || date === undefined) continue;
-    releases.push({ version: tag, date, notes: cleanNotes(decode(content)) });
+    releases.push({ version: tag, date, notes: splitNotes(decode(content)) });
   }
   return releases;
 }

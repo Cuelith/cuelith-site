@@ -43,33 +43,42 @@ rmSync(dist, { recursive: true, force: true });
 mkdirSync(path.join(dist, "assets", "shots"), { recursive: true });
 mkdirSync(path.join(dist, "assets", "fonts"), { recursive: true });
 
-// ---- immagini: ogni schermata in due larghezze, WebP ----
-const shotsDir = path.join(src, "assets", "shots");
+// ---- immagini: ogni schermata in due larghezze, WebP, una serie per lingua ----
+// Le schermate inglesi (programma in inglese, show in inglese) stanno in shots/en.
+const LANGS = ["it", "en"];
 const shots = {};
 const inline = {};
-for (const file of readdirSync(shotsDir).filter((name) => name.endsWith(".png"))) {
-  const name = file.slice(0, -4);
-  const image = sharp(path.join(shotsDir, file));
-  const meta = await image.metadata();
-  const widths = meta.width > 1000 ? [900, 1600] : [Math.min(meta.width, 560)];
-  const files = [];
-  for (const width of widths.filter((w) => w <= meta.width)) {
-    const target = `assets/shots/${name}-${String(width)}.webp`;
-    const data = await sharp(path.join(shotsDir, file))
-      .resize({ width })
-      .webp({ quality: 82 })
-      .toBuffer();
-    writeFileSync(path.join(dist, target), data);
-    files.push({ src: `/${target}`, width });
-    if (width === widths[0]) inline[name] = `data:image/webp;base64,${data.toString("base64")}`;
+for (const lang of LANGS) {
+  const sub = lang === "it" ? "" : `${lang}/`;
+  const shotsDir = path.join(src, "assets", "shots", sub);
+  mkdirSync(path.join(dist, "assets", "shots", sub), { recursive: true });
+  shots[lang] = {};
+  inline[lang] = {};
+  for (const file of readdirSync(shotsDir).filter((name) => name.endsWith(".png"))) {
+    const name = file.slice(0, -4);
+    const meta = await sharp(path.join(shotsDir, file)).metadata();
+    const widths = meta.width > 1000 ? [900, 1600] : [Math.min(meta.width, 560)];
+    const files = [];
+    for (const width of widths.filter((w) => w <= meta.width)) {
+      const target = `assets/shots/${sub}${name}-${String(width)}.webp`;
+      const data = await sharp(path.join(shotsDir, file))
+        .resize({ width })
+        .webp({ quality: 82 })
+        .toBuffer();
+      writeFileSync(path.join(dist, target), data);
+      files.push({ src: `/${target}`, width });
+      if (width === widths[0]) {
+        inline[lang][name] = `data:image/webp;base64,${data.toString("base64")}`;
+      }
+    }
+    shots[lang][name] = { width: meta.width, height: meta.height, files };
   }
-  shots[name] = { width: meta.width, height: meta.height, files };
+  // Immagine per le anteprime dei link (social): la regia, 1200x630.
+  await sharp(path.join(shotsDir, "regia.png"))
+    .resize({ width: 1200, height: 630, fit: "cover", position: "top" })
+    .jpeg({ quality: 84 })
+    .toFile(path.join(dist, "assets", `social-${lang}.jpg`));
 }
-// Immagine per le anteprime dei link (social): la regia, 1200x630.
-await sharp(path.join(shotsDir, "regia.png"))
-  .resize({ width: 1200, height: 630, fit: "cover", position: "top" })
-  .jpeg({ quality: 84 })
-  .toFile(path.join(dist, "assets", "social.jpg"));
 
 // ---- caratteri, stile, script ----
 const FONTS = [
@@ -103,14 +112,23 @@ delete catalog.comment;
 const assets = {
   logo: "/assets/cuelith-logo.png",
   icon: "/assets/cuelith-icon.svg",
-  social: "/assets/social.jpg",
   styles: `<link rel="preload" href="/assets/fonts/${FONTS[0][1]}" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="/assets/site.css?v=${stamp(css)}">`,
   flag: `<script src="/assets/motion-flag.js?v=${stamp(flag)}"></script>`,
   script: `<script src="/assets/site.js?v=${stamp(script)}" defer></script>`,
 };
-for (const lang of ["it", "en"]) {
+for (const lang of LANGS) {
   const content = json(`content/${lang}.json`);
-  const html = document(renderPage({ content, releases, modules, catalog, shots, assets }), lang);
+  const html = document(
+    renderPage({
+      content,
+      releases,
+      modules,
+      catalog,
+      shots: shots[lang],
+      assets: { ...assets, social: `/assets/social-${lang}.jpg` },
+    }),
+    lang,
+  );
   const dir = path.join(dist, content.path);
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, "index.html"), html);
@@ -148,21 +166,22 @@ if (single) {
   const out = path.join(root, "dist-single");
   mkdirSync(out, { recursive: true });
   const b64 = (file) => readFileSync(path.join(src, "assets", file)).toString("base64");
-  const inlineShots = Object.fromEntries(
-    Object.entries(shots).map(([name, image]) => [
-      name,
-      { ...image, files: [{ src: inline[name], width: image.files[0].width }] },
-    ]),
-  );
+  const inlineShots = (lang) =>
+    Object.fromEntries(
+      Object.entries(shots[lang]).map(([name, image]) => [
+        name,
+        { ...image, files: [{ src: inline[lang][name], width: image.files[0].width }] },
+      ]),
+    );
   const singleCss = `${fontFaces((file) => `data:font/woff2;base64,${b64(`fonts/${file}`)}`)}\n${read("styles.css")}`;
-  for (const lang of ["it", "en"]) {
+  for (const lang of LANGS) {
     const content = json(`content/${lang}.json`);
     const { head, body } = renderPage({
       content,
       releases,
       modules,
       catalog,
-      shots: inlineShots,
+      shots: inlineShots(lang),
       single: true,
       assets: {
         logo: `data:image/png;base64,${b64("cuelith-logo.png")}`,

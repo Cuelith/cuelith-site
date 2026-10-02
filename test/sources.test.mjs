@@ -6,8 +6,10 @@ import {
   parseReleases,
   PLATFORMS,
   publicModules,
+  splitNotes,
   VERSION,
 } from "../functions/_lib/sources.js";
+import { versionList } from "../src/shared.js";
 import { onRequestGet as download } from "../functions/download/[[path]].js";
 
 test("la versione piu' recente si legge dal file del rilascio", () => {
@@ -43,8 +45,31 @@ test("l'elenco delle versioni: numero, data, note; il resto si scarta", () => {
 <entry><updated>2026-09-01T00:00:00Z</updated><link href="https://github.com/Cuelith/cuelith-core/releases/tag/vNONVALIDA"/><content>x</content></entry>
 </feed>`;
   assert.deepEqual(parseReleases(feed), [
-    { version: "0.1.0", date: "2026-10-01T22:15:49Z", notes: "<p>Prima versione</p>" },
+    { version: "0.1.0", date: "2026-10-01T22:15:49Z", notes: { it: "<p>Prima versione</p>" } },
   ]);
+});
+
+test("le note in due lingue: una riga di separazione divide l'italiano dall'inglese", () => {
+  assert.deepEqual(splitNotes('<p>Novità</p><hr><p>What is <a href="x">new</a></p>'), {
+    it: "<p>Novità</p>",
+    en: "<p>What is new</p>",
+  });
+  assert.deepEqual(splitNotes("<p>Solo italiano</p>"), { it: "<p>Solo italiano</p>" });
+  assert.deepEqual(splitNotes("<p>Solo italiano</p><hr />"), { it: "<p>Solo italiano</p>" });
+  // La pagina inglese mostra l'inglese; se manca, l'italiano.
+  const strings = { latest: "", windows: "", linux: "", notes: "" };
+  const release = (notes) => [{ version: "1.0.0", date: "2026-10-01T00:00:00Z", notes }];
+  assert.ok(
+    versionList(release({ it: "<p>ciao</p>", en: "<p>hello</p>" }), strings, "en-GB").includes(
+      "hello",
+    ),
+  );
+  assert.ok(versionList(release({ it: "<p>ciao</p>" }), strings, "en-GB").includes("ciao"));
+  assert.ok(
+    versionList(release({ it: "<p>ciao</p>", en: "<p>hello</p>" }), strings, "it-IT").includes(
+      "ciao",
+    ),
+  );
 });
 
 test("dei plugin escono solo i dati da mostrare, mai gli indirizzi dei pacchetti", () => {
