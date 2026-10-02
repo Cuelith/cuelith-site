@@ -26,44 +26,50 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---------- ingressi ----------
-   Attivi solo con .js-motion (lo mette motion-flag.js, mai con le animazioni
-   ridotte): senza, tutto e' gia' al suo posto. Ogni tipo ha il suo gesto;
-   --i mette in fila gli elementi di uno stesso gruppo. */
+/* ---------- movimento legato allo scorrimento ----------
+   Attivo solo con .js-motion (lo mette motion-flag.js, mai con le animazioni
+   ridotte): senza, tutto e' gia' al suo posto.
+
+   Ogni elemento segue la sua posizione sullo schermo, in modo continuo e nei
+   due versi: --r va da 0 (fuori) a 1 (al suo posto) mentre l'elemento entra
+   dal basso, e torna a 0 mentre esce in alto. --d dice da che parte sta
+   (1 = sotto, -1 = sopra), cosi' cio' che esce in alto continua a salire.
+   Li scrive app.js a ogni fotogramma di scorrimento. Ogni tipo ha il suo gesto. */
 
 .js-motion [data-reveal] {
-  opacity: 0;
+  --r: 0;
+  --d: 1;
+  opacity: var(--r);
+  /* Solo per ammorbidire i passi della rotella: il movimento lo da' lo scorrimento. */
   transition:
-    opacity 0.6s var(--ease),
-    transform 0.75s var(--ease);
-  transition-delay: calc(var(--i, 0) * 85ms);
+    opacity 0.14s linear,
+    transform 0.14s linear;
+  will-change: opacity, transform;
 }
 
 .js-motion [data-reveal="up"] {
-  transform: translateY(22px);
+  transform: translateY(calc((1 - var(--r)) * var(--d) * 30px));
 }
 
 .js-motion [data-reveal="down"] {
-  transform: translateY(-26px);
+  transform: translateY(calc((1 - var(--r)) * var(--d) * -30px));
 }
 
 .js-motion [data-reveal="left"] {
-  transform: translateX(-34px);
+  transform: translateX(calc((1 - var(--r)) * -40px));
 }
 
 .js-motion [data-reveal="right"] {
-  transform: translateX(34px);
+  transform: translateX(calc((1 - var(--r)) * 40px));
 }
 
 .js-motion [data-reveal="scale"] {
-  transform: scale(0.88);
+  transform: scale(calc(0.88 + 0.12 * var(--r)));
 }
 
-/* Atterra con un piccolo rimbalzo. */
 .js-motion [data-reveal="land"] {
-  transform: scale(0.84);
+  transform: scale(calc(0.84 + 0.16 * var(--r)));
   transform-origin: left center;
-  transition-timing-function: var(--ease), cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* La linea si disegna, poi sale il contenuto. */
@@ -72,26 +78,29 @@
 }
 
 .js-motion [data-reveal="draw"]::before {
-  transform: scaleX(0);
+  transform: scaleX(var(--r));
 }
 
 .js-motion [data-reveal="draw"] > * {
-  opacity: 0;
-  transform: translateY(16px);
+  opacity: var(--r);
+  transform: translateY(calc((1 - var(--r)) * var(--d) * 18px));
   transition:
-    opacity 0.55s var(--ease),
-    transform 0.6s var(--ease);
-  transition-delay: calc(var(--i, 0) * 140ms + 250ms);
+    opacity 0.14s linear,
+    transform 0.14s linear;
 }
 
-.js-motion [data-reveal].is-in,
-.js-motion [data-reveal="draw"].is-in > * {
-  opacity: 1;
-  transform: none;
+/* L'apertura e' gia' sullo schermo quando la pagina si carica: entra una volta
+   col tempo, riga dopo riga (--i), poi segue lo scorrimento come il resto. */
+@keyframes intro {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
 }
 
-.js-motion [data-reveal="draw"].is-in::before {
-  transform: scaleX(1);
+.js-motion .hero [data-reveal] {
+  animation: intro 0.75s var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 90ms);
 }
 
 *,
@@ -611,8 +620,7 @@ p {
   height: 2px;
   background: var(--rule);
   transform-origin: left;
-  transition: transform 0.9s var(--ease);
-  transition-delay: calc(var(--i, 0) * 140ms);
+  transition: transform 0.14s linear;
 }
 
 .pillars li:nth-child(1) {
@@ -1142,7 +1150,7 @@ details[open] > summary::after {
   /* Su schermi stretti gli ingressi laterali diventano verticali: nulla esce di lato. */
   .js-motion [data-reveal="left"],
   .js-motion [data-reveal="right"] {
-    transform: translateY(22px);
+    transform: translateY(calc((1 - var(--r)) * var(--d) * 24px));
   }
 
   .feature__media {

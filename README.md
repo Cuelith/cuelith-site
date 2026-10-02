@@ -20,6 +20,10 @@ pnpm build:preview  # in più, un'anteprima in un file solo (dist-single/)
 pnpm shots          # copia le schermate fatte dal programma vero (vedi sotto)
 ```
 
+Per guardare la pagina a ogni larghezza, con `pnpm dev` acceso:
+`node scripts/foto.mjs http://127.0.0.1:8788/ <cartella> 400 800 telefono 0.6` (usa il browser di
+prova del repo affiancato `cuelith-core`; l'ultimo numero è il passo tra una foto e l'altra).
+
 Le schermate vengono dal programma in esecuzione, mai ritoccate: nel repo affiancato
 `cuelith-core`, `pnpm build` e poi `pnpm -C e2e run site:shots`; qui `pnpm shots`.
 
