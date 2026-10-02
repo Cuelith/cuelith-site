@@ -4,6 +4,10 @@ import { esc, fill, formatDate, pluginCards, pluginList, versionList } from "./s
 // momento (versioni, plugin) e le immagini preparate, e restituisce l'HTML.
 
 const SITE = "https://cuelith.lzrhive.it";
+// Gli unici due indirizzi esterni della pagina: il sostegno (Ko-fi) e l'hub dei
+// progetti. Cambiano qui e in test/site.test.mjs.
+const KOFI = "https://ko-fi.com/mlhive";
+const HUB = "https://lzrhive.it/";
 
 /** Una schermata del programma, nella misura giusta per lo schermo di chi guarda. */
 function shot(image, alt, { eager = false, sizes = "(min-width: 1100px) 620px, 92vw" } = {}) {
@@ -258,6 +262,22 @@ ${versionList(releases, c.versions, c.locale)}
     </div>
   </div>
 </section>
+
+<section class="section support" aria-labelledby="sostegno">
+  <div class="wrap">
+  <div class="support__row">
+    <div data-stagger>
+      <p class="eyebrow" data-reveal="fade">${esc(c.support.eyebrow)}</p>
+      <h2 id="sostegno" data-reveal="up">${esc(c.support.title)}</h2>
+      <p class="lead lead--section" data-reveal="up">${esc(c.support.text)}</p>
+    </div>
+    <div class="support__action" data-stagger>
+      <a class="button button--primary" href="${KOFI}" target="_blank" rel="noopener" data-reveal="scale">${esc(c.support.kofi)}</a>
+      <p class="support__note" data-reveal="fade">${esc(c.support.note)}</p>
+    </div>
+  </div>
+  </div>
+</section>
 </main>
 
 <footer class="foot">
@@ -268,6 +288,8 @@ ${versionList(releases, c.versions, c.locale)}
     </div>
     <ul>
       <li><a href="/download/source">${esc(c.footer.source)}</a></li>
+      <li><a href="${KOFI}" target="_blank" rel="noopener">${esc(c.footer.kofi)}</a></li>
+      <li><a href="${c.lang === "it" ? HUB : `${HUB}en`}" target="_blank" rel="noopener">${esc(c.footer.hub)}</a></li>
       <li><a href="${single ? "#" : c.alternate}" lang="${c.lang === "it" ? "en" : "it"}">${esc(c.nav.language)}</a></li>
       <li><a href="#contenuto">${esc(c.footer.top)}</a></li>
     </ul>

@@ -37,11 +37,20 @@ for (const lang of ["it", "en"]) {
   test(`la pagina ${lang} non mostra da dove arrivano i file`, () => {
     const html = page(lang);
     assert.doesNotMatch(html, /github/i);
-    // Gli unici indirizzi completi sono quelli del sito stesso.
+    // Gli indirizzi completi sono quelli del sito stesso e due soli esterni
+    // voluti: il sostegno (Ko-fi) e l'hub dei progetti.
+    const allowed = [
+      "https://cuelith.lzrhive.it",
+      "https://ko-fi.com/mlhive",
+      "https://lzrhive.it/",
+    ];
     const external = [...html.matchAll(/https?:\/\/[^"'\s<)]+/g)]
       .map((match) => match[0])
-      .filter((url) => !url.startsWith("https://cuelith.lzrhive.it"));
+      .filter((url) => !allowed.some((start) => url.startsWith(start)));
     assert.deepEqual(external, []);
+    for (const url of ["https://ko-fi.com/mlhive", "https://lzrhive.it/"]) {
+      assert.ok(html.includes(`href="${url}`), url);
+    }
   });
 
   test(`la pagina ${lang} ha download, versioni e plugin`, () => {

@@ -293,10 +293,19 @@
     "source": "Source code (zip)",
     "license": "Free software, Apache 2.0 licence.",
     "privacy": "This site uses no cookies and does not track visitors.",
-    "top": "Back to top"
+    "top": "Back to top",
+    "kofi": "Support on Ko-fi",
+    "hub": "More projects on lzrhive"
   },
   "os": {
     "windows": "Windows",
     "linux": "Linux"
+  },
+  "support": {
+    "eyebrow": "Support",
+    "title": "Cuelith is free",
+    "text": "No ads, no accounts. If it helps you, you can support its development with a small donation.",
+    "kofi": "Support on Ko-fi",
+    "note": "It is optional: Cuelith stays free for everyone."
   }
 }

@@ -1082,6 +1082,54 @@ details[open] > summary::after {
 
 /* ---------- pie' di pagina ---------- */
 
+/* ---------- sostegno ---------- */
+
+.support {
+  padding-block: clamp(48px, 7vw, 88px);
+}
+
+.support__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px clamp(24px, 5vw, 64px);
+  padding: clamp(24px, 4vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--bg-2);
+}
+
+.support__row > div:first-child {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+.support__action {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.support__note {
+  color: var(--faint);
+  font-size: 14px;
+}
+
+@media (max-width: 520px) {
+  .support__action,
+  .support__action .button {
+    width: 100%;
+  }
+
+  .support__action .button {
+    justify-content: center;
+  }
+}
+
 .foot {
   padding-block: 44px;
   color: var(--muted);
