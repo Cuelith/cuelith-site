@@ -513,3 +513,61 @@ test("HTTP: tipo, dimensione e forma del corpo; solo POST; errori inattesi senza
   }
   assert.deepEqual(logged, [], "il notaio non scrive nei registri");
 });
+
+// ---- chiave con scadenza propria (es. licenza di un anno) ----
+
+test("il permesso non supera la scadenza della chiave presso il fornitore", async () => {
+  const now = Date.UTC(2026, 9, 6, 10);
+  const withExpiry = (expiresAt) => ({
+    handlers: {
+      activate: async (p) =>
+        json({
+          activated: true,
+          license_key: licenseObject({ expires_at: expiresAt }),
+          instance: { id: "inst-0001-aaaa", name: p.instance_name },
+          meta: meta(),
+        }),
+    },
+  });
+  // Scade tra 20 giorni: il permesso vale 20 giorni, non 90, e il rinnovo non cade dopo.
+  install(withExpiry(new Date(now + 20 * 86400_000).toISOString()));
+  const soon = await verifyLicense(
+    (await activateLicense(input(), env, fetch, now)).token,
+    notary.publicKey,
+    now,
+  );
+  assert.equal(soon.exp, now / 1000 + 20 * 86400);
+  assert.equal(soon.renewAfter, soon.exp);
+  // Scade tra 200 giorni: vale il tetto di sempre (90).
+  install(withExpiry(new Date(now + 200 * 86400_000).toISOString()));
+  const later = await verifyLicense(
+    (await activateLicense(input(), env, fetch, now)).token,
+    notary.publicKey,
+    now,
+  );
+  assert.equal(later.exp, now / 1000 + 90 * 86400);
+  assert.equal(later.renewAfter, now / 1000 + 30 * 86400);
+  // Nessuna scadenza (licenza a vita): tetto di sempre. Il formato vero ha i microsecondi.
+  install(withExpiry(null));
+  assert.equal(
+    (
+      await verifyLicense(
+        (await activateLicense(input(), env, fetch, now)).token,
+        notary.publicKey,
+        now,
+      )
+    ).exp,
+    now / 1000 + 90 * 86400,
+  );
+  install(withExpiry("2027-10-05T12:32:50.000000Z"));
+  assert.equal(
+    (
+      await verifyLicense(
+        (await activateLicense(input(), env, fetch, now)).token,
+        notary.publicKey,
+        now,
+      )
+    ).exp,
+    now / 1000 + 90 * 86400,
+  );
+});

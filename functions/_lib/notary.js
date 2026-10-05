@@ -114,14 +114,20 @@ function checkLicense(data, licensing, env, statuses) {
   }
 }
 
-/** Permesso firmato: chi, per quale plugin, per quale computer, quando rinnovare e quando scade. */
+/**
+ * Permesso firmato: chi, per quale plugin, per quale computer, quando rinnovare e quando scade.
+ * `licenseExpiresAt` (millisecondi), se la chiave ha una scadenza propria presso il fornitore
+ * (es. licenza di un anno): il permesso non la supera mai.
+ */
 export async function signLicense(
-  { pluginId, devicePublicKey, instanceId, test },
+  { pluginId, devicePublicKey, instanceId, test, licenseExpiresAt },
   env,
   now = Date.now(),
 ) {
   if (!env.NOTARY_PRIVATE_KEY) throw new NotaryError("unavailable", 503);
   const iat = Math.floor(now / 1000);
+  const limit = Number.isFinite(licenseExpiresAt) ? Math.floor(licenseExpiresAt / 1000) : Infinity;
+  const exp = Math.min(iat + EXPIRES_DAYS * DAY, limit);
   const payload = {
     v: 1,
     kid: env.NOTARY_KEY_ID || "n1",
@@ -129,8 +135,8 @@ export async function signLicense(
     device: devicePublicKey,
     instance: instanceId,
     iat,
-    renewAfter: iat + RENEW_AFTER_DAYS * DAY,
-    exp: iat + EXPIRES_DAYS * DAY,
+    renewAfter: Math.min(iat + RENEW_AFTER_DAYS * DAY, exp),
+    exp,
     ...(test ? { test: true } : {}),
   };
   const body = b64uEncode(new TextEncoder().encode(JSON.stringify(payload)));
@@ -198,7 +204,13 @@ export async function activateLicense(input, env, fetcher = fetch, now = Date.no
     throw error;
   }
   const { token, payload } = await signLicense(
-    { pluginId, devicePublicKey, instanceId, test: data.license_key?.test_mode === true },
+    {
+      pluginId,
+      devicePublicKey,
+      instanceId,
+      test: data.license_key?.test_mode === true,
+      licenseExpiresAt: Date.parse(data.license_key?.expires_at ?? ""),
+    },
     env,
     now,
   );
@@ -228,7 +240,13 @@ export async function refreshLicense(input, env, fetcher = fetch, now = Date.now
   }
   checkLicense(data, licensing, env, ["active"]);
   const { token, payload } = await signLicense(
-    { pluginId, devicePublicKey, instanceId, test: data.license_key?.test_mode === true },
+    {
+      pluginId,
+      devicePublicKey,
+      instanceId,
+      test: data.license_key?.test_mode === true,
+      licenseExpiresAt: Date.parse(data.license_key?.expires_at ?? ""),
+    },
     env,
     now,
   );
