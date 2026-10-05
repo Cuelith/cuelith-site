@@ -264,7 +264,12 @@ function proposal(meta) {
 async function load(message) {
   const { status, body } = await call("pending");
   if (status !== 200) {
-    say(WHY[status] ?? "Non riesco a leggere le proposte.", true);
+    say(
+      status === 403 && typeof body.email === "string"
+        ? `Accesso negato: sei entrato come «${body.email}», ma il pannello è riservato a un altro indirizzo (variabile ADMIN_EMAIL).`
+        : (WHY[status] ?? "Non riesco a leggere le proposte."),
+      true,
+    );
     return;
   }
   pendingBox.replaceChildren(...body.pending.map(proposal));

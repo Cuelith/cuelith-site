@@ -101,8 +101,12 @@ export async function requireAdmin(request, env, fetcher = fetch) {
     fetcher,
   });
   if (claims === undefined) return reply(401, "unauthorized");
-  if (String(claims.email ?? "").toLowerCase() !== env.ADMIN_EMAIL.toLowerCase()) {
-    return reply(403, "forbidden");
+  if (String(claims.email ?? "").toLowerCase() !== env.ADMIN_EMAIL.trim().toLowerCase()) {
+    // Access ha riconosciuto chi e': si dice con quale indirizzo e' entrato (il suo), cosi' si capisce lo scarto.
+    return Response.json(
+      { error: "forbidden", email: String(claims.email ?? "") },
+      { status: 403, headers: { "Cache-Control": "no-store" } },
+    );
   }
   if (request.method !== "GET" && request.method !== "HEAD") {
     const origin = request.headers.get("Origin");

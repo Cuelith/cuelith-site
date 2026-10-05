@@ -286,3 +286,24 @@ test("Ed25519: firma e verifica, e la firma non vale per altro", async () => {
   assert.equal(await verifyEd25519("corta", message, signature), false);
   assert.equal(await verifyEd25519(publicKey, message, "###"), false);
 });
+
+test("amministratore: chi è riconosciuto ma non è l'amministratore vede con quale indirizzo è entrato", async () => {
+  const keys = [await jwkOf(keyA, "k1")];
+  const other = await token(keyA, { claims: { email: "altro@example.com" } });
+  const response = await requireAdmin(
+    new Request("https://cuelith.test/x", { headers: { "Cf-Access-Jwt-Assertion": other } }),
+    { ...env, ADMIN_EMAIL: "  Fondatore@Example.com " },
+    certs(keys),
+  );
+  assert.equal(response.status, 403);
+  assert.deepEqual(await response.json(), { error: "forbidden", email: "altro@example.com" });
+  // Con spazi attorno nella variabile, l'indirizzo giusto passa comunque.
+  const good = await requireAdmin(
+    new Request("https://cuelith.test/x", {
+      headers: { "Cf-Access-Jwt-Assertion": await token(keyA) },
+    }),
+    { ...env, ADMIN_EMAIL: "  Fondatore@Example.com " },
+    certs(keys),
+  );
+  assert.equal(good.email, "fondatore@example.com");
+});
