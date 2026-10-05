@@ -10,8 +10,8 @@
     "build": "node build.mjs",
     "build:preview": "node build.mjs --single",
     "shots": "node scripts/semaforo.mjs && node scripts/shots.mjs",
-    "dev": "node build.mjs && wrangler pages dev dist --port 8788",
-    "test": "node --test test/sources.test.mjs test/site.test.mjs test/market.test.mjs",
+    "dev": "node build.mjs && wrangler pages dev dist --port 8788 --kv SUBMISSIONS",
+    "test": "node --test test/*.test.mjs",
     "format": "prettier --write .",
     "deploy:dev": "node build.mjs && wrangler pages deploy dist --project-name cuelith --branch dev",
     "deploy": "node build.mjs && wrangler pages deploy dist --project-name cuelith --branch main",
@@ -21,5 +21,8 @@
     "prettier": "3.9.9",
     "sharp": "0.35.5",
     "wrangler": "4.146.0"
+  },
+  "dependencies": {
+    "fflate": "0.8.3"
   }
 }

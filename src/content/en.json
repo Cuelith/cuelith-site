@@ -475,6 +475,10 @@
           "label": "Author's public key",
           "hint": "43 characters. It signs your packages: required for a paid plugin, optional for a free one."
         },
+        "signature": {
+          "label": "Package signature",
+          "hint": "86 characters, printed by “pnpm sign”. Required if you give the author's key."
+        },
         "price": {
           "label": "Price to show",
           "hint": "Free text, for example “€9”. The real price is set in your store."
@@ -509,7 +513,9 @@
         "ok": "Proposal received. We will reply to the address you gave.",
         "invalid": "Please check the highlighted fields.",
         "unavailable": "The service is not available right now. Please try again later.",
-        "network": "I cannot send the proposal: check your connection and try again."
+        "network": "I cannot send the proposal: check your connection and try again.",
+        "captcha": "I cannot verify that you are a person. Reload the page and try again.",
+        "rate": "You have already sent several proposals today. Please try again tomorrow."
       },
       "errors": {
         "required": "Required.",
@@ -524,7 +530,8 @@
         "invalidEmail": "Not a valid email address.",
         "notInteger": "A whole number greater than zero is needed.",
         "mustConfirm": "To propose the plugin you need to tick the whole checklist.",
-        "spam": "Submission not accepted."
+        "spam": "Submission not accepted.",
+        "invalidSignature": "Invalid signature: it must be 86 characters (letters, numbers, - and _)."
       }
     }
   }

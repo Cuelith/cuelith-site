@@ -1,0 +1,21 @@
+# Variabili per provare il sito in locale (pnpm dev). Copia questo file in
+# .dev.vars (che Git ignora) e compila. Mai segreti veri in questo file di esempio.
+
+# Turnstile: le chiavi di PROVA di Cloudflare (accettano sempre). Il token da
+# usare per provare a mano e' "XXXX.DUMMY.TOKEN.XXXX".
+# Per costruire la pagina con il controllo: TURNSTILE_SITE_KEY=1x00000000000000000000AA pnpm build
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+
+# Cloudflare Access: in locale non c'e', quindi il pannello risponde "non configurato" (503).
+# ACCESS_TEAM_DOMAIN=
+# ACCESS_AUD=
+# ADMIN_EMAIL=
+
+# GitHub (token fine-grained solo sul repo del registry): lascialo vuoto in locale
+# se non vuoi aprire pull request vere.
+# GITHUB_TOKEN=
+
+# Notaio: chiave generata con "node scripts/notary-keys.mjs". Solo per prove locali.
+# NOTARY_PRIVATE_KEY=
+# NOTARY_KEY_ID=n1
+# ALLOW_TEST_MODE=1

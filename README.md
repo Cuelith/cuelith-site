@@ -11,7 +11,11 @@ e i dati pubblicati altrove, senza mostrarne l'origine:
 - `/api/releases`, `/api/modules` — versioni e plugin del momento, per aggiornare la pagina (`/api/modules` legge l'indice 2 del registry, e se non risponde l'indice 1)
 - `/marketplace/`, `/marketplace/submit/` (e `/en/…`) — schede dei plugin e proposta di un plugin
 - `/marketplace/buy/<id>` — porta al negozio dell'autore di un plugin a pagamento, scelto dal catalogo
-- `/api/marketplace/submit` — riceve la proposta (oggi la controlla e risponde «non disponibile»: la conservazione è la fase 3 della decisione 0013)
+- `/api/marketplace/submit` — riceve la proposta: controllo, Turnstile, limite per indirizzo, conservazione in KV
+- `/marketplace/dashboard-admin/` e `/api/marketplace/admin/*` — pannello del fondatore (dietro Cloudflare Access): elenco, analisi, approvazione (apre la pull request nel registry) e rifiuto
+- `/api/license/activate`, `refresh`, `deactivate` — il Notaio dei permessi di licenza
+
+Come collegare Cloudflare e GitHub: [MARKETPLACE_SETUP.md](MARKETPLACE_SETUP.md).
 
 ## Lavorare
 
@@ -21,6 +25,7 @@ pnpm dev            # costruisce e serve in locale, funzioni comprese (porta 878
 pnpm test           # prove delle funzioni e della pagina
 pnpm build:preview  # in più, un'anteprima in un file solo (dist-single/)
 pnpm preview:paid   # il marketplace con due plugin a pagamento finti (porta 8799, dopo pnpm build)
+node scripts/notary-keys.mjs   # crea le chiavi del Notaio (stampa e basta, non scrive nulla)
 pnpm shots          # copia le schermate fatte dal programma vero (vedi sotto)
 ```
 

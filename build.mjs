@@ -17,6 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { loadModules, loadReleases } from "./functions/_lib/sources.js";
+import { ADMIN_PATH, renderAdmin } from "./src/admin.mjs";
 import { renderMarketplace, renderSubmit } from "./src/market.mjs";
 import { document, renderPage } from "./src/page.mjs";
 
@@ -25,6 +26,10 @@ const src = path.join(root, "src");
 const dist = path.join(root, "dist");
 const single = process.argv.includes("--single");
 const offline = process.argv.includes("--offline");
+// Chiave PUBBLICA di Turnstile (il controllo "sei una persona" del modulo di proposta):
+// si passa alla costruzione, non e' un segreto. Senza, il modulo non mostra il controllo
+// e le proposte non si accettano (vedi MARKETPLACE_SETUP.md).
+const turnstileSiteKey = process.env.TURNSTILE_SITE_KEY ?? "";
 const read = (file) => readFileSync(path.join(src, file), "utf8");
 const json = (file) => JSON.parse(read(file));
 
@@ -107,6 +112,9 @@ const marketScript = `(() => {\n"use strict";\n${["shared.js", "submission.js"]
 writeFileSync(path.join(dist, "assets", "site.css"), css);
 writeFileSync(path.join(dist, "assets", "site.js"), script);
 writeFileSync(path.join(dist, "assets", "market.js"), marketScript);
+// Pannello del fondatore: uno script suo, senza le funzioni della pagina pubblica.
+const adminScript = `(() => {\n"use strict";\n${read("admin-client.js")}\n})();\n`;
+writeFileSync(path.join(dist, "assets", "admin.js"), adminScript);
 // Piccolo e caricato per primo: decide se le animazioni d'ingresso sono attive.
 const flag = read("motion-flag.js");
 writeFileSync(path.join(dist, "assets", "motion-flag.js"), flag);
@@ -149,7 +157,7 @@ for (const lang of LANGS) {
   };
   for (const [render, page, extra] of [
     [renderMarketplace, content.marketplace, { modules, catalog }],
-    [renderSubmit, content.submit, {}],
+    [renderSubmit, content.submit, { turnstileSiteKey }],
   ]) {
     const sub = document(render({ content, assets: subAssets, ...extra }), lang);
     const subDir = path.join(dist, page.path);
@@ -158,17 +166,57 @@ for (const lang of LANGS) {
   }
 }
 
+// Pannello delle proposte: una pagina sola, in italiano, fuori da ogni elenco.
+{
+  const { head, body } = renderAdmin({
+    assets: {
+      ...assets,
+      script: `<script src="/assets/admin.js?v=${stamp(adminScript)}" defer></script>`,
+    },
+  });
+  const adminDir = path.join(dist, ADMIN_PATH);
+  mkdirSync(adminDir, { recursive: true });
+  writeFileSync(path.join(adminDir, "index.html"), document({ head, body }, "it"));
+}
+
 // ---- file di servizio ----
+const CSP = (extra = {}) =>
+  [
+    "default-src 'self'",
+    "img-src 'self' data:",
+    "style-src 'self'",
+    `script-src 'self'${extra.script ?? ""}`,
+    "font-src 'self'",
+    "connect-src 'self'",
+    ...(extra.frame ? [`frame-src ${extra.frame}`] : []),
+    "base-uri 'none'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+  ].join("; ");
+// Solo con una chiave Turnstile la pagina di proposta ammette il suo script e la sua cornice:
+// le regole della pagina sostituiscono quelle generali ("! Intestazione" le toglie prima).
+const turnstileRules =
+  turnstileSiteKey === ""
+    ? ""
+    : `${LANGS.map((lang) => json(`content/${lang}.json`).submit.path)
+        .map(
+          (p) =>
+            `${p}*\n  ! Content-Security-Policy\n  Content-Security-Policy: ${CSP({ script: " https://challenges.cloudflare.com", frame: "https://challenges.cloudflare.com" })}\n`,
+        )
+        .join("")}`;
 writeFileSync(
   path.join(dist, "_headers"),
   `/*
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: ${CSP()}
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 /assets/*
   Cache-Control: public, max-age=604800
-`,
+${ADMIN_PATH}*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+${turnstileRules}`,
 );
 writeFileSync(
   path.join(dist, "robots.txt"),

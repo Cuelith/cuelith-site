@@ -130,6 +130,7 @@ for (const lang of ["it", "en"]) {
       "productId",
       "affiliateUrl",
       "contact",
+      "signature",
     ]) {
       assert.ok(html.includes(`data-field="${name}"`), name);
     }
@@ -165,6 +166,7 @@ const paid = () => ({
   kind: "paid",
   id: "acme.lyrics-pro",
   authorKey: "A".repeat(43),
+  signature: "B".repeat(86),
   price: "9 €",
   checkoutUrl: "https://acme.lemonsqueezy.com/checkout/buy/abc",
   affiliateUrl: "https://acme.lemonsqueezy.com/affiliates",
@@ -258,6 +260,14 @@ test("a pagamento: prezzo, negozio, prodotto, affiliati e chiave d'autore sono o
   // La chiave e' facoltativa per un plugin gratuito, ma se c'e' deve essere valida.
   assert.equal(parseSubmission({ ...free(), authorKey: "" }).ok, true);
   assert.equal(errorsOf({ ...free(), authorKey: "troppo corta" }).authorKey, "invalidKey");
+  // Con la chiave d'autore serve anche la firma del pacchetto; senza chiave la firma non serve.
+  assert.equal(errorsOf({ ...paid(), signature: "" }).signature, "required");
+  assert.equal(errorsOf({ ...paid(), signature: "corta" }).signature, "invalidSignature");
+  assert.equal(parseSubmission({ ...free(), signature: "ignorata" }).ok, true);
+  assert.equal(
+    parseSubmission({ ...free(), authorKey: "A".repeat(43), signature: "B".repeat(86) }).ok,
+    true,
+  );
 });
 
 test("lunghezze, email e campo trappola", () => {
@@ -421,4 +431,46 @@ test("invio: controlla tipo, forma e contenuto; una proposta valida riceve 503 f
   assert.equal((await ok.json()).error, "unavailable");
   assert.equal(ok.headers.get("Cache-Control"), "no-store");
   assert.equal(submitAny({}).status, 405);
+});
+
+// ---- Turnstile e pannello ----
+
+import { renderAdmin } from "../src/admin.mjs";
+import { TURNSTILE_SCRIPT } from "../src/market.mjs";
+
+for (const lang of ["it", "en"]) {
+  test(`proposta ${lang}: il controllo Turnstile c'e' solo con la chiave pubblica, e il suo script solo allora`, () => {
+    const content = json(`content/${lang}.json`);
+    const without = document(renderSubmit({ content, assets }), lang);
+    assert.doesNotMatch(without, /cf-turnstile|challenges\.cloudflare\.com/);
+    const withKey = document(
+      renderSubmit({ content, assets, turnstileSiteKey: "1x00000000000000000000AA" }),
+      lang,
+    );
+    assert.ok(withKey.includes('class="cf-turnstile" data-sitekey="1x00000000000000000000AA"'));
+    assert.ok(withKey.includes(`<script src="${TURNSTILE_SCRIPT}" async defer></script>`));
+    // Il controllo sta dentro il modulo, e i messaggi per i suoi errori esistono.
+    assert.ok(withKey.indexOf("cf-turnstile") > withKey.indexOf('id="proposal"'));
+    assert.ok(
+      content.submit.form.result.captcha.length > 0 && content.submit.form.result.rate.length > 0,
+    );
+    // Una chiave strana non puo' uscire dall'attributo.
+    const evil = document(
+      renderSubmit({ content, assets, turnstileSiteKey: '"><script>x</script>' }),
+      lang,
+    );
+    assert.doesNotMatch(evil, /<script>x<\/script>/);
+  });
+}
+
+test("pannello: non si indicizza, non ha collegamenti esterni e la pagina e' vuota (la riempie lo script)", () => {
+  const { head, body } = renderAdmin({
+    assets: { ...assets, script: '<script src="/assets/admin.js" defer></script>' },
+  });
+  const html = document({ head, body }, "it");
+  assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+  assert.doesNotMatch(html, /canonical|hreflang|og:/);
+  assert.deepEqual(externals(html), []);
+  assert.ok(html.includes("data-pending") && html.includes("data-done"));
+  assert.ok(html.includes('src="/assets/admin.js"'));
 });

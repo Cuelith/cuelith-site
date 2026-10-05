@@ -475,6 +475,10 @@
           "label": "Chiave pubblica dell'autore",
           "hint": "43 caratteri. Serve a firmare i pacchetti: obbligatoria per un plugin a pagamento, facoltativa per uno gratuito."
         },
+        "signature": {
+          "label": "Firma del pacchetto",
+          "hint": "86 caratteri, la stampa «pnpm sign». Obbligatoria se indichi la chiave d'autore."
+        },
         "price": {
           "label": "Prezzo da mostrare",
           "hint": "Testo libero, per esempio «9 €». Il prezzo vero lo decide il tuo negozio."
@@ -509,7 +513,9 @@
         "ok": "Proposta ricevuta. Ti risponderemo all'indirizzo indicato.",
         "invalid": "Controlla i campi evidenziati.",
         "unavailable": "Il servizio non è disponibile in questo momento. Riprova più tardi.",
-        "network": "Non riesco a inviare la proposta: controlla la connessione e riprova."
+        "network": "Non riesco a inviare la proposta: controlla la connessione e riprova.",
+        "captcha": "Non riesco a verificare che sei una persona. Ricarica la pagina e riprova.",
+        "rate": "Hai già inviato diverse proposte oggi. Riprova domani."
       },
       "errors": {
         "required": "Campo obbligatorio.",
@@ -524,7 +530,8 @@
         "invalidEmail": "Indirizzo email non valido.",
         "notInteger": "Serve un numero intero maggiore di zero.",
         "mustConfirm": "Per proporre il plugin devi spuntare tutta la checklist.",
-        "spam": "Proposta non accettata."
+        "spam": "Proposta non accettata.",
+        "invalidSignature": "Firma non valida: servono 86 caratteri (lettere, numeri, - e _)."
       }
     }
   }

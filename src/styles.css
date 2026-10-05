@@ -1572,3 +1572,107 @@ details[open] > summary::after {
     justify-content: center;
   }
 }
+
+/* ---------- pannello delle proposte (riservato) ---------- */
+
+.admin__status {
+  margin-top: 18px;
+  color: var(--cue);
+  font-size: 15px;
+}
+
+.admin__list {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.admin__title {
+  margin-top: clamp(36px, 5vw, 56px);
+  font-size: 26px;
+}
+
+.proposal {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: var(--bg-2);
+}
+
+.proposal__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+
+.proposal__details {
+  display: grid;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.proposal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.proposal button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin__checks {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin__ok {
+  color: var(--cue);
+}
+
+.admin__bad {
+  color: var(--live);
+}
+
+.admin__checks small {
+  color: var(--faint);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin__table th,
+.admin__table td {
+  padding: 8px 10px 8px 0;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.admin__table th {
+  width: 36%;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .admin__table th {
+    width: 42%;
+  }
+}

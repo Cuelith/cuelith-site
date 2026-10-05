@@ -23,7 +23,7 @@ export const DEV_LINKS = {
 };
 
 /** Intestazione, barra in alto e piede: uguali per le due pagine. */
-function shell({ c, page, assets, single, body, strings }) {
+function shell({ c, page, assets, single, body, strings, extraScripts = "" }) {
   const url = `${SITE}${page.path}`;
   const other = c.lang === "it" ? "en" : "it";
   const alternates =
@@ -69,6 +69,7 @@ ${body}
 
 ${siteFooter(c, assets, { single, alternate: page.alternate })}
 <script type="application/json" id="strings">${JSON.stringify(strings).replace(/</g, "\\u003c")}</script>
+${extraScripts}
 ${assets.script}`;
   return { head, body: full };
 }
@@ -159,7 +160,10 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
   });
 }
 
-export function renderSubmit({ content: c, assets, single = false }) {
+/** Dove si carica il controllo "sei una persona" (Turnstile): solo la pagina di proposta ne ha bisogno. */
+export const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+
+export function renderSubmit({ content: c, assets, single = false, turnstileSiteKey = "" }) {
   const s = c.submit;
   const f = s.form;
   const percent = String(AFFILIATE_PERCENT);
@@ -222,6 +226,7 @@ export function renderSubmit({ content: c, assets, single = false }) {
         ${field(f.fields, "packageUrl", { type: "url" })}
         ${field(f.fields, "repositoryUrl", { type: "url", required: false })}
         ${field(f.fields, "authorKey", { required: false })}
+        ${field(f.fields, "signature", { required: false })}
       </fieldset>
 
       <fieldset class="form__group" data-only="paid" hidden>
@@ -251,6 +256,11 @@ export function renderSubmit({ content: c, assets, single = false }) {
 
       <div class="trap" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
 
+      ${
+        turnstileSiteKey === ""
+          ? ""
+          : `<div class="cf-turnstile" data-sitekey="${esc(turnstileSiteKey)}" data-theme="dark" data-language="${c.lang}"></div>`
+      }
       <div class="form__actions">
         <button type="submit" class="button button--primary">${esc(f.submit)}</button>
         <p class="form__status" role="status" aria-live="polite" data-status></p>
@@ -265,6 +275,8 @@ export function renderSubmit({ content: c, assets, single = false }) {
     assets,
     single,
     body,
+    extraScripts:
+      turnstileSiteKey === "" ? "" : `<script src="${TURNSTILE_SCRIPT}" async defer></script>`,
     strings: {
       lang: c.lang,
       submit: { result: f.result, errors: f.errors, sending: f.sending },

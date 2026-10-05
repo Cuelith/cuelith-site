@@ -9,6 +9,8 @@ const PLUGIN_ID = /^[a-z0-9]+(?:\.[a-z0-9]+(?:-[a-z0-9]+)*)+$/;
 const AUTHOR_KEY = /^[A-Za-z0-9_-]{43}$/;
 /** Negozio ammesso: solo il rivenditore registrato che sappiamo verificare (vedi registry). */
 const SHOP_HOST = /^(?:[a-z0-9-]+\.)*lemonsqueezy\.com$/;
+/** Firma Ed25519 del pacchetto: 64 byte in base64url, senza riempimento. */
+const SIGNATURE = /^[A-Za-z0-9_-]{86}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** Nomi che solo il progetto puo' usare: chi li usasse si farebbe passare per il progetto. */
 const RESERVED = ["core", "cuelith"];
@@ -89,6 +91,7 @@ export function parseSubmission(input) {
     packageUrl: str(raw.packageUrl),
     repositoryUrl: str(raw.repositoryUrl),
     authorKey: str(raw.authorKey),
+    signature: str(raw.signature),
     contact: str(raw.contact),
   };
   check("name", withinLength(value.name, LIMITS.name));
@@ -106,8 +109,13 @@ export function parseSubmission(input) {
   if (value.repositoryUrl !== "") check("repositoryUrl", httpsUrl(value.repositoryUrl));
   if (value.eulaUrl !== "") check("eulaUrl", httpsUrl(value.eulaUrl));
   if (value.authorKey !== "" && !AUTHOR_KEY.test(value.authorKey)) errors.authorKey = "invalidKey";
+  // Con la chiave d'autore il pacchetto va firmato (pnpm sign); senza chiave la firma non serve.
+  if (value.authorKey !== "") {
+    if (value.signature === "") errors.signature = "required";
+    else if (!SIGNATURE.test(value.signature)) errors.signature = "invalidSignature";
+  }
 
-  const result = { kind, ...value };
+  const result = { kind, ...value, signature: value.authorKey === "" ? "" : value.signature };
   if (kind === "paid") {
     // La chiave dell'autore serve a un plugin a pagamento: lega il pacchetto a chi lo vende.
     if (value.authorKey === "") errors.authorKey = "required";

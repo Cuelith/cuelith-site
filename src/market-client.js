@@ -119,12 +119,16 @@ if (form && pageStrings.submit) {
     const data = { kind: kindOf(), confirm: {} };
     for (const control of form.querySelectorAll("input, textarea")) {
       if (control.disabled || !control.name || control.name === "kind") continue;
+      // Il token di Turnstile si invia a parte (turnstileToken), non come campo del modulo.
+      if (control.name.startsWith("cf-turnstile")) continue;
       if (control.type === "checkbox") {
         data.confirm[control.name.replace(/^confirm\./, "")] = control.checked;
       } else {
         data[control.name] = control.value;
       }
     }
+    const token = form.querySelector('[name="cf-turnstile-response"]')?.value;
+    if (token) data.turnstileToken = token;
     return data;
   };
 
@@ -165,12 +169,18 @@ if (form && pageStrings.submit) {
         const body = await response.json().catch(() => ({}));
         for (const [name, key] of Object.entries(body.errors ?? {})) showError(name, key);
         say(result.invalid, true);
+      } else if (response.status === 403) {
+        say(result.captcha, true);
+      } else if (response.status === 429) {
+        say(result.rate, true);
       } else {
         say(result.unavailable, true);
       }
     } catch {
       say(result.network, true);
     } finally {
+      // Ogni prova di Turnstile vale una volta sola: se c'e', se ne chiede una nuova.
+      window.turnstile?.reset();
       button.disabled = false;
     }
   });
