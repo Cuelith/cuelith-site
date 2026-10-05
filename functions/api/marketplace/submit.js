@@ -36,17 +36,20 @@ export async function onRequestPost({ request, env = {} }) {
   const result = parseSubmission(input);
   if (!result.ok) return reply({ error: "invalid", errors: result.errors }, 400);
 
-  if (!env.SUBMISSIONS || !env.TURNSTILE_SECRET) return reply({ error: "unavailable" }, 503);
+  // Il segreto di Turnstile si chiama TURNSTILE_SECRET; si accetta anche TURNSTILE_SECRET_KEY,
+  // il nome che Cloudflare usa nelle sue istruzioni.
+  const secret = env.TURNSTILE_SECRET || env.TURNSTILE_SECRET_KEY;
+  if (!env.SUBMISSIONS || !secret) return reply({ error: "unavailable" }, 503);
 
   const ip = request.headers.get("CF-Connecting-IP") ?? undefined;
   const human = await verifyTurnstile(input.turnstileToken, {
-    secret: env.TURNSTILE_SECRET,
+    secret,
     ip,
     hostname: env.TURNSTILE_HOSTNAME || undefined,
   });
   if (!human) return reply({ error: "captcha" }, 403);
 
-  const fingerprint = await ipFingerprint(ip ?? "sconosciuto", env.TURNSTILE_SECRET);
+  const fingerprint = await ipFingerprint(ip ?? "sconosciuto", secret);
   if (!(await allowSubmission(env.SUBMISSIONS, fingerprint))) return reply({ error: "rate" }, 429);
   if ((await pendingCount(env.SUBMISSIONS)) >= MAX_PENDING) return reply({ error: "busy" }, 503);
 

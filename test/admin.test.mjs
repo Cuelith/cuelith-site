@@ -214,6 +214,12 @@ test("invio: senza Turnstile valido 403, senza configurazione 503, proposta non 
   assert.equal(asked(), before);
 });
 
+test("invio: il segreto di Turnstile può chiamarsi anche TURNSTILE_SECRET_KEY", async () => {
+  env.TURNSTILE_SECRET_KEY = env.TURNSTILE_SECRET;
+  delete env.TURNSTILE_SECRET;
+  assert.equal((await send(body())).status, 200);
+});
+
 test("invio: al massimo 5 proposte al giorno per indirizzo, poi 429; un altro indirizzo passa", async () => {
   for (let i = 0; i < 5; i += 1) assert.equal((await send(body())).status, 200, String(i));
   assert.equal((await send(body())).status, 429);
