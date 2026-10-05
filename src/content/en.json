@@ -214,7 +214,7 @@
     "soonNote": "Coming plugins are planned, with no promised date. When they are released they appear here and in the app.",
     "developers": {
       "title": "Want to write one?",
-      "text": "The plugin system is open: anyone can add a tool, a protocol or a layout. The source code includes an example plugin to start from.",
+      "text": "The plugin system is open: anyone can add a tool, a protocol or a layout. The source code includes an example plugin to start from. Cuelith is free software, but your plugin is yours: you choose its licence, free or paid, open or closed.",
       "action": "Download the source code"
     }
   },
@@ -255,6 +255,10 @@
         "a": "Yes. The app is open source and will stay free, along with everything you need to use it. Today all plugins are free too."
       },
       {
+        "q": "Who can use and modify the source code?",
+        "a": "Anyone. Cuelith is free software under the GPL: you can study it, change it and share it. If you distribute a modified version, you must share its source code under the same licence, so Cuelith stays free for everyone. Plugins are separate programs: their authors choose their own licence. The name “Cuelith” and the logo remain the project’s."
+      },
+      {
         "q": "Will there be paid plugins?",
         "a": "In the future some advanced plugins may have a price, which we intend to keep low. That will not apply to anything essential for using Cuelith: the app and its core features stay free. If it happens, we will say so clearly beforehand."
       },
@@ -291,7 +295,7 @@
   "footer": {
     "tagline": "Live projection, lightweight and modular.",
     "source": "Source code (zip)",
-    "license": "Free software, Apache 2.0 licence.",
+    "license": "Free software, GPL 3.0 licence.",
     "privacy": "This site uses no cookies and does not track visitors.",
     "top": "Back to top",
     "kofi": "Support on Ko-fi",

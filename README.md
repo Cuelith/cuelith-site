@@ -39,4 +39,4 @@ Le schermate vengono dal programma in esecuzione, mai ritoccate: nel repo affian
 `pnpm deploy:dev` per l'anteprima, `pnpm deploy` per il sito. Come negli altri repo di Cuelith,
 `main` riceve solo versioni con tag; il lavoro va su `dev`.
 
-Licenza Apache 2.0.
+Licenza Apache 2.0 per il codice di questo sito. Il programma Cuelith è GPL 3.0 o successiva (vedi `cuelith-core` e la decisione 0012 in `cuelith-docs`): il piè di pagina e i dati strutturati del sito dicono GPL 3.0.

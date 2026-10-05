@@ -87,7 +87,7 @@ ${
         description: c.meta.description,
         url: `${SITE}${c.path}`,
         inLanguage: c.lang,
-        license: "https://www.apache.org/licenses/LICENSE-2.0",
+        license: "https://www.gnu.org/licenses/gpl-3.0.html",
         ...(version === "" ? {} : { softwareVersion: version }),
         offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
       }).replace(/</g, "\\u003c")}</script>`

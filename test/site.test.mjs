@@ -45,7 +45,7 @@ for (const lang of ["it", "en"]) {
       "https://lzrhive.it/",
       // Identificatori dei dati strutturati per i motori di ricerca: non sono collegamenti.
       "https://schema.org",
-      "https://www.apache.org/licenses/LICENSE-2.0",
+      "https://www.gnu.org/licenses/gpl-3.0.html",
     ];
     const external = [...html.matchAll(/https?:\/\/[^"'\s<)]+/g)]
       .map((match) => match[0])

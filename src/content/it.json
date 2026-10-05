@@ -214,7 +214,7 @@
     "soonNote": "I plugin in arrivo sono in programma, senza una data promessa. Quando escono compaiono qui e nel programma.",
     "developers": {
       "title": "Vuoi scriverne uno?",
-      "text": "Il sistema dei plugin è aperto: chiunque può aggiungere uno strumento, un protocollo o una disposizione. Nel codice sorgente trovi un plugin d'esempio da cui partire.",
+      "text": "Il sistema dei plugin è aperto: chiunque può aggiungere uno strumento, un protocollo o una disposizione. Nel codice sorgente trovi un plugin d'esempio da cui partire. Cuelith è software libero, ma il tuo plugin è tuo: scegli tu la licenza, gratuito o a pagamento, aperto o chiuso.",
       "action": "Scarica il codice sorgente"
     }
   },
@@ -255,6 +255,10 @@
         "a": "Sì. Il programma è open source e resterà gratuito, insieme a tutto ciò che serve per usarlo. Oggi sono gratuiti anche tutti i plugin."
       },
       {
+        "q": "Chi può usare e modificare il codice sorgente?",
+        "a": "Chiunque. Cuelith è software libero con licenza GPL: puoi studiarlo, modificarlo e condividerlo. Se distribuisci una versione modificata, devi condividerne il codice sorgente con la stessa licenza, così Cuelith resta libero per tutti. I plugin sono programmi separati: i loro autori scelgono la propria licenza. Il nome «Cuelith» e il logo restano del progetto."
+      },
+      {
         "q": "Ci saranno plugin a pagamento?",
         "a": "In futuro alcuni plugin avanzati potrebbero avere un prezzo, che vogliamo tenere contenuto. Non riguarderà ciò che è essenziale per usare Cuelith: il programma e le funzioni di base restano gratuiti. Se succederà, lo diremo con chiarezza prima."
       },
@@ -291,7 +295,7 @@
   "footer": {
     "tagline": "Proiezione live, leggera e modulare.",
     "source": "Codice sorgente (zip)",
-    "license": "Software libero, licenza Apache 2.0.",
+    "license": "Software libero, licenza GPL 3.0.",
     "privacy": "Questo sito non usa cookie e non traccia chi lo visita.",
     "top": "Torna su",
     "kofi": "Sostienici su Ko-fi",

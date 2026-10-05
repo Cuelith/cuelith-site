@@ -5,6 +5,7 @@ Il sito di Cuelith (`cuelith.lzrhive.it`). Fonte di verità del progetto: `cueli
 
 ## Regole
 
+- **Licenza**: il programma è GPL 3.0 (piè di pagina, dati strutturati, domande frequenti); questo repo del sito resta Apache 2.0. Non scrivere «Apache» nei testi sul programma.
 - **Mai nominare altri programmi** del settore, né dire a cosa Cuelith si ispira. Formati aperti
   (OpenLyrics, ChordPro) e protocolli (NDI, ASIO, Dante, MIDI, OSC, DMX…) si possono nominare.
 - **Non descrivere l'architettura** né le tecnologie usate: la pagina parla di cosa fa il
