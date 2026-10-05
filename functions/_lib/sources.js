@@ -79,6 +79,9 @@ export function parseReleases(feed) {
     const date = /<updated>([^<]+)<\/updated>/.exec(entry)?.[1];
     const content = /<content[^>]*>([\s\S]*?)<\/content>/.exec(entry)?.[1] ?? "";
     if (tag === undefined || !VERSION.test(tag) || date === undefined) continue;
+    // Il feed elenca anche i tag senza release (titolo = nome del tag, nessun installatore): non sono versioni.
+    const title = /<title>([^<]*)<\/title>/.exec(entry)?.[1]?.trim();
+    if (title === `v${tag}`) continue;
     releases.push({ version: tag, date, notes: splitNotes(decode(content)) });
   }
   return releases;

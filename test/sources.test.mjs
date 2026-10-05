@@ -37,11 +37,12 @@ test("le note di versione restano solo testo, elenchi e titoli", () => {
   );
 });
 
-test("l'elenco delle versioni: numero, data, note; il resto si scarta", () => {
+test("l'elenco delle versioni: numero, data, note; il resto (anche un tag senza release) si scarta", () => {
   const feed = `<feed>
 <entry><id>x</id><updated>2026-10-01T22:15:49Z</updated>
 <link rel="alternate" type="text/html" href="https://github.com/Cuelith/cuelith-core/releases/tag/v0.1.0"/>
 <title>Cuelith 0.1.0</title><content type="html">&lt;p&gt;Prima &lt;a href=&quot;https://x&quot;&gt;versione&lt;/a&gt;&lt;/p&gt;</content></entry>
+<entry><updated>2026-10-02T08:13:12Z</updated><link rel="alternate" type="text/html" href="https://github.com/Cuelith/cuelith-core/releases/tag/v0.0.9"/><title>v0.0.9</title><content type="html">&lt;p&gt;Solo un tag&lt;/p&gt;</content></entry>
 <entry><updated>2026-09-01T00:00:00Z</updated><link href="https://github.com/Cuelith/cuelith-core/releases/tag/vNONVALIDA"/><content>x</content></entry>
 </feed>`;
   assert.deepEqual(parseReleases(feed), [
