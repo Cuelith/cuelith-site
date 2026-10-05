@@ -424,7 +424,13 @@
         "Indica qui sotto la pagina di iscrizione degli affiliati: iscriviamo il progetto e nel catalogo usiamo il nostro link di acquisto.",
         "Crea la tua chiave d'autore e firma ogni pacchetto: nel modello di plugin bastano due comandi (pnpm keys, pnpm sign)."
       ],
-      "refunds": "I rimborsi li gestisci tu dal negozio: un rimborso disattiva la licenza di chi l'ha ottenuto."
+      "refunds": "I rimborsi li gestisci tu dal negozio: un rimborso disattiva la licenza di chi l'ha ottenuto.",
+      "rules": [
+        "Imposta la chiave di licenza senza scadenza se vendi il plugin una volta sola: il permesso in Cuelith non supera mai la scadenza della chiave, quindi una chiave a un anno smette di funzionare dopo un anno.",
+        "Ogni chiave vale per 3 computer. Chi cambia computer disattiva il vecchio dal plugin (Plugin → Installati → «Disattiva questo computer») e attiva il nuovo.",
+        "Se un computer si rompe e non si riesce a disattivarlo, libera tu il posto dal tuo negozio (Lemon Squeezy: License keys → la chiave → attivazioni): chi compra deve poterti scrivere.",
+        "Dopo un rimborso la chiave si disattiva e il plugin, al prossimo controllo, si spegne fuori dalle dirette: durante una diretta non si ferma mai nulla."
+      ]
     },
     "form": {
       "title": "Il modulo",

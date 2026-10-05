@@ -202,6 +202,9 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
       ${s.paid.steps.map((step) => `<li>${esc(fill(step, { percent }))}</li>`).join("\n      ")}
     </ol>
     <p class="plugins__note">${esc(s.paid.refunds)}</p>
+    <ul class="steps steps--plain">
+      ${s.paid.rules.map((r) => `<li>${esc(r)}</li>`).join("")}
+    </ul>
   </div>
 </section>
 

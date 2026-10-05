@@ -424,7 +424,13 @@
         "Give the affiliate sign-up page below: we enrol the project and use our own purchase link in the catalogue.",
         "Create your author key and sign every package: in the plugin template two commands are enough (pnpm keys, pnpm sign)."
       ],
-      "refunds": "You handle refunds from your store: a refund switches off the licence of the person who got it."
+      "refunds": "You handle refunds from your store: a refund switches off the licence of the person who got it.",
+      "rules": [
+        "Set the licence key to never expire if you sell the plugin once: the permission in Cuelith never outlasts the key's expiry, so a one-year key stops working after a year.",
+        "Each key works on 3 computers. Whoever changes computer deactivates the old one from the plugin (Plugins → Installed → “Deactivate this computer”) and activates the new one.",
+        "If a computer breaks and cannot be deactivated, free the seat yourself from your store (Lemon Squeezy: License keys → the key → activations): buyers must be able to contact you.",
+        "After a refund the key is deactivated and the plugin, at the next check, switches off outside live shows: nothing is ever stopped during a live show."
+      ]
     },
     "form": {
       "title": "The form",
