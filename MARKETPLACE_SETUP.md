@@ -88,7 +88,9 @@ Serve per aprire la pull request. Deve poter toccare **solo** quel repo.
 5. Scadenza: 90 giorni. **Metti un promemoria** nel calendario: dopo la scadenza le approvazioni falliscono con «GitHub non ha accettato (codice 401)»; si rigenera e si sostituisce al passo 7.
 6. Copia il token (compare una volta sola) e incollalo **solo** nella variabile `GITHUB_TOKEN` del passo 7.
 
-## 6. Le chiavi del Notaio
+## 6. Le chiavi del Notaio (già generate)
+
+> **Aggiornamento del 2026-10-06.** Le chiavi sono già state create, con `node scripts/notary-keys.mjs --out <file>`: la **pubblica** (`5lToPBMM2bePCMUbSl8NGl0wrXKS8OnxpSuj5gESaN8`) è già nel programma, la **privata** è nel file `C:\Users\MattiaLazzari\cuelith-notary-chiave-privata.txt`. Apri il file, copia la riga e incollala nel segreto `NOTARY_PRIVATE_KEY` di Cloudflare (passo 7); poi **cancella il file** (o spostalo in un posto sicuro). Il resto di questo paragrafo vale se devi rigenerare le chiavi.
 
 Sul tuo computer, nella cartella `cuelith-site`:
 
