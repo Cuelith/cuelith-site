@@ -15,7 +15,8 @@
     "faq": "FAQ",
     "download": "Download",
     "language": "Italiano",
-    "languageLabel": "Leggi questa pagina in italiano"
+    "languageLabel": "Leggi questa pagina in italiano",
+    "marketplace": "Marketplace"
   },
   "hero": {
     "eyebrow": "Live projection software · free and open source",
@@ -215,8 +216,10 @@
     "developers": {
       "title": "Want to write one?",
       "text": "The plugin system is open: anyone can add a tool, a protocol or a layout. The source code includes an example plugin to start from. Cuelith is free software, but your plugin is yours: you choose its licence, free or paid, open or closed.",
-      "action": "Download the source code"
-    }
+      "action": "Download the source code",
+      "propose": "Propose a plugin"
+    },
+    "marketplaceLink": "See every plugin in the marketplace"
   },
   "download": {
     "eyebrow": "Download",
@@ -299,7 +302,9 @@
     "privacy": "This site uses no cookies and does not track visitors.",
     "top": "Back to top",
     "kofi": "Support on Ko-fi",
-    "hub": "More projects on lzrhive"
+    "hub": "More projects on lzrhive",
+    "marketplace": "Plugin marketplace",
+    "submit": "Propose a plugin"
   },
   "os": {
     "windows": "Windows",
@@ -311,5 +316,216 @@
     "text": "No ads, no accounts. If it helps you, you can support its development with a small donation.",
     "kofi": "Support on Ko-fi",
     "note": "It is optional: Cuelith stays free for everyone."
+  },
+  "marketplace": {
+    "path": "/en/marketplace/",
+    "alternate": "/marketplace/",
+    "meta": {
+      "title": "Plugin marketplace · Cuelith",
+      "description": "Cuelith plugins: what they do, what they can access and how to get them. Free and paid."
+    },
+    "eyebrow": "Marketplace",
+    "title": "Add to Cuelith what you need",
+    "leadFree": "Plugins from the project and from other authors. Every card says what the plugin does and what it can access, before you install it.",
+    "leadMixed": "Free and paid plugins, from the project and from other authors. Every card says what the plugin does, what it costs and what it can access, before you install it.",
+    "filterLabel": "Show",
+    "filters": {
+      "all": "All",
+      "free": "Free",
+      "paid": "Paid"
+    },
+    "badges": {
+      "free": "Free",
+      "paid": "Paid"
+    },
+    "trust": {
+      "verified": "By the Cuelith project",
+      "unverified": "Third party, not verified"
+    },
+    "by": "by {publisher}",
+    "licenseLabel": "Licence",
+    "install": "Install it from Cuelith: Plugins → Marketplace.",
+    "buy": "Buy",
+    "buyHint": "This opens the author's store.",
+    "affiliateNote": "The link may contain a referral reference of the Cuelith project.",
+    "notBuyable": "Not available to buy right now",
+    "empty": "The marketplace cannot be reached right now. Please try again later.",
+    "how": {
+      "title": "How buying works",
+      "items": [
+        "The plugin is sold by its author, from their own store at a registered reseller that handles payment, VAT and refunds. Cuelith does not collect any money and never sees your payment details.",
+        "Some purchase links may contain a referral reference of the Cuelith project, which supports the project this way. The price you pay is the store's price.",
+        "After buying you receive a key by email. You enter it in Cuelith, on the plugin's card: it works on 3 computers at once and you can move it when you change computer.",
+        "If the store refunds you, the licence switches off by itself."
+      ]
+    },
+    "authors": {
+      "title": "Do you write plugins?",
+      "text": "You can propose yours, free or paid, without creating an account.",
+      "action": "How to propose one"
+    }
+  },
+  "submit": {
+    "path": "/en/marketplace/submit/",
+    "alternate": "/marketplace/submit/",
+    "meta": {
+      "title": "Propose a plugin · Cuelith",
+      "description": "How to publish a plugin, free or paid, in the Cuelith marketplace: rules, checklist and submission form."
+    },
+    "eyebrow": "For plugin authors",
+    "title": "Propose your plugin",
+    "lead": "One form, no account. The project reviews the plugin and, if everything is in order, publishes it in the Cuelith marketplace.",
+    "steps": {
+      "title": "How it works",
+      "items": [
+        {
+          "title": "Write and package",
+          "text": "Start from the plugin template and follow the developer guide. The package (.cpkg) must sit at a stable https address."
+        },
+        {
+          "title": "Fill in the form",
+          "text": "Description, package, licence and, for a paid plugin, the details of your store."
+        },
+        {
+          "title": "We review",
+          "text": "We check the package, the permissions and the checklist. We reply to the address you give."
+        },
+        {
+          "title": "Publication",
+          "text": "If the proposal is approved, the plugin appears in the marketplace on the website and inside Cuelith. Each new version is proposed again from the same form."
+        }
+      ]
+    },
+    "docs": {
+      "title": "To get started",
+      "guide": "Developer guide",
+      "template": "Plugin template"
+    },
+    "checklist": {
+      "title": "Conformity checklist",
+      "lead": "To be published, the plugin must meet all of it: tick each item in the form.",
+      "paidTitle": "In addition, for a paid plugin",
+      "items": {
+        "noMalware": "The plugin contains no malware, hidden code or undeclared data collection.",
+        "permissions": "It declares in its manifest every permission it uses, and only those.",
+        "licence": "It states its licence, proprietary ones (EULA) included, and where it can be read.",
+        "name": "It does not use “Cuelith” in its own name (write “for Cuelith”) and does not copy code from the Cuelith core, which is GPL.",
+        "merchant": "I sell it with my own store at Lemon Squeezy, which collects the payment, pays the VAT and handles refunds. The Cuelith project does not collect or touch my money.",
+        "devices": "In the product I have turned on licence keys with a limit of 3 devices per key.",
+        "affiliate": "I have turned on my store's affiliate programme with a {percent}% commission and I give its sign-up page below."
+      }
+    },
+    "paid": {
+      "title": "Paid plugins: how selling works",
+      "intro": "The marketplace sells nothing: it lists the plugin and sends people to your store. Today the registered reseller we support is Lemon Squeezy.",
+      "steps": [
+        "Open your store and create the plugin's product, with licence keys and a limit of 3 devices per key.",
+        "Turn on the store's affiliate programme and set the commission to {percent}%: this is the condition to be listed as paid. Your store pays the commission directly to the project, and the price for buyers does not change.",
+        "Give the affiliate sign-up page below: we enrol the project and use our own purchase link in the catalogue.",
+        "Create your author key and sign every package: in the plugin template two commands are enough (pnpm keys, pnpm sign)."
+      ],
+      "refunds": "You handle refunds from your store: a refund switches off the licence of the person who got it."
+    },
+    "form": {
+      "title": "The form",
+      "kind": {
+        "label": "Plugin type",
+        "free": "Free",
+        "paid": "Paid"
+      },
+      "groups": {
+        "plugin": "The plugin",
+        "shop": "Your store",
+        "contact": "Contact"
+      },
+      "fields": {
+        "name": {
+          "label": "Plugin name",
+          "hint": "What users will see."
+        },
+        "id": {
+          "label": "Identifier",
+          "hint": "In reverse-domain form, for example acme.lyrics-pro. Lowercase letters, numbers, dots and hyphens only. “cuelith” and “core” are reserved for the project."
+        },
+        "description": {
+          "label": "Description",
+          "hint": "What it does, in one or two sentences (10 to 300 characters)."
+        },
+        "publisher": {
+          "label": "Author or company",
+          "hint": "The name shown on the card."
+        },
+        "license": {
+          "label": "Plugin licence",
+          "hint": "A licence name (for example MIT) or the name of your own terms of use (EULA)."
+        },
+        "eulaUrl": {
+          "label": "Where the licence or EULA can be read (optional)",
+          "hint": "An https address."
+        },
+        "packageUrl": {
+          "label": "Package address (.cpkg)",
+          "hint": "https, stable and reachable by anyone. We check size, fingerprint and permissions."
+        },
+        "repositoryUrl": {
+          "label": "Project page (optional)",
+          "hint": "The plugin's website or repository, an https address."
+        },
+        "authorKey": {
+          "label": "Author's public key",
+          "hint": "43 characters. It signs your packages: required for a paid plugin, optional for a free one."
+        },
+        "price": {
+          "label": "Price to show",
+          "hint": "Free text, for example “€9”. The real price is set in your store."
+        },
+        "checkoutUrl": {
+          "label": "Purchase page of the product",
+          "hint": "The product's address in your store (lemonsqueezy.com domain)."
+        },
+        "affiliateUrl": {
+          "label": "Affiliate sign-up page of your store",
+          "hint": "We join as affiliates and use our own link in the catalogue (lemonsqueezy.com domain)."
+        },
+        "storeId": {
+          "label": "Store number",
+          "hint": "You can find it in your store settings."
+        },
+        "productId": {
+          "label": "Product number",
+          "hint": "You can find it on the product page."
+        },
+        "contact": {
+          "label": "Your email",
+          "hint": "Only used to reply to you. It is never published."
+        }
+      },
+      "confirmTitle": "Confirmations",
+      "submit": "Send the proposal",
+      "sending": "Sending…",
+      "privacy": "Your email is only used to reply to you and is never published. We keep it until the proposal is decided.",
+      "needsScript": "The form needs JavaScript to be turned on.",
+      "result": {
+        "ok": "Proposal received. We will reply to the address you gave.",
+        "invalid": "Please check the highlighted fields.",
+        "unavailable": "The service is not available right now. Please try again later.",
+        "network": "I cannot send the proposal: check your connection and try again."
+      },
+      "errors": {
+        "required": "Required.",
+        "tooShort": "Too short.",
+        "tooLong": "Too long.",
+        "invalidUrl": "Not a valid address.",
+        "notHttps": "The address must start with https://.",
+        "notShop": "It must be an address of your store (lemonsqueezy.com).",
+        "invalidId": "Invalid format: lowercase reverse-domain, for example acme.lyrics-pro.",
+        "reservedId": "This name is reserved for the project.",
+        "invalidKey": "Invalid key: it must be 43 characters (letters, numbers, - and _).",
+        "invalidEmail": "Not a valid email address.",
+        "notInteger": "A whole number greater than zero is needed.",
+        "mustConfirm": "To propose the plugin you need to tick the whole checklist.",
+        "spam": "Submission not accepted."
+      }
+    }
   }
 }

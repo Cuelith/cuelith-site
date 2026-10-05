@@ -8,7 +8,10 @@ e i dati pubblicati altrove, senza mostrarne l'origine:
 - `/download/windows`, `/download/linux` — l'installatore più recente
 - `/download/<versione>/<sistema>` — una versione precisa
 - `/download/source` — il codice sorgente (zip)
-- `/api/releases`, `/api/modules` — versioni e plugin del momento, per aggiornare la pagina
+- `/api/releases`, `/api/modules` — versioni e plugin del momento, per aggiornare la pagina (`/api/modules` legge l'indice 2 del registry, e se non risponde l'indice 1)
+- `/marketplace/`, `/marketplace/submit/` (e `/en/…`) — schede dei plugin e proposta di un plugin
+- `/marketplace/buy/<id>` — porta al negozio dell'autore di un plugin a pagamento, scelto dal catalogo
+- `/api/marketplace/submit` — riceve la proposta (oggi la controlla e risponde «non disponibile»: la conservazione è la fase 3 della decisione 0013)
 
 ## Lavorare
 
@@ -17,6 +20,7 @@ pnpm install
 pnpm dev            # costruisce e serve in locale, funzioni comprese (porta 8788)
 pnpm test           # prove delle funzioni e della pagina
 pnpm build:preview  # in più, un'anteprima in un file solo (dist-single/)
+pnpm preview:paid   # il marketplace con due plugin a pagamento finti (porta 8799, dopo pnpm build)
 pnpm shots          # copia le schermate fatte dal programma vero (vedi sotto)
 ```
 
@@ -32,6 +36,7 @@ Le schermate vengono dal programma in esecuzione, mai ritoccate: nel repo affian
 - `src/content/it.json`, `src/content/en.json` — tutti i testi della pagina
 - `src/data/plugins.json` — i plugin presentati oltre a quelli del marketplace (inclusi e in arrivo)
 - `src/page.mjs`, `src/shared.js`, `src/styles.css`, `src/app.js` — la pagina
+- `src/market.mjs`, `src/market-client.js`, `src/submission.js` — marketplace e proposta (la validazione è condivisa con la funzione di invio)
 - `functions/` — download e dati
 
 ## Pubblicare

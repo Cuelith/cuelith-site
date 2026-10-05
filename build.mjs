@@ -17,6 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { loadModules, loadReleases } from "./functions/_lib/sources.js";
+import { renderMarketplace, renderSubmit } from "./src/market.mjs";
 import { document, renderPage } from "./src/page.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -98,8 +99,14 @@ const css = `${fontFaces((file) => `/assets/fonts/${file}`)}\n${read("styles.css
 // Le funzioni condivise entrano nello script del browser senza "export".
 const script = `(() => {\n"use strict";\n${read("shared.js").replace(/^export /gm, "")}\n${read("app.js")}\n})();\n`;
 const stamp = (text) => createHash("sha256").update(text).digest("hex").slice(0, 10);
+// Script delle pagine del marketplace: stesse funzioni condivise, il controllo
+// delle proposte (lo stesso del server) e gli aiuti della pagina.
+const marketScript = `(() => {\n"use strict";\n${["shared.js", "submission.js"]
+  .map((file) => read(file).replace(/^export /gm, ""))
+  .join("\n")}\n${read("market-client.js")}\n})();\n`;
 writeFileSync(path.join(dist, "assets", "site.css"), css);
 writeFileSync(path.join(dist, "assets", "site.js"), script);
+writeFileSync(path.join(dist, "assets", "market.js"), marketScript);
 // Piccolo e caricato per primo: decide se le animazioni d'ingresso sono attive.
 const flag = read("motion-flag.js");
 writeFileSync(path.join(dist, "assets", "motion-flag.js"), flag);
@@ -132,6 +139,23 @@ for (const lang of LANGS) {
   const dir = path.join(dist, content.path);
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, "index.html"), html);
+
+  // Marketplace e proposta di un plugin: pagine semplici, senza animazioni d'ingresso.
+  const subAssets = {
+    ...assets,
+    flag: "",
+    social: `/assets/social-${lang}.jpg`,
+    script: `<script src="/assets/market.js?v=${stamp(marketScript)}" defer></script>`,
+  };
+  for (const [render, page, extra] of [
+    [renderMarketplace, content.marketplace, { modules, catalog }],
+    [renderSubmit, content.submit, {}],
+  ]) {
+    const sub = document(render({ content, assets: subAssets, ...extra }), lang);
+    const subDir = path.join(dist, page.path);
+    mkdirSync(subDir, { recursive: true });
+    writeFileSync(path.join(subDir, "index.html"), sub);
+  }
 }
 
 // ---- file di servizio ----
@@ -156,6 +180,10 @@ writeFileSync(
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://cuelith.lzrhive.it/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/en/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/marketplace/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/en/marketplace/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/marketplace/submit/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/en/marketplace/submit/</loc></url>
 </urlset>
 `,
 );

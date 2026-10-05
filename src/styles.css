@@ -1150,8 +1150,10 @@ details[open] > summary::after {
 }
 
 .foot ul {
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  max-width: 380px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1241,6 +1243,331 @@ details[open] > summary::after {
   }
 
   .hero__actions .button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* ---------- marketplace e proposta di un plugin ---------- */
+
+.subpage {
+  padding-block: clamp(48px, 7vw, 88px) clamp(40px, 6vw, 72px);
+}
+
+.subpage__title {
+  max-width: 20ch;
+}
+
+.top__nav a[aria-current="page"] {
+  color: var(--fg);
+}
+
+.top__nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.badge--paid {
+  border-color: #5a4415;
+  background: #221a08;
+  color: var(--stage);
+}
+
+.plugin__trust {
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.plugin__note {
+  color: var(--faint);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.plugin__buy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+  margin-top: auto;
+}
+
+.plugin__price {
+  font: 600 20px var(--display);
+}
+
+.plugin__soon {
+  color: var(--faint);
+  font-size: 14px;
+}
+
+.notice {
+  margin-top: clamp(32px, 5vw, 56px);
+  padding: 22px 24px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: var(--bg-2);
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.notice__title {
+  max-width: none;
+  margin-bottom: 10px;
+  color: var(--fg);
+  font: 600 20px/1.25 var(--display);
+}
+
+.notice ol {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.developers__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: clamp(22px, 3vw, 32px) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  padding: 18px 20px 18px 56px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--cue-bg);
+  color: var(--cue);
+  font: 600 13px var(--mono);
+}
+
+.steps h3 {
+  font-size: 17px;
+}
+
+.steps p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.steps--plain {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.steps--plain li {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.docs {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ---------- il modulo ---------- */
+
+.form {
+  display: grid;
+  gap: 22px;
+  margin-top: clamp(22px, 3vw, 32px);
+}
+
+.form__group {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.form__group legend {
+  padding-inline: 8px;
+  color: var(--fg);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.field label {
+  color: var(--fg);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--bg-2);
+  color: var(--fg);
+  font: inherit;
+  font-size: 16px;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible,
+.check input:focus-visible,
+.radio input:focus-visible {
+  outline: 2px solid var(--cue);
+  outline-offset: 2px;
+}
+
+.field [aria-invalid="true"] {
+  border-color: var(--live);
+}
+
+.field__hint {
+  color: var(--faint);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.field__error {
+  color: var(--live);
+  font-size: 14px;
+}
+
+.radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.radio:has(input:checked) {
+  border-color: var(--cue);
+  background: var(--cue-bg);
+}
+
+.checks {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checks__title {
+  margin: 16px 0 10px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--cue);
+}
+
+.form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.form__status {
+  color: var(--cue);
+  font-size: 15px;
+}
+
+.form__status--bad {
+  color: var(--live);
+}
+
+/* Campo trappola: fuori dallo schermo, non per chi usa la pagina. */
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .form__group {
+    padding: 16px;
+  }
+
+  .form__actions .button,
+  .developers__actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .plugin__buy .button {
     flex: 1 1 auto;
     justify-content: center;
   }

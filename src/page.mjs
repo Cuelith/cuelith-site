@@ -19,6 +19,35 @@ function shot(image, alt, { eager = false, sizes = "(min-width: 1100px) 620px, 9
 const arrow =
   '<svg viewBox="0 0 20 20" aria-hidden="true" width="18" height="18"><path d="M10 3v10m0 0 4-4m-4 4-4-4M4 16.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+/**
+ * Il piede della pagina, uguale in tutte le pagine del sito. `alternate` e'
+ * l'indirizzo della stessa pagina nell'altra lingua.
+ */
+export function siteFooter(c, assets, { single = false, alternate }) {
+  return `<footer class="foot">
+  <div class="wrap foot__row">
+    <div>
+      <img src="${assets.logo}" alt="Cuelith" width="120" height="32" loading="lazy">
+      <p>${esc(c.footer.tagline)}</p>
+    </div>
+    <ul>
+      <li><a href="/download/source">${esc(c.footer.source)}</a></li>
+      <li><a href="${single ? "#" : MARKETPLACE_PATHS[c.lang]}">${esc(c.footer.marketplace)}</a></li>
+      <li><a href="${single ? "#" : SUBMIT_PATHS[c.lang]}">${esc(c.footer.submit)}</a></li>
+      <li><a href="${KOFI}" target="_blank" rel="noopener">${esc(c.footer.kofi)}</a></li>
+      <li><a href="${c.lang === "it" ? HUB : `${HUB}en`}" target="_blank" rel="noopener">${esc(c.footer.hub)}</a></li>
+      <li><a href="${single ? "#" : alternate}" lang="${c.lang === "it" ? "en" : "it"}">${esc(c.nav.language)}</a></li>
+      <li><a href="#contenuto">${esc(c.footer.top)}</a></li>
+    </ul>
+    <p class="foot__small">${esc(c.footer.license)}<br>${esc(c.footer.privacy)}</p>
+  </div>
+</footer>`;
+}
+
+/** Le pagine del marketplace, per lingua (le stesse che dicono i testi `marketplace.path` e `submit.path`). */
+export const MARKETPLACE_PATHS = { it: "/marketplace/", en: "/en/marketplace/" };
+export const SUBMIT_PATHS = { it: "/marketplace/submit/", en: "/en/marketplace/submit/" };
+
 export function renderPage({
   content: c,
   releases,
@@ -102,6 +131,7 @@ ${assets.styles}`;
     <nav aria-label="${esc(c.nav.label)}" class="top__nav">
       <a href="#funzioni">${esc(c.nav.features)}</a>
       <a href="#plugin">${esc(c.nav.plugins)}</a>
+      <a href="${single ? "#" : MARKETPLACE_PATHS[c.lang]}">${esc(c.nav.marketplace)}</a>
       <a href="#versioni">${esc(c.nav.versions)}</a>
       <a href="#domande">${esc(c.nav.faq)}</a>
     </nav>
@@ -228,13 +258,16 @@ ${assets.styles}`;
     <div data-plugins>
 ${pluginCards(plugins, strings.plugins)}
     </div>
-    <p class="plugins__note">${esc(c.plugins.soonNote)}</p>
+    <p class="plugins__note">${esc(c.plugins.soonNote)} <a class="link" href="${single ? "#" : MARKETPLACE_PATHS[c.lang]}">${esc(c.plugins.marketplaceLink)}</a></p>
     <aside class="developers" data-reveal="up">
       <div>
         <h3>${esc(c.plugins.developers.title)}</h3>
         <p>${esc(c.plugins.developers.text)}</p>
       </div>
-      <a class="button" href="/download/source">${arrow}${esc(c.plugins.developers.action)}</a>
+      <div class="developers__actions">
+        <a class="button" href="/download/source">${arrow}${esc(c.plugins.developers.action)}</a>
+        <a class="button" href="${single ? "#" : SUBMIT_PATHS[c.lang]}">${esc(c.plugins.developers.propose)}</a>
+      </div>
     </aside>
   </div>
 </section>
@@ -297,22 +330,7 @@ ${versionList(releases, c.versions, c.locale)}
 </section>
 </main>
 
-<footer class="foot">
-  <div class="wrap foot__row">
-    <div>
-      <img src="${assets.logo}" alt="Cuelith" width="120" height="32" loading="lazy">
-      <p>${esc(c.footer.tagline)}</p>
-    </div>
-    <ul>
-      <li><a href="/download/source">${esc(c.footer.source)}</a></li>
-      <li><a href="${KOFI}" target="_blank" rel="noopener">${esc(c.footer.kofi)}</a></li>
-      <li><a href="${c.lang === "it" ? HUB : `${HUB}en`}" target="_blank" rel="noopener">${esc(c.footer.hub)}</a></li>
-      <li><a href="${single ? "#" : c.alternate}" lang="${c.lang === "it" ? "en" : "it"}">${esc(c.nav.language)}</a></li>
-      <li><a href="#contenuto">${esc(c.footer.top)}</a></li>
-    </ul>
-    <p class="foot__small">${esc(c.footer.license)}<br>${esc(c.footer.privacy)}</p>
-  </div>
-</footer>
+${siteFooter(c, assets, { single, alternate: c.alternate })}
 <script type="application/json" id="strings">${JSON.stringify(strings).replace(/</g, "\\u003c")}</script>
 ${assets.script}`;
 

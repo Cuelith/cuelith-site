@@ -47,6 +47,11 @@ export function pluginList(modules, catalog, lang) {
       version: module.version,
       verified: module.verified,
       permissions: module.permissions,
+      publisher: module.publisher ?? "",
+      license: module.license ?? "",
+      access: module.access === "paid" ? "paid" : "free",
+      price: module.price ?? "",
+      buyable: module.buyable === true,
     };
   });
   const known = new Set(fromMarket.map((plugin) => plugin.id));
@@ -183,6 +188,62 @@ export function versionList(releases, strings, locale) {
     <div class="version__notes" aria-label="${esc(strings.notes)}">${notesFor(release, locale)}</div>
   </div>
 </details>`;
+    })
+    .join("\n");
+}
+
+/**
+ * Le schede del marketplace: i plugin che si possono usare, gratuiti e a
+ * pagamento, con chi li scrive, la licenza, cosa possono usare e come si
+ * ottengono. `strings` e' la voce `marketplace` dei testi, con in piu'
+ * `permissionsLabel`, `permissions` e `version` dei plugin.
+ */
+export function marketCards(plugins, strings) {
+  return plugins
+    .filter((plugin) => plugin.status === "available")
+    .map((plugin) => {
+      const paid = plugin.access === "paid";
+      const icon = plugin.icon
+        ? `<img class="plugin__icon" src="${esc(plugin.icon)}" alt="" width="40" height="40">`
+        : `<span class="plugin__icon plugin__icon--text" aria-hidden="true">${esc(initials(plugin.name))}</span>`;
+      const by = plugin.publisher ? fill(strings.by, { publisher: plugin.publisher }) : "";
+      const trust = plugin.verified ? strings.trust.verified : strings.trust.unverified;
+      const permissions =
+        plugin.permissions.length === 0
+          ? strings.permissions.none
+          : plugin.permissions.map((p) => permissionText(p, strings)).join(" · ");
+      const meta = [
+        plugin.license ? `${strings.licenseLabel}: ${plugin.license}` : "",
+        plugin.version ? fill(strings.version, { version: plugin.version }) : "",
+      ]
+        .filter((part) => part !== "")
+        .join(" · ");
+      const action = paid
+        ? `<div class="plugin__buy">
+    <p class="plugin__price">${esc(plugin.price)}</p>
+    ${
+      plugin.buyable
+        ? `<a class="button button--primary button--small" href="/marketplace/buy/${esc(plugin.id)}" rel="nofollow">${esc(strings.buy)}</a>`
+        : `<p class="plugin__soon">${esc(strings.notBuyable)}</p>`
+    }
+  </div>
+  ${plugin.buyable ? `<p class="plugin__note">${esc(strings.buyHint)} ${esc(strings.affiliateNote)}</p>` : ""}`
+        : `<p class="plugin__note">${esc(strings.install)}</p>`;
+      return `<li class="plugin" data-group="${paid ? "paid" : "free"}" data-plugin="${esc(plugin.id)}">
+  <div class="plugin__head">
+    ${icon}
+    <div>
+      <h3>${esc(plugin.name)}</h3>
+      <p class="plugin__kind">${esc(by)}</p>
+    </div>
+    <span class="badge ${paid ? "badge--paid" : "badge--available"}">${esc(paid ? strings.badges.paid : strings.badges.free)}</span>
+  </div>
+  <p class="plugin__text">${esc(plugin.text)}</p>
+  <p class="plugin__trust">${esc(trust)}</p>
+  <p class="plugin__permissions"><span>${esc(strings.permissionsLabel)}:</span> ${esc(permissions)}</p>
+  ${meta === "" ? "" : `<p class="plugin__version">${esc(meta)}</p>`}
+  ${action}
+</li>`;
     })
     .join("\n");
 }

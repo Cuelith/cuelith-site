@@ -8,6 +8,8 @@ export const RELEASES_FEED = `${CORE}/releases.atom`;
 export const LATEST_MANIFEST = `${CORE}/releases/latest/download/latest.yml`;
 export const SOURCE_ARCHIVE =
   "https://codeload.github.com/Cuelith/cuelith-core/zip/refs/heads/main";
+/** Indice con tutti i plugin, anche a pagamento (schema 2); l'indice 1 e' il ripiego. */
+export const MODULES_INDEX_V2 = "https://cuelith.github.io/cuelith-registry/index-2.json";
 export const MODULES_INDEX = "https://cuelith.github.io/cuelith-registry/index.json";
 
 /** Versioni nel formato 1.2.3 (con eventuale suffisso): niente altro entra in un indirizzo. */
@@ -100,6 +102,13 @@ export function publicModules(index) {
       description: String(plugin.description ?? ""),
       family: String(plugin.family ?? "function"),
       verified: plugin.verified === true,
+      publisher: String(plugin.publisher ?? ""),
+      license: String(plugin.license ?? ""),
+      // Solo "paid" e' a pagamento: tutto il resto e' gratuito (indice 1, voci vecchie).
+      access: plugin.access === "paid" ? "paid" : "free",
+      price: plugin.access === "paid" ? String(plugin.price ?? "") : "",
+      // L'indirizzo dell'acquisto non esce: si arriva al negozio da /marketplace/buy/<id>.
+      buyable: plugin.access === "paid" && checkoutOf(plugin) !== undefined,
       icon:
         typeof plugin.icon === "string" && plugin.icon.startsWith("data:image/svg+xml;base64,")
           ? plugin.icon
@@ -109,6 +118,25 @@ export function publicModules(index) {
       permissions: Array.isArray(latest.permissions) ? latest.permissions.map(String) : [],
     };
   });
+}
+
+/** Pagina di acquisto ammessa: solo il negozio di un rivenditore registrato, in https. */
+export const CHECKOUT_HOST = /^(?:[a-z0-9-]+\.)*lemonsqueezy\.com$/;
+
+/** L'indirizzo di acquisto di un plugin a pagamento, se e' uno ammesso. */
+export function checkoutOf(plugin) {
+  if (plugin?.access !== "paid" || typeof plugin.checkoutUrl !== "string") return undefined;
+  try {
+    const url = new URL(plugin.checkoutUrl);
+    const ok =
+      url.protocol === "https:" &&
+      CHECKOUT_HOST.test(url.hostname) &&
+      url.username === "" &&
+      url.password === "";
+    return ok ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 /** Legge un indirizzo come testo; undefined se non risponde bene (il sito resta in piedi). */
@@ -126,11 +154,27 @@ export async function loadReleases(fetcher = fetch) {
   return feed === undefined ? undefined : parseReleases(feed);
 }
 
+/** I plugin del marketplace: dall'indice 2, e se non risponde dall'indice 1. */
 export async function loadModules(fetcher = fetch) {
-  const text = await readText(MODULES_INDEX, fetcher);
+  for (const url of [MODULES_INDEX_V2, MODULES_INDEX]) {
+    const text = await readText(url, fetcher);
+    if (text === undefined) continue;
+    try {
+      return publicModules(JSON.parse(text));
+    } catch {
+      // Indice illeggibile: si prova il successivo.
+    }
+  }
+  return undefined;
+}
+
+/** Dove porta "Acquista" per un plugin: l'indirizzo del suo negozio, se ammesso. */
+export async function loadCheckout(id, fetcher = fetch) {
+  const text = await readText(MODULES_INDEX_V2, fetcher);
   if (text === undefined) return undefined;
   try {
-    return publicModules(JSON.parse(text));
+    const plugin = (JSON.parse(text).plugins ?? []).find((p) => p?.id === id);
+    return checkoutOf(plugin);
   } catch {
     return undefined;
   }
