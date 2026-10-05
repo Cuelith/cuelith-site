@@ -108,7 +108,9 @@ for (const lang of ["it", "en"]) {
 
   test(`proposta ${lang}: modulo completo, checklist e istruzioni di vendita`, () => {
     const html = submitPage(lang);
-    assert.doesNotMatch(html, /Cloudflare|KV/);
+    // L'infrastruttura non si nomina, tranne Turnstile (controllo anti-spam) nell'informativa.
+    assert.doesNotMatch(html.replace(/Cloudflare \(Turnstile\)/g, ""), /Cloudflare|KV/);
+    assert.match(html, /Turnstile/);
     const allowed = [DEV_LINKS.guide[lang], DEV_LINKS.template];
     assert.deepEqual(
       externals(html).filter((url) => !isAllowed(url, allowed)),

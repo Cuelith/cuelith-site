@@ -299,7 +299,7 @@
     "tagline": "Proiezione live, leggera e modulare.",
     "source": "Codice sorgente (zip)",
     "license": "Software libero, licenza GPL 3.0.",
-    "privacy": "Questo sito non usa cookie e non traccia chi lo visita.",
+    "privacy": "Il sito non usa cookie e non traccia chi lo visita. Solo il modulo per proporre un plugin carica un controllo anti-spam di Cloudflare (Turnstile), che può salvare dati nel tuo browser.",
     "top": "Torna su",
     "kofi": "Sostienici su Ko-fi",
     "hub": "Altri progetti su lzrhive",
@@ -513,7 +513,7 @@
       "confirmTitle": "Conferme",
       "submit": "Invia la proposta",
       "sending": "Invio in corso…",
-      "privacy": "La tua email serve solo a risponderti e non viene pubblicata. La conserviamo finché la proposta non è decisa.",
+      "privacy": "La tua email serve solo a risponderti e non viene pubblicata. La conserviamo finché la proposta non è decisa e comunque non oltre 60 giorni. Il modulo usa un controllo anti-spam di Cloudflare (Turnstile), che può salvare dati nel tuo browser.",
       "needsScript": "Il modulo funziona con JavaScript attivo.",
       "result": {
         "ok": "Proposta ricevuta. Ti risponderemo all'indirizzo indicato.",

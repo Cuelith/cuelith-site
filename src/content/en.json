@@ -299,7 +299,7 @@
     "tagline": "Live projection, lightweight and modular.",
     "source": "Source code (zip)",
     "license": "Free software, GPL 3.0 licence.",
-    "privacy": "This site uses no cookies and does not track visitors.",
+    "privacy": "The site uses no cookies and does not track visitors. Only the form to propose a plugin loads an anti-spam check from Cloudflare (Turnstile), which may store data in your browser.",
     "top": "Back to top",
     "kofi": "Support on Ko-fi",
     "hub": "More projects on lzrhive",
@@ -513,7 +513,7 @@
       "confirmTitle": "Confirmations",
       "submit": "Send the proposal",
       "sending": "Sending…",
-      "privacy": "Your email is only used to reply to you and is never published. We keep it until the proposal is decided.",
+      "privacy": "Your email is only used to reply to you and is never published. We keep it until the proposal is decided and in any case no longer than 60 days. The form uses an anti-spam check from Cloudflare (Turnstile), which may store data in your browser.",
       "needsScript": "The form needs JavaScript to be turned on.",
       "result": {
         "ok": "Proposal received. We will reply to the address you gave.",
