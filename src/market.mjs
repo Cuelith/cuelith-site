@@ -1,12 +1,13 @@
 import {
   MARKETPLACE_PATHS,
+  PAGE_PATHS,
   PRIVACY_PATHS,
   SUBMIT_PATHS,
   TERMS_PATHS,
   siteFooter,
   siteHeader,
 } from "./page.mjs";
-import { esc, fill, marketCards, pluginList } from "./shared.js";
+import { esc, fill, formatDate, pluginList, storeTiles } from "./shared.js";
 import { CONFIRMATIONS, LIMITS } from "./submission.js";
 
 // Le pagine /marketplace e /marketplace/submit, per una lingua. Come la pagina
@@ -28,16 +29,18 @@ export const DEV_LINKS = {
 };
 
 /** Intestazione, barra in alto e piede: uguali per le due pagine. */
-function shell({ c, page, assets, single, body, strings, extraScripts = "" }) {
+export function shell({ c, page, assets, single, body, strings, extraScripts = "", alt }) {
   const url = `${SITE}${page.path}`;
   const alternates =
-    page === c.marketplace
-      ? MARKETPLACE_PATHS
-      : page === c.terms
-        ? TERMS_PATHS
-        : page === c.privacy
-          ? PRIVACY_PATHS
-          : SUBMIT_PATHS;
+    alt !== undefined
+      ? alt
+      : page === c.marketplace
+        ? MARKETPLACE_PATHS
+        : page === c.terms
+          ? TERMS_PATHS
+          : page === c.privacy
+            ? PRIVACY_PATHS
+            : SUBMIT_PATHS;
   const head = `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(page.meta.title)}</title>
@@ -103,8 +106,10 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
     permissionsLabel: c.plugins.permissionsLabel,
     permissions: c.plugins.permissions,
     version: c.plugins.version,
+    base: MARKETPLACE_PATHS[c.lang],
+    groups: c.plugins.filters,
   };
-  const plugins = pluginList(modules, catalog, c.lang).filter((p) => p.status === "available");
+  const plugins = pluginList(modules, catalog, c.lang).filter((p) => p.status !== "soon");
   const hasPaid = plugins.some((p) => p.access === "paid");
   const hasFree = plugins.some((p) => p.access !== "paid");
   const hidden = (show) => (show ? "" : " hidden");
@@ -114,6 +119,7 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
         `<button type="button" class="chip" data-filter="${group}" aria-pressed="${group === "all" ? "true" : "false"}"${hidden(group === "all" || (group === "paid" ? hasPaid : hasFree))}>${esc(m.filters[group])}</button>`,
     )
     .join("\n      ");
+  const count = (n) => (n === 1 ? m.countOne : fill(m.count, { n: String(n) }));
 
   const body = `<section class="section subpage">
   <div class="wrap">
@@ -121,17 +127,26 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
     <h1 class="subpage__title">${esc(m.title)}</h1>
     <p class="lead lead--section" data-lead="free"${hidden(!hasPaid)}>${esc(m.leadFree)}</p>
     <p class="lead lead--section" data-lead="mixed"${hidden(hasPaid)}>${esc(m.leadMixed)}</p>
-    <div class="filters" role="group" aria-label="${esc(m.filterLabel)}" data-filters${hidden(hasPaid)}>
-      <span class="filters__label">${esc(m.filterLabel)}</span>
-      ${chips}
+    <div class="store__tools">
+      <label class="store__search">
+        <span class="sr-only">${esc(m.searchLabel)}</span>
+        <input type="search" id="store-search" data-search placeholder="${esc(m.searchPlaceholder)}" autocomplete="off" enterkeyhint="search">
+      </label>
+      <div class="filters" role="group" aria-label="${esc(m.filterLabel)}" data-filters${hidden(hasPaid)}>
+        <span class="filters__label">${esc(m.filterLabel)}</span>
+        ${chips}
+      </div>
+      <p class="store__count" data-count aria-live="polite">${esc(count(plugins.length))}</p>
     </div>
     <div data-market>
       ${
         plugins.length === 0
           ? `<p class="plugins__note">${esc(m.empty)}</p>`
-          : `<ul class="plugins">\n${marketCards(plugins, strings)}\n</ul>`
+          : `<ul class="apps">\n${storeTiles(plugins, strings)}\n</ul>`
       }
     </div>
+    <p class="plugins__note" data-empty hidden>${esc(m.noResults)}</p>
+    <p class="plugins__note">${esc(m.installNote)}</p>
     <aside class="notice" data-notice${hidden(hasPaid)}>
       <h2 class="notice__title">${esc(m.how.title)}</h2>
       <ol>${m.how.items.map((item) => `<li>${esc(item)}</li>`).join("")}</ol>
@@ -340,5 +355,207 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
       lang: c.lang,
       submit: { result: f.result, errors: f.errors, sending: f.sending },
     },
+  });
+}
+
+// ---- la scheda di un plugin ----
+
+/**
+ * Un intervallo di versioni in parole: ">=0.1.0 <1.0.0" diventa "dalla 0.1.0 alla 1.0.0 (esclusa)",
+ * "^1.6.0" diventa "1.6.0 e successive della serie 1.x". Quel che non si riconosce resta com'e'.
+ */
+export function rangeText(range, st) {
+  const text = String(range ?? "").trim();
+  if (text.startsWith(">=") && text.includes(" <")) {
+    const [from, to] = text.slice(2).split(" <");
+    if (from && to && !to.includes(" ")) return fill(st.rangeBetween, { from, to });
+  }
+  if (text.startsWith("^") && text.length > 1 && !text.includes(" ")) {
+    const version = text.slice(1);
+    const [major, minor] = version.split(".");
+    // Prima della 1.0 il segno ^ vale solo per la serie 0.x (es. ^0.1.0 = la 0.1.x).
+    return fill(major === "0" ? st.rangeZero : st.rangeCaret, {
+      version,
+      major,
+      minor: minor ?? "0",
+    });
+  }
+  return text;
+}
+
+/** Un permesso in parole semplici (lo stesso testo del programma). */
+function permissionLine(permission, texts) {
+  if (permission.startsWith("network:")) {
+    return fill(texts.networkHost, { host: permission.slice(8) });
+  }
+  return texts[permission] ?? permission;
+}
+
+const initialsOf = (name) =>
+  name
+    .split(/[\s,]+/)
+    .filter((word) => /^[\p{L}\p{N}]/u.test(word))
+    .slice(0, 2)
+    .map((word) => word[0].toUpperCase())
+    .join("");
+
+/**
+ * La scheda di un plugin: cosa fa, chi lo scrive, quanto costa, cosa puo' fare sul
+ * computer, con quali versioni di Cuelith funziona e come si installa. Sul telefono
+ * dice che si installa solo su computer. `plugin` e' una voce di pluginList().
+ */
+export function renderPluginDetail({ content: c, plugin, assets, single = false }) {
+  const st = c.store;
+  const m = c.marketplace;
+  const paid = plugin.access === "paid";
+  const base = MARKETPLACE_PATHS[c.lang];
+  const here = `${base}${plugin.id}/`;
+  const other = c.lang === "it" ? "en" : "it";
+  const alt = {
+    it: `${MARKETPLACE_PATHS.it}${plugin.id}/`,
+    en: `${MARKETPLACE_PATHS.en}${plugin.id}/`,
+  };
+  const latest = plugin.versions[0];
+  const range = (text) => rangeText(text, st);
+  const icon = plugin.icon
+    ? `<img class="app-head__icon" src="${esc(plugin.icon)}" alt="" width="96" height="96">`
+    : `<span class="app-head__icon app-head__icon--text" aria-hidden="true">${esc(initialsOf(plugin.name))}</span>`;
+  const trust = plugin.verified ? m.trust.verified : m.trust.unverified;
+  const price = paid ? plugin.price || m.badges.paid : st.free;
+  const group = c.plugins.filters[plugin.group] ?? "";
+  const perms =
+    plugin.permissions.length === 0
+      ? [c.plugins.permissions.none]
+      : plugin.permissions.map((p) => permissionLine(p, c.plugins.permissions));
+  const steps = (paid ? st.buySteps : st.installSteps).map((step) =>
+    fill(step, { name: plugin.name }),
+  );
+  const row = (label, value) =>
+    value === "" ? "" : `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
+  const when = (iso) => (iso ? formatDate(iso, c.locale) : "");
+
+  const cta = paid
+    ? plugin.buyable
+      ? `<a class="button button--primary button--big" href="/marketplace/buy/${esc(plugin.id)}" rel="nofollow"><span><strong>${esc(m.buy)} · ${esc(price)}</strong><small>${esc(m.buyHint)}</small></span></a>`
+      : `<p class="plugin__soon">${esc(m.notBuyable)}</p>`
+    : "";
+
+  const body = `<section class="section subpage store-detail">
+  <div class="wrap wrap--narrow">
+    <p class="store__back"><a class="link" href="${single ? "#" : base}">← ${esc(st.back)}</a></p>
+    <header class="app-head">
+      ${icon}
+      <div class="app-head__text">
+        <h1>${esc(plugin.name)}</h1>
+        <p class="app-head__by">${esc(plugin.publisher ? fill(st.by, { publisher: plugin.publisher }) : "")}<span class="app__trust${plugin.verified ? " app__trust--ok" : ""}">${esc(trust)}</span></p>
+        <p class="app-head__meta"><span class="badge ${paid ? "badge--paid" : "badge--available"}">${esc(price)}</span>${plugin.version ? `<span>${esc(fill(c.plugins.version, { version: plugin.version }))}</span>` : ""}${plugin.license ? `<span>${esc(m.licenseLabel)}: ${esc(plugin.license)}</span>` : ""}</p>
+      </div>
+      <div class="app-head__cta">${cta}</div>
+    </header>
+
+    <div class="notice phone-note">
+      <h2 class="notice__title">${esc(st.phoneTitle)}</h2>
+      <p>${esc(st.phoneText)}</p>
+      <a class="link" href="${single ? "#" : PAGE_PATHS.download[c.lang]}">${esc(st.phoneLink)}</a>
+    </div>
+
+    <section class="store-block">
+      <h2>${esc(st.whatTitle)}</h2>
+      <p class="lead lead--section">${esc(plugin.text)}</p>
+    </section>
+
+    <section class="store-block">
+      <h2>${esc(st.installTitle)}</h2>
+      <ol class="store-steps">${steps.map((step) => `<li>${esc(step)}</li>`).join("")}</ol>
+      ${paid ? `<p class="plugin__note">${esc(fill(m.soldBy, { publisher: plugin.publisher || "?" }))} ${esc(st.priceNote)}</p>` : ""}
+    </section>
+
+    <section class="store-block">
+      <h2>${esc(st.permissionsTitle)}</h2>
+      <p class="plugin__note">${esc(st.permissionsLead)}</p>
+      <ul class="store-perms">${perms.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+    </section>
+
+    ${
+      latest === undefined || (latest.cuelith === "" && latest.protocol === "")
+        ? ""
+        : `<section class="store-block">
+      <h2>${esc(st.compatTitle)}</h2>
+      <p>${esc(fill(st.compat, { cuelith: range(latest.cuelith), protocol: range(latest.protocol) }))}</p>
+    </section>`
+    }
+
+    <section class="store-block">
+      <h2>${esc(st.detailsTitle)}</h2>
+      <dl class="store-facts">
+        ${row(st.publisher, plugin.publisher)}
+        ${row(st.license, plugin.license)}
+        ${row(st.version, plugin.version)}
+        ${row(st.updated, when(plugin.published))}
+        ${row(st.category, group)}
+        ${row(st.origin, trust)}
+      </dl>
+    </section>
+
+    ${
+      plugin.versions.length === 0
+        ? ""
+        : `<section class="store-block">
+      <h2>${esc(st.versionsTitle)}</h2>
+      <ul class="store-versions">${plugin.versions
+        .map(
+          (v) =>
+            `<li><strong>${esc(fill(st.versionLine, { version: v.version }))}</strong>${v.published ? `<span>${esc(when(v.published))}</span>` : ""}${v.cuelith ? `<span>Cuelith ${esc(v.cuelith)}</span>` : ""}</li>`,
+        )
+        .join("")}</ul>
+    </section>`
+    }
+  </div>
+</section>`;
+  const page = {
+    path: here,
+    alternate: alt[other],
+    eyebrow: m.eyebrow,
+    meta: {
+      title: `${plugin.name} · ${m.eyebrow} · Cuelith`,
+      description:
+        plugin.text.length > 0
+          ? plugin.text
+          : fill(st.description, { name: plugin.name, publisher: plugin.publisher }),
+    },
+  };
+  return shell({ c, page, assets, single, body, strings: { lang: c.lang, market: { base } }, alt });
+}
+
+/** Il plugin che non c'e': stessa pagina del marketplace, con un avviso e il ritorno all'elenco. */
+export function renderPluginNotFound({ content: c, id, assets }) {
+  const st = c.store;
+  const base = MARKETPLACE_PATHS[c.lang];
+  const alt = {
+    it: `${MARKETPLACE_PATHS.it}${id}/`,
+    en: `${MARKETPLACE_PATHS.en}${id}/`,
+  };
+  const other = c.lang === "it" ? "en" : "it";
+  const body = `<section class="section subpage">
+  <div class="wrap wrap--narrow">
+    <h1 class="subpage__title">${esc(st.notFoundTitle)}</h1>
+    <p class="lead lead--section">${esc(st.notFoundText)}</p>
+    <p><a class="button" href="${base}">${esc(st.back)}</a></p>
+  </div>
+</section>`;
+  const page = {
+    path: base,
+    alternate: alt[other],
+    eyebrow: c.marketplace.eyebrow,
+    meta: { title: `${st.notFoundTitle} · Cuelith`, description: st.notFoundText },
+  };
+  return shell({
+    c,
+    page,
+    assets,
+    single: false,
+    body,
+    strings: { lang: c.lang, market: { base } },
+    alt,
   });
 }

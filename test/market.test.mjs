@@ -69,39 +69,49 @@ const COMMON = ["https://cuelith.lzrhive.it", "https://ko-fi.com/mlhive", "https
 const isAllowed = (url, extra = []) => [...COMMON, ...extra].some((start) => url.startsWith(start));
 
 for (const lang of ["it", "en"]) {
-  test(`marketplace ${lang}: solo plugin gratuiti, senza filtri, senza spiegazione dell'acquisto`, () => {
+  test(`marketplace ${lang}: lo store mostra sempre nome, funzione, autore e prezzo, e porta alla scheda`, () => {
     const html = market(lang, snapshot.modules);
     assert.doesNotMatch(html, /github/i);
     assert.deepEqual(
       externals(html).filter((url) => !isAllowed(url)),
       [],
     );
-    assert.ok(html.includes('<li class="plugin" data-group="free"'));
+    const text = json(`content/${lang}.json`).marketplace;
+    const base = lang === "it" ? "/marketplace/" : "/en/marketplace/";
+    // Un riquadro per plugin: nome, cosa fa, chi lo scrive, gratuito.
+    const song = snapshot.modules.find((m) => m.id === "cuelith.songs");
+    assert.ok(html.includes('<li class="app" data-group="free" data-plugin="cuelith.songs"'));
+    assert.ok(html.includes(`href="${base}cuelith.songs/"`), "collegamento alla scheda");
+    assert.ok(html.includes('class="app__name"'));
+    assert.ok(html.includes(">" + text.badges.free + "<"));
+    assert.ok(html.includes(song.publisher), "chi lo scrive");
     assert.ok(!html.includes('data-group="paid"'));
     assert.doesNotMatch(html, /\/marketplace\/buy\//);
-    // Senza plugin a pagamento filtri e spiegazione ci sono ma nascosti.
+    // I plugin inclusi nel programma (le lingue) compaiono, senza collegamento.
+    assert.match(html, /app--included/);
+    assert.ok(html.includes(`>${text.badges.included}<`));
+    // Ricerca e conteggio ci sono; filtri e spiegazione dell'acquisto no, finche' non c'e' un plugin a pagamento.
+    assert.match(html, /<input type="search"[^>]*data-search/);
+    assert.match(html, /data-count/);
     assert.match(html, /data-filters hidden/);
     assert.match(html, /data-notice hidden/);
     assert.match(html, /data-lead="mixed" hidden/);
     assert.doesNotMatch(html, /data-lead="free" hidden/);
   });
 
-  test(`marketplace ${lang}: un plugin a pagamento ha prezzo, Acquista e la dicitura su chi vende`, () => {
+  test(`marketplace ${lang}: un plugin a pagamento mostra il prezzo nel riquadro e la dicitura su chi vende nella scheda`, () => {
     const html = market(lang, [...snapshot.modules, paidModule]);
-    assert.ok(html.includes('href="/marketplace/buy/acme.lyrics-pro"'));
-    assert.ok(html.includes('data-group="paid"'));
-    assert.ok(html.includes("9 €"));
     const text = json(`content/${lang}.json`).marketplace;
-    // Chi vende e' scritto nella scheda: il progetto non e' il venditore.
-    assert.ok(html.includes(text.soldBy.replace("{publisher}", "Acme")), "dicitura nella scheda");
-    assert.match(html, /Lemon Squeezy/);
-    // Nessuna commissione: niente affiliazione, ne' nella scheda ne' nella spiegazione.
+    const base = lang === "it" ? "/marketplace/" : "/en/marketplace/";
+    assert.ok(html.includes('data-group="paid" data-plugin="acme.lyrics-pro"'));
+    assert.ok(html.includes(`href="${base}acme.lyrics-pro/"`));
+    assert.ok(html.includes("9 €"), "il prezzo e' nel riquadro");
+    // Nessuna commissione: niente affiliazione. L'acquisto si apre dalla scheda, non dall'elenco.
     assert.doesNotMatch(html, /affiliaz|affiliate|referral|riferimento di/i);
-    // Filtri e spiegazione sono visibili.
+    assert.doesNotMatch(html, /\/marketplace\/buy\//);
     assert.doesNotMatch(html, /data-filters hidden/);
     assert.doesNotMatch(html, /data-notice hidden/);
     assert.ok(html.includes(text.how.items[1]));
-    // L'indirizzo del negozio non e' mai nella pagina: si passa da /marketplace/buy/.
     assert.doesNotMatch(html, /lemonsqueezy/i);
     assert.deepEqual(
       externals(html).filter((url) => !isAllowed(url)),
@@ -109,18 +119,10 @@ for (const lang of ["it", "en"]) {
     );
   });
 
-  test(`marketplace ${lang}: un plugin a pagamento senza indirizzo valido non si puo' acquistare`, () => {
+  test(`marketplace ${lang}: un plugin a pagamento non acquistabile compare lo stesso`, () => {
     const html = market(lang, [{ ...paidModule, buyable: false }]);
+    assert.ok(html.includes('data-plugin="acme.lyrics-pro"'));
     assert.doesNotMatch(html, /\/marketplace\/buy\//);
-    const text = json(`content/${lang}.json`).marketplace;
-    assert.ok(html.includes(text.notBuyable));
-    // La dicitura su chi vende c'e', il suggerimento «si apre il negozio» no (non c'e' nessun negozio da aprire).
-    assert.ok(html.includes(text.soldBy.replace("{publisher}", "Acme")));
-    const notes = [...html.matchAll(/<p class="plugin__note">([^<]*)<\/p>/g)].map((m) => m[1]);
-    assert.equal(notes.length, 1);
-    assert.ok(
-      !notes[0].includes(text.buyHint.replace(/'/g, "&#39;")) && !notes[0].includes(text.buyHint),
-    );
   });
 
   test(`proposta ${lang}: modulo completo, checklist e istruzioni di vendita`, () => {

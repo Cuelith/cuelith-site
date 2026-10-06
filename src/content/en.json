@@ -354,8 +354,8 @@
     },
     "eyebrow": "Marketplace",
     "title": "Add to Cuelith what you need",
-    "leadFree": "Plugins from the project and from other authors. Every card says what the plugin does and what it can access, before you install it.",
-    "leadMixed": "Free and paid plugins, from the project and from other authors. Every card says what the plugin does, what it costs and what it can access, before you install it.",
+    "leadFree": "All the Cuelith plugins, from the project and from other authors. Every page says what the plugin does, who writes it and what it can access, before you install it.",
+    "leadMixed": "All the Cuelith plugins, free and paid, from the project and from other authors. Every page says what the plugin does, who writes it, what it costs and what it can access, before you install it.",
     "filterLabel": "Show",
     "filters": {
       "all": "All",
@@ -364,7 +364,8 @@
     },
     "badges": {
       "free": "Free",
-      "paid": "Paid"
+      "paid": "Paid",
+      "included": "Included"
     },
     "trust": {
       "verified": "By the Cuelith project",
@@ -391,7 +392,14 @@
       "text": "You can propose yours, free or paid, without creating an account.",
       "action": "How to propose one"
     },
-    "soldBy": "Made by {publisher}. Sold by Lemon Squeezy (Merchant of Record)."
+    "soldBy": "Made by {publisher}. Sold by Lemon Squeezy (Merchant of Record).",
+    "searchLabel": "Search for a plugin",
+    "searchPlaceholder": "Search by name, author or what it does",
+    "count": "{n} plugins",
+    "countOne": "1 plugin",
+    "noResults": "No plugin matches your search.",
+    "open": "Open the page",
+    "installNote": "They install from Cuelith, on your computer."
   },
   "submit": {
     "path": "/en/marketplace/submit/",
@@ -850,5 +858,46 @@
         "text": "The most common answers are on the questions page. If you cannot find yours, write to us."
       }
     ]
+  },
+  "store": {
+    "back": "All plugins",
+    "free": "Free",
+    "by": "by {publisher}",
+    "whatTitle": "What it does",
+    "permissionsTitle": "What it can do on your computer",
+    "permissionsLead": "Before you install it, Cuelith shows you this same list, and a plugin can only use what it declares.",
+    "compatTitle": "Compatibility",
+    "compat": "Works with Cuelith {cuelith}; protocol {protocol}.",
+    "installTitle": "How to install it",
+    "installSteps": [
+      "Open Cuelith on your computer.",
+      "Go to Plugins → Marketplace.",
+      "Find “{name}” and press Install."
+    ],
+    "buySteps": [
+      "Buy from the author's store: the “Buy” button opens it.",
+      "You get a licence key by email.",
+      "In Cuelith, Plugins → Marketplace → “{name}”: enter the key. It works on 3 computers."
+    ],
+    "phoneTitle": "Installs on a computer only",
+    "phoneText": "Cuelith and its plugins run on a computer (Windows or Linux), not on a phone or tablet. From here you can see what the plugin does and come back from your computer.",
+    "phoneLink": "Download Cuelith for your computer",
+    "detailsTitle": "Information",
+    "publisher": "Author",
+    "license": "Licence",
+    "version": "Latest version",
+    "updated": "Updated",
+    "category": "Category",
+    "origin": "Origin",
+    "versionsTitle": "Versions",
+    "versionLine": "Version {version}",
+    "notFoundTitle": "Plugin not found",
+    "notFoundText": "This plugin is not, or no longer, in the marketplace.",
+    "description": "{name}, a Cuelith plugin by {publisher}.",
+    "priceLabel": "Price",
+    "priceNote": "The price is the one in the author's store.",
+    "rangeBetween": "from {from} up to {to} (excluded)",
+    "rangeCaret": "{version} and later in the {major}.x series",
+    "rangeZero": "the {major}.{minor}.x series (from {version})"
   }
 }

@@ -6,22 +6,46 @@
 
 const pageStrings = JSON.parse(document.getElementById("strings").textContent);
 
-// ---- marketplace: filtro e dati del momento ----
+// ---- marketplace: ricerca, filtro e dati del momento ----
 const market = document.querySelector("[data-market]");
 if (market && pageStrings.market) {
   const chips = [...document.querySelectorAll("[data-filter]")];
   const filters = document.querySelector("[data-filters]");
   const notice = document.querySelector("[data-notice]");
   const leads = [...document.querySelectorAll("[data-lead]")];
+  const searchBox = document.querySelector("[data-search]");
+  const counter = document.querySelector("[data-count]");
+  const empty = document.querySelector("[data-empty]");
+  let group = "all";
 
-  const applyFilter = (group) => {
+  /** Filtro e ricerca insieme: un riquadro si vede se passa tutti e due. */
+  const applyView = () => {
     for (const chip of chips)
       chip.setAttribute("aria-pressed", String(chip.dataset.filter === group));
+    const query = (searchBox?.value ?? "").trim().toLowerCase();
+    let shown = 0;
     for (const card of market.querySelectorAll("[data-group]")) {
-      card.hidden = group !== "all" && card.dataset.group !== group;
+      const visible =
+        (group === "all" || card.dataset.group === group) &&
+        (query === "" || (card.dataset.search ?? "").includes(query));
+      card.hidden = !visible;
+      if (visible) shown += 1;
     }
+    if (counter) {
+      counter.textContent =
+        shown === 1
+          ? pageStrings.market.countOne
+          : fill(pageStrings.market.count, { n: String(shown) });
+    }
+    if (empty) empty.hidden = shown > 0 || market.querySelector("[data-group]") === null;
   };
-  for (const chip of chips) chip.addEventListener("click", () => applyFilter(chip.dataset.filter));
+  for (const chip of chips) {
+    chip.addEventListener("click", () => {
+      group = chip.dataset.filter;
+      applyView();
+    });
+  }
+  if (searchBox) searchBox.addEventListener("input", applyView);
 
   /** Mostra filtri, spiegazione dell'acquisto e introduzione solo se c'e' un plugin a pagamento. */
   const showPaid = (hasPaid, hasFree) => {
@@ -46,18 +70,19 @@ if (market && pageStrings.market) {
       const { modules } = await response.json();
       if (!Array.isArray(modules) || modules.length === 0) return;
       const plugins = pluginList(modules, pageStrings.catalog, pageStrings.lang).filter(
-        (plugin) => plugin.status === "available",
+        (plugin) => plugin.status !== "soon",
       );
       if (plugins.length === 0) return;
-      const active = chips.find((chip) => chip.getAttribute("aria-pressed") === "true");
-      market.innerHTML = `<ul class="plugins">\n${marketCards(plugins, pageStrings.market)}\n</ul>`;
+      market.innerHTML = `<ul class="apps">\n${storeTiles(plugins, pageStrings.market)}\n</ul>`;
       showPaid(
         plugins.some((plugin) => plugin.access === "paid"),
         plugins.some((plugin) => plugin.access !== "paid"),
       );
-      applyFilter(active && !active.hidden ? active.dataset.filter : "all");
+      const active = chips.find((chip) => chip.dataset.filter === group);
+      if (active?.hidden) group = "all";
+      applyView();
     } catch {
-      // Restano le schede scritte nella pagina.
+      // Restano i riquadri scritti nella pagina.
     }
   })();
 }

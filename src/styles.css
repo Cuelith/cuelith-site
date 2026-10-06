@@ -2191,3 +2191,408 @@ details[open] > summary::after {
     font-size: 15px;
   }
 }
+
+/* ---------- lo store: riquadri, ricerca e scheda del plugin ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.store__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin: clamp(20px, 3vw, 32px) 0 18px;
+}
+
+.store__search {
+  flex: 1 1 280px;
+  max-width: 460px;
+}
+
+.store__search input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: var(--bg-2);
+  color: var(--fg);
+  font: inherit;
+  font-size: 15px;
+}
+
+.store__search input::placeholder {
+  color: var(--faint);
+}
+
+.store__search input:focus-visible {
+  outline: 2px solid var(--cue);
+  outline-offset: 2px;
+}
+
+.store__count {
+  margin: 0 0 0 auto;
+  color: var(--faint);
+  font-size: 14px;
+}
+
+.apps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app[hidden] {
+  display: none;
+}
+
+.app__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  height: 100%;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-2);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 0.28s var(--ease),
+    border-color 0.28s var(--ease),
+    background 0.28s var(--ease);
+}
+
+.app__link:hover,
+.app__link:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--cue);
+  background: var(--bg-3);
+}
+
+.app__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: var(--bg-3);
+}
+
+.app__icon--text {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-2);
+  color: var(--mod);
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.app__body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.app__name {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.app__by {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.app__trust {
+  color: var(--faint);
+}
+
+.app__trust--ok {
+  color: var(--cue);
+}
+
+.app__text {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.45;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.app__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-top: 4px;
+  color: var(--faint);
+  font-size: 12.5px;
+}
+
+.app__go {
+  align-self: center;
+  color: var(--faint);
+  transition: transform 0.28s var(--ease);
+}
+
+.app__link:hover .app__go {
+  color: var(--cue);
+  transform: translateX(3px);
+}
+
+/* La scheda di un plugin. */
+.store__back {
+  margin: 0 0 18px;
+}
+
+.app-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px 22px;
+  align-items: center;
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.app-head__icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+  object-fit: cover;
+  background: var(--bg-3);
+}
+
+.app-head__icon--text {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-2);
+  color: var(--mod);
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.app-head h1 {
+  margin: 0 0 6px;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.1;
+}
+
+.app-head__by,
+.app-head__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
+.app-head__meta {
+  color: var(--faint);
+  font-size: 13.5px;
+}
+
+.app-head__cta .plugin__soon {
+  margin: 0;
+}
+
+.store-block {
+  margin-top: clamp(26px, 4vw, 40px);
+}
+
+.store-block h2 {
+  margin-bottom: 10px;
+  font-size: clamp(22px, 3vw, 26px);
+}
+
+.store-steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 22px;
+  color: var(--muted);
+}
+
+.store-perms {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.store-perms li {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg-2);
+}
+
+.store-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+  margin: 0;
+}
+
+.store-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.store-facts dt {
+  color: var(--faint);
+  font-size: 14px;
+}
+
+.store-facts dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.store-versions {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.store-versions li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
+.store-versions strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* Il telefono non installa Cuelith: lo dice, ma solo li'. */
+.phone-note {
+  display: none;
+  margin: 0 0 clamp(20px, 3vw, 28px);
+}
+
+@media (max-width: 900px) {
+  .apps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .phone-note {
+    display: block;
+  }
+
+  .store-block--desktop {
+    display: none;
+  }
+}
+
+/* Telefono: lo store diventa un elenco compatto, come in un negozio di app. */
+@media (max-width: 700px) {
+  .apps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--bg-2);
+  }
+
+  .app__link {
+    gap: 12px;
+    padding: 14px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .app:last-child .app__link {
+    border-bottom: 0;
+  }
+
+  .app__link:hover,
+  .app__link:focus-visible {
+    transform: none;
+    background: var(--bg-3);
+  }
+
+  .app__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 13px;
+  }
+
+  .app__name {
+    font-size: 17px;
+  }
+
+  .app__text {
+    -webkit-line-clamp: 2;
+    font-size: 14px;
+  }
+
+  .app-head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .app-head__cta {
+    grid-column: 1 / -1;
+  }
+
+  .app-head__cta .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-head__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+  }
+
+  .store-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .store__search {
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .store__count {
+    margin-left: 0;
+  }
+}

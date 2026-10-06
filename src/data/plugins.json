@@ -21,10 +21,12 @@
   "overrides": {
     "cuelith.songs": {
       "name": {
-        "en": "Songs"
+        "en": "Songs",
+        "it": "Brani"
       },
       "text": {
-        "en": "Songs with verses, choruses and a projection order. Imports and exports OpenLyrics and ChordPro."
+        "en": "Songs with verses, choruses and a projection order. Imports and exports OpenLyrics and ChordPro.",
+        "it": "Brani con strofe, ritornelli e ordine di proiezione. Importa ed esporta OpenLyrics e ChordPro."
       }
     }
   },
@@ -305,7 +307,7 @@
         "en": "Worship layout"
       },
       "text": {
-        "it": "Canti, Bibbia e avvisi a portata di mano, per chi fa tutto da solo.",
+        "it": "Brani, Bibbia e avvisi a portata di mano, per chi fa tutto da solo.",
         "en": "Songs, Bible and announcements at hand, for a one-person team."
       }
     },

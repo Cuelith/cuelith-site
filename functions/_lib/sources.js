@@ -118,6 +118,14 @@ export function publicModules(index) {
       version: String(latest.version ?? ""),
       published: String(latest.published ?? ""),
       permissions: Array.isArray(latest.permissions) ? latest.permissions.map(String) : [],
+      // Le versioni, per la scheda del plugin: numero, data, compatibilita' e permessi (mai gli indirizzi).
+      versions: (plugin.versions ?? []).slice(0, 12).map((v) => ({
+        version: String(v.version ?? ""),
+        published: String(v.published ?? ""),
+        cuelith: String(v.engines?.cuelith ?? ""),
+        protocol: String(v.engines?.protocol ?? ""),
+        permissions: Array.isArray(v.permissions) ? v.permissions.map(String) : [],
+      })),
     };
   });
 }

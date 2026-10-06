@@ -66,7 +66,7 @@
       {
         "tag": "Leggero",
         "title": "Installi solo ciò che usi",
-        "text": "Appena installato, Cuelith è un programma essenziale: scaletta, slide, anteprima, programma e uscite. Canti, protocolli e strumenti sono plugin che accendi e spegni senza riavviare."
+        "text": "Appena installato, Cuelith è un programma essenziale: scaletta, slide, anteprima, programma e uscite. Brani, protocolli e strumenti sono plugin che accendi e spegni senza riavviare."
       },
       {
         "tag": "Affidabile",
@@ -76,7 +76,7 @@
       {
         "tag": "Aperto",
         "title": "Gratuito, senza sorprese",
-        "text": "Il programma è open source e non chiede account. Funziona senza internet, e i tuoi show, canti e immagini restano sul tuo computer."
+        "text": "Il programma è open source e non chiede account. Funziona senza internet, e i tuoi show, brani e immagini restano sul tuo computer."
       }
     ]
   },
@@ -90,7 +90,7 @@
         "text": "Scaletta a sinistra, slide al centro, programma e anteprima a destra. Un clic prepara, un tasto manda in onda, con la dissolvenza che scegli.",
         "points": [
           "Cinque disposizioni della regia: per chi presenta, per le band, per le conferenze",
-          "Tasti rapidi per tutto: avanti, indietro, nero, sezioni del canto",
+          "Tasti rapidi per tutto: avanti, indietro, nero, sezioni del brano",
           "Timer e messaggi per chi è sul palco"
         ],
         "alt": "Regia di Cuelith con scaletta, slide, programma e anteprima."
@@ -109,14 +109,14 @@
       },
       {
         "shot": "band",
-        "title": "Canti con le sezioni, pronti per chi improvvisa",
-        "text": "Verse, Chorus e Bridge diventano grossi pulsanti: se la band torna al ritornello, ci sei con un tocco. I canti si importano ed esportano nei formati aperti OpenLyrics e ChordPro.",
+        "title": "Brani con le sezioni, pronti per chi improvvisa",
+        "text": "Verse, Chorus e Bridge diventano grossi pulsanti: se la band torna al ritornello, ci sei con un tocco. I brani si importano ed esportano nei formati aperti OpenLyrics e ChordPro.",
         "points": [
           "Librerie con ricerca per titolo, testo, autore e numero",
           "Ordine di proiezione separato dal testo",
           "Crediti e autori sempre a posto"
         ],
-        "alt": "Disposizione Band: le sezioni del canto come grandi pulsanti."
+        "alt": "Disposizione Band: le sezioni del brano come grandi pulsanti."
       },
       {
         "shot": "telecomando",
@@ -159,7 +159,7 @@
       },
       {
         "title": "Chiese e comunità",
-        "text": "Canti con sezioni, avvisi, testi e sfondi. Un monitor per i musicisti e uno per chi parla.",
+        "text": "Brani con sezioni, avvisi, testi e sfondi. Un monitor per i musicisti e uno per chi parla.",
         "status": "available"
       },
       {
@@ -176,7 +176,7 @@
     "filterLabel": "Cosa ti serve?",
     "filters": {
       "all": "Tutto",
-      "content": "Canti e testi",
+      "content": "Brani e testi",
       "video": "Video e streaming",
       "audio": "Audio",
       "control": "Controllo e luci",
@@ -275,14 +275,14 @@
       },
       {
         "q": "Posso usarlo per il live streaming?",
-        "a": "Non ancora. Oggi Cuelith proietta testi, canti e immagini su più schermi. Camera, scene e streaming sono i prossimi plugin in programma."
+        "a": "Non ancora. Oggi Cuelith proietta testi, brani e immagini su più schermi. Camera, scene e streaming sono i prossimi plugin in programma."
       },
       {
         "q": "Dove finiscono i miei dati?",
         "a": "Sul tuo computer. Cuelith non ha account e non invia dati personali né contenuti. Si collega a internet solo per controllare gli aggiornamenti e leggere l'elenco dei plugin."
       },
       {
-        "q": "Ho già i miei canti. Posso importarli?",
+        "q": "Ho già i miei brani. Posso importarli?",
         "a": "Sì, se sono nei formati aperti OpenLyrics o ChordPro, oppure come testo semplice. Si possono anche esportare tutti insieme, per una copia di sicurezza."
       },
       {
@@ -354,8 +354,8 @@
     },
     "eyebrow": "Marketplace",
     "title": "Aggiungi a Cuelith ciò che ti serve",
-    "leadFree": "I plugin del progetto e di altri autori. Ogni scheda dice cosa fa il plugin e a cosa può accedere, prima di installarlo.",
-    "leadMixed": "Plugin gratuiti e a pagamento, del progetto e di altri autori. Ogni scheda dice cosa fa il plugin, quanto costa e a cosa può accedere, prima di installarlo.",
+    "leadFree": "Tutti i plugin di Cuelith, del progetto e di altri autori. Ogni scheda dice cosa fa il plugin, chi lo scrive e a cosa può accedere, prima di installarlo.",
+    "leadMixed": "Tutti i plugin di Cuelith, gratuiti e a pagamento, del progetto e di altri autori. Ogni scheda dice cosa fa il plugin, chi lo scrive, quanto costa e a cosa può accedere, prima di installarlo.",
     "filterLabel": "Mostra",
     "filters": {
       "all": "Tutti",
@@ -364,7 +364,8 @@
     },
     "badges": {
       "free": "Gratuito",
-      "paid": "A pagamento"
+      "paid": "A pagamento",
+      "included": "Incluso"
     },
     "trust": {
       "verified": "Del progetto Cuelith",
@@ -391,7 +392,14 @@
       "text": "Puoi proporre il tuo, gratuito o a pagamento, senza creare un account.",
       "action": "Come proporlo"
     },
-    "soldBy": "Prodotto da {publisher}. Venduto da Lemon Squeezy (Merchant of Record)."
+    "soldBy": "Prodotto da {publisher}. Venduto da Lemon Squeezy (Merchant of Record).",
+    "searchLabel": "Cerca un plugin",
+    "searchPlaceholder": "Cerca per nome, autore o funzione",
+    "count": "{n} plugin",
+    "countOne": "1 plugin",
+    "noResults": "Nessun plugin corrisponde alla ricerca.",
+    "open": "Apri la scheda",
+    "installNote": "Si installano da Cuelith, sul computer."
   },
   "submit": {
     "path": "/marketplace/submit/",
@@ -796,7 +804,7 @@
     "features": {
       "meta": {
         "title": "Funzioni · Cuelith",
-        "description": "Come si lavora con Cuelith alla regia: cosa c'è in onda, uno schermo diverso per ogni pubblico, canti con sezioni, squadra con tablet e telefono."
+        "description": "Come si lavora con Cuelith alla regia: cosa c'è in onda, uno schermo diverso per ogni pubblico, brani con sezioni, squadra con tablet e telefono."
       }
     },
     "plugins": {
@@ -854,5 +862,46 @@
         "text": "Le risposte più frequenti sono nella pagina delle domande. Se non trovi la tua, scrivici."
       }
     ]
+  },
+  "store": {
+    "back": "Tutti i plugin",
+    "free": "Gratuito",
+    "by": "di {publisher}",
+    "whatTitle": "Cosa fa",
+    "permissionsTitle": "Cosa può fare sul tuo computer",
+    "permissionsLead": "Prima di installarlo, Cuelith ti mostra questa stessa lista e un plugin può usare solo ciò che dichiara.",
+    "compatTitle": "Compatibilità",
+    "compat": "Funziona con Cuelith {cuelith}; protocollo {protocol}.",
+    "installTitle": "Come si installa",
+    "installSteps": [
+      "Apri Cuelith sul tuo computer.",
+      "Vai su Plugin → Marketplace.",
+      "Cerca «{name}» e premi Installa."
+    ],
+    "buySteps": [
+      "Acquista dal negozio dell'autore: il pulsante «Acquista» lo apre.",
+      "Ricevi una chiave di licenza per email.",
+      "In Cuelith, Plugin → Marketplace → «{name}»: inserisci la chiave. Vale su 3 computer."
+    ],
+    "phoneTitle": "Si installa solo su computer",
+    "phoneText": "Cuelith e i suoi plugin funzionano su un computer (Windows o Linux), non su telefono o tablet. Da qui puoi vedere cosa fa il plugin e tornarci dal computer.",
+    "phoneLink": "Scarica Cuelith per il computer",
+    "detailsTitle": "Informazioni",
+    "publisher": "Autore",
+    "license": "Licenza",
+    "version": "Ultima versione",
+    "updated": "Aggiornato",
+    "category": "Categoria",
+    "origin": "Origine",
+    "versionsTitle": "Versioni",
+    "versionLine": "Versione {version}",
+    "notFoundTitle": "Plugin non trovato",
+    "notFoundText": "Questo plugin non c'è, o non c'è più, nel marketplace.",
+    "description": "{name}, un plugin per Cuelith di {publisher}.",
+    "priceLabel": "Prezzo",
+    "priceNote": "Il prezzo è quello del negozio dell'autore.",
+    "rangeBetween": "dalla {from} alla {to} (esclusa)",
+    "rangeCaret": "{version} e successive della serie {major}.x",
+    "rangeZero": "la serie {major}.{minor}.x (da {version})"
   }
 }

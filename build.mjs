@@ -153,6 +153,18 @@ const assets = {
   flag: `<script src="/assets/motion-flag.js?v=${stamp(flag)}"></script>`,
   script: `<script src="/assets/site.js?v=${stamp(script)}" defer></script>`,
 };
+// Le pagine disegnate al momento dalle funzioni del sito (la scheda di un plugin) leggono da
+// qui lo stile e il resto: i nomi dei file cambiano a ogni costruzione.
+writeFileSync(
+  path.join(dist, "assets", "manifest.json"),
+  JSON.stringify({
+    logo: assets.logo,
+    icon: assets.icon,
+    styles: assets.styles,
+    script: "",
+    social: Object.fromEntries(LANGS.map((lang) => [lang, `/assets/social-${lang}.jpg`])),
+  }),
+);
 /** Quale pagina (chiave di PAGE_PATHS) produce ogni funzione. */
 const pageDirs = new Map([
   [renderFeatures, "features"],

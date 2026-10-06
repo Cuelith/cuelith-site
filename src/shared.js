@@ -52,6 +52,9 @@ export function pluginList(modules, catalog, lang) {
       access: module.access === "paid" ? "paid" : "free",
       price: module.price ?? "",
       buyable: module.buyable === true,
+      family: module.family ?? "function",
+      published: module.published ?? "",
+      versions: Array.isArray(module.versions) ? module.versions : [],
     };
   });
   const known = new Set(fromMarket.map((plugin) => plugin.id));
@@ -64,6 +67,17 @@ export function pluginList(modules, catalog, lang) {
       kind: item.kind,
       name: pick(item.name, item.id),
       text: pick(item.text, ""),
+      // Cio' che e' incluso nel programma e' del progetto, gratuito e senza permessi da chiedere.
+      ...(item.status === "included"
+        ? {
+            publisher: "Cuelith",
+            verified: true,
+            access: "free",
+            price: "",
+            license: "",
+            permissions: [],
+          }
+        : {}),
     }));
   const order = { available: 0, included: 1, soon: 2 };
   return [...fromMarket, ...fromSite].sort((a, b) => order[a.status] - order[b.status]);
@@ -188,6 +202,51 @@ export function versionList(releases, strings, locale) {
     <div class="version__notes" aria-label="${esc(strings.notes)}">${notesFor(release, locale)}</div>
   </div>
 </details>`;
+    })
+    .join("\n");
+}
+
+/**
+ * Lo store: un riquadro per plugin, come in un negozio di app. Ogni riquadro dice
+ * sempre nome, cosa fa, chi lo scrive, se e' gratuito o quanto costa, e porta alla
+ * scheda del plugin. Sul telefono diventa un elenco compatto (lo decide lo stile).
+ * `strings` e' la voce `marketplace` con in piu' `base` (il percorso dello store),
+ * `groups` (i nomi delle categorie) e `version`.
+ */
+export function storeTiles(plugins, strings) {
+  return plugins
+    .filter((plugin) => plugin.status === "available" || plugin.status === "included")
+    .map((plugin) => {
+      const included = plugin.status === "included";
+      const paid = plugin.access === "paid";
+      const icon = plugin.icon
+        ? `<img class="app__icon" src="${esc(plugin.icon)}" alt="" width="64" height="64">`
+        : `<span class="app__icon app__icon--text" aria-hidden="true">${esc(initials(plugin.name))}</span>`;
+      const trust = plugin.verified ? strings.trust.verified : strings.trust.unverified;
+      const by = plugin.publisher ? fill(strings.by, { publisher: plugin.publisher }) : "";
+      const price = included
+        ? strings.badges.included
+        : paid
+          ? plugin.price || strings.badges.paid
+          : strings.badges.free;
+      const group = strings.groups?.[plugin.group] ?? "";
+      const search = [plugin.name, plugin.publisher, plugin.text, group].join(" ").toLowerCase();
+      const open = included
+        ? `<div class="app__link">`
+        : `<a class="app__link" href="${strings.base}${esc(plugin.id)}/" aria-label="${esc(plugin.name)} · ${esc(strings.open)}">`;
+      const close = included ? "</div>" : "</a>";
+      return `<li class="app${included ? " app--included" : ""}" data-group="${paid ? "paid" : "free"}" data-plugin="${esc(plugin.id)}" data-search="${esc(search)}">
+  ${open}
+    ${icon}
+    <span class="app__body">
+      <strong class="app__name">${esc(plugin.name)}</strong>
+      <span class="app__by">${esc(by)}<span class="app__trust${plugin.verified ? " app__trust--ok" : ""}">${esc(trust)}</span></span>
+      <span class="app__text">${esc(plugin.text)}</span>
+      <span class="app__meta"><span class="badge ${paid ? "badge--paid" : "badge--available"}">${esc(price)}</span>${group === "" ? "" : `<span>${esc(group)}</span>`}${plugin.version ? `<span>${esc(fill(strings.version, { version: plugin.version }))}</span>` : ""}</span>
+    </span>
+    ${included ? "" : `<svg class="app__go" viewBox="0 0 20 20" aria-hidden="true" width="18" height="18"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`}
+  ${close}
+</li>`;
     })
     .join("\n");
 }
