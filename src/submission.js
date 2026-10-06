@@ -24,18 +24,21 @@ export const LIMITS = {
   contact: [5, 120],
 };
 
+/** Versione delle condizioni del marketplace che l'autore accetta (si legge anche nel testo delle condizioni). */
+export const TERMS_VERSION = "2.0";
+
 /** Conferme da dare per ogni tipo di proposta (le chiavi dei testi stanno in submit.checklist). */
 export const CONFIRMATIONS = {
-  free: ["noMalware", "permissions", "licence", "name", "terms"],
+  free: ["noMalware", "permissions", "licence", "name", "terms", "termsSpecific"],
   paid: [
     "noMalware",
     "permissions",
     "licence",
     "name",
     "terms",
+    "termsSpecific",
     "merchant",
     "devices",
-    "affiliate",
   ],
 };
 
@@ -124,21 +127,24 @@ export function parseSubmission(input) {
     else if (!SIGNATURE.test(value.signature)) errors.signature = "invalidSignature";
   }
 
-  const result = { kind, ...value, signature: value.authorKey === "" ? "" : value.signature };
+  const result = {
+    kind,
+    ...value,
+    signature: value.authorKey === "" ? "" : value.signature,
+    termsVersion: TERMS_VERSION,
+  };
   if (kind === "paid") {
     // La chiave dell'autore serve a un plugin a pagamento: lega il pacchetto a chi lo vende.
     if (value.authorKey === "") errors.authorKey = "required";
     const price = str(raw.price);
     const checkoutUrl = str(raw.checkoutUrl);
-    const affiliateUrl = str(raw.affiliateUrl);
     check("price", withinLength(price, LIMITS.price));
     check("checkoutUrl", httpsUrl(checkoutUrl, SHOP_HOST));
-    check("affiliateUrl", httpsUrl(affiliateUrl, SHOP_HOST));
     const [storeError, storeId] = wholeNumber(str(raw.storeId));
     const [productError, productId] = wholeNumber(str(raw.productId));
     check("storeId", storeError);
     check("productId", productError);
-    Object.assign(result, { price, checkoutUrl, affiliateUrl, storeId, productId });
+    Object.assign(result, { price, checkoutUrl, storeId, productId });
   }
 
   // Ogni conferma e' obbligatoria: la checklist non si salta.

@@ -38,9 +38,8 @@ const isHttps = (value) => {
  * - `submission`: la proposta (gia' controllata da parseSubmission).
  * - `analysis`: { sha256, size, manifest, icon } da analyzePackage.
  * - `existing`: la voce gia' nel registry per lo stesso id, se c'e'.
- * - `checkoutUrl`: l'indirizzo di acquisto da pubblicare (quello con il link
- *   di affiliazione del progetto, scelto dal fondatore); se manca, quello
- *   dell'autore.
+ * - `checkoutUrl`: l'indirizzo di acquisto da pubblicare, se il fondatore ne
+ *   sceglie uno diverso; se manca, quello dell'autore.
  *
  * Restituisce { checks, ok, entry, icon, warnings }: `checks` e' l'elenco dei
  * controlli ({ key, ok, detail }), `ok` e' vero solo se tutti passano.

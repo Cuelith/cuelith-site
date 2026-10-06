@@ -305,7 +305,9 @@
     "hub": "More projects on lzrhive",
     "marketplace": "Plugin marketplace",
     "submit": "Propose a plugin",
-    "terms": "Marketplace conditions"
+    "terms": "Marketplace conditions",
+    "privacyLink": "Privacy",
+    "noContact": "(contact address being set up)"
   },
   "os": {
     "windows": "Windows",
@@ -348,14 +350,13 @@
     "install": "Install it from Cuelith: Plugins → Marketplace.",
     "buy": "Buy",
     "buyHint": "This opens the author's store.",
-    "affiliateNote": "The link may contain a referral reference of the Cuelith project.",
     "notBuyable": "Not available to buy right now",
     "empty": "The marketplace cannot be reached right now. Please try again later.",
     "how": {
       "title": "How buying works",
       "items": [
         "The plugin is sold by its author, from their own store at a registered reseller that handles payment, VAT and refunds. Cuelith does not collect any money and never sees your payment details.",
-        "Some purchase links may contain a referral reference of the Cuelith project, which supports the project this way. The price you pay is the store's price.",
+        "The price you pay is the store's price: the project adds no commission.",
         "After buying you receive a key by email. You enter it in Cuelith, on the plugin's card: it works on 3 computers at once and you can move it when you change computer.",
         "If the store refunds you, the licence switches off by itself."
       ]
@@ -364,7 +365,8 @@
       "title": "Do you write plugins?",
       "text": "You can propose yours, free or paid, without creating an account.",
       "action": "How to propose one"
-    }
+    },
+    "soldBy": "Made by {publisher}. Sold by Lemon Squeezy (Merchant of Record)."
   },
   "submit": {
     "path": "/en/marketplace/submit/",
@@ -389,7 +391,7 @@
         },
         {
           "title": "We review",
-          "text": "We check the package, the permissions and the checklist. We reply to the address you give."
+          "text": "We check the package, the permissions, compatibility and the code of conduct. We reply to the address you give."
         },
         {
           "title": "Publication",
@@ -413,8 +415,8 @@
         "name": "It does not use “Cuelith” in its own name (write “for Cuelith”) and does not copy code from the Cuelith core, which is GPL.",
         "merchant": "I sell it with my own store at Lemon Squeezy, which collects the payment, pays the VAT and handles refunds. The Cuelith project does not collect or touch my money.",
         "devices": "In the product I have turned on licence keys with a limit of 3 devices per key.",
-        "affiliate": "I have turned on my store's affiliate programme with a {percent}% commission and I give its sign-up page below.",
-        "terms": "I have read and accept the Conditions for listing plugins in the marketplace and I expressly approve the clauses in articles 7 (complying with the conditions and removal from the catalogue) and 10 (changes)."
+        "terms": "I have read and accept the Conditions for publishing plugins in the marketplace and the privacy notice.",
+        "termsSpecific": "I expressly approve, under articles 1341 and 1342 of the Italian Civil Code, the clauses in articles 2 (future changes), 5 (checks and responsibility), 6 (checking that the author is active), 8 (removal from the catalogue) and 11 (changes, law and jurisdiction)."
       }
     },
     "paid": {
@@ -422,8 +424,7 @@
       "intro": "The marketplace sells nothing: it lists the plugin and sends people to your store. Today the registered reseller we support is Lemon Squeezy.",
       "steps": [
         "Open your store and create the plugin's product, with licence keys and a limit of 3 devices per key.",
-        "Turn on the store's affiliate programme and set the commission to {percent}%: this is the condition to be listed as paid. Your store pays the commission directly to the project, and the price for buyers does not change.",
-        "Give the affiliate sign-up page below: we enrol the project and use our own purchase link in the catalogue.",
+        "Give the product's address below: it will be the “Buy” button in the catalogue and in the program. The project charges no commission.",
         "Create your author key and sign every package: in the plugin template two commands are enough (pnpm keys, pnpm sign)."
       ],
       "refunds": "You handle refunds from your store: a refund switches off the licence of the person who got it.",
@@ -437,10 +438,10 @@
         "title": "Marketplace conditions",
         "intro": "The full text is on the conditions page, which you accept by sending the proposal. In short:",
         "items": [
-          "A {percent}% commission on sales made through the marketplace link, using your store's affiliate programme: it is a fixed condition to be listed as paid, and the programme must stay on.",
-          "You are free to sell the plugin on your own site and elsewhere, with no commission on those sales.",
-          "The listing and the package must not invite people to buy outside the marketplace: if it happens we tell you and you have 14 days to fix it, after which the plugin may be removed from the catalogue.",
-          "People who already bought keep their licence if the plugin leaves the catalogue."
+          "Publishing is free: no commission, no exclusivity. You can sell the plugin elsewhere too.",
+          "The plugin follows the code of conduct (rights, no malware, honest data and permissions, compatibility) and passes the checks.",
+          "You give a real email address and keep it active: now and then we ask for a confirmation. With no reply the plugin may become “dormant” and we tell you.",
+          "If there is a problem we tell you and you have 14 days to fix it. People who already bought keep their licence if the plugin leaves the catalogue."
         ],
         "link": "Read the full conditions"
       }
@@ -504,11 +505,7 @@
         },
         "checkoutUrl": {
           "label": "Purchase page of the product",
-          "hint": "The product's address in your store (lemonsqueezy.com domain)."
-        },
-        "affiliateUrl": {
-          "label": "Affiliate sign-up page of your store",
-          "hint": "We join as affiliates and use our own link in the catalogue (lemonsqueezy.com domain)."
+          "hint": "The product's address in your store (lemonsqueezy.com domain): it will be the “Buy” button."
         },
         "storeId": {
           "label": "Store number",
@@ -526,7 +523,7 @@
       "confirmTitle": "Confirmations",
       "submit": "Send the proposal",
       "sending": "Sending…",
-      "privacy": "Your email is only used to reply to you and is never published. We keep it until the proposal is decided and in any case no longer than 60 days. The form uses an anti-spam check from Cloudflare (Turnstile), which may store data in your browser.",
+      "privacy": "Your email is used to reply, for the periodic checks and for notices, and is never published. It is kept while the plugin is in the catalogue; rejected proposals are deleted. The form uses an anti-spam check from Cloudflare (Turnstile), which may store data in your browser.",
       "needsScript": "The form needs JavaScript to be turned on.",
       "result": {
         "ok": "Proposal received. We will reply to the address you gave.",
@@ -551,126 +548,186 @@
         "mustConfirm": "To propose the plugin you need to tick the whole checklist.",
         "spam": "Submission not accepted.",
         "invalidSignature": "Invalid signature: it must be 86 characters (letters, numbers, - and _)."
-      }
+      },
+      "privacyLink": "Read the privacy notice"
     }
   },
   "terms": {
     "path": "/en/marketplace/terms/",
     "eyebrow": "For plugin authors",
-    "title": "Conditions for listing plugins in the marketplace",
-    "lead": "The rules for having a plugin in the Cuelith catalogue: what the marketplace offers, the commission, the freedom to sell elsewhere and what must not be done in the storefront.",
-    "version": "Version 1 · 6 October 2026",
+    "title": "Conditions for publishing plugins in the marketplace",
+    "lead": "What the marketplace offers, what we ask of those who publish, and what we do when something goes wrong.",
+    "version": "Version 2.0 · 6 October 2026",
     "back": "Back to “Propose a plugin”",
-    "sections": [
-      {
-        "title": "1. Subject",
-        "paragraphs": [
-          "Cuelith gives authors a storefront to present and distribute their plugins to the project's users.",
-          "Having a plugin in the marketplace is subject to these conditions.",
-          "These conditions govern only the relationship between the author and the Cuelith marketplace service. They do not change the licence of the program, nor the rights granted by the GPL or by the plugin exception."
-        ]
-      },
-      {
-        "title": "2. Commission on sales",
-        "paragraphs": [
-          "For sales made through the marketplace purchase link, Cuelith takes part in the sale through the affiliate programme of the author's store.",
-          "The commission for being listed in the marketplace is {percent}%, unless a different percentage is expressly stated in the conditions that apply when the author joins.",
-          "The commission applies only to sales attributed to the marketplace link. Cuelith charges no commission on sales the author makes on their own site or through other channels not traceable to the marketplace link.",
-          "The price paid by the buyer is not raised by Cuelith because of the commission.",
-          "For as long as the paid plugin is in the catalogue, the author keeps the affiliate programme of their store active at the stated commission. If they switch it off or lower it, article 7 applies."
-        ]
-      },
-      {
-        "title": "3. The author's freedom to sell",
-        "paragraphs": ["The author stays free to sell their plugin:"],
-        "items": [
-          "on their own site;",
-          "through other marketplaces;",
-          "through other sales channels;",
-          "directly to their own customers."
-        ],
-        "after": "Having the plugin in the Cuelith marketplace is not an exclusivity agreement. The author can therefore keep using their own sales channels while the plugin is in the Cuelith catalogue."
-      },
-      {
-        "title": "4. Proper use of the storefront",
-        "paragraphs": [
-          "The Cuelith marketplace is a storefront that lets users discover, install and buy the plugins in the catalogue.",
-          "To keep the plugin in the catalogue, the author must not use the marketplace's surfaces to deliberately steer users towards an alternative purchase channel.",
-          "In particular, in the plugin's listing, in its images, in promotional texts and in the plugin package submitted for review (including its interface), the author must not:"
-        ],
-        "items": [
-          "a) include links, buttons or messages inviting people to buy the same plugin, a version of it or a licence for it through a channel other than the marketplace;",
-          "b) include discount codes or promotions aimed specifically at encouraging purchases outside the marketplace;",
-          "c) use buttons or interfaces worded “Buy”, “Purchase”, “Upgrade” or similar that lead to an outside checkout instead of the purchase channel provided by the marketplace;",
-          "d) present as free a plugin whose main function necessarily requires a payment made outside the marketplace."
-        ],
-        "after": "The author may instead give an official website, an information page, documentation, technical support or other informative content, as long as that content is not used to invite the user to buy the plugin through an alternative channel. The project checks these points when it reviews every proposal and every new version."
-      },
-      {
-        "title": "5. Outside sales",
-        "paragraphs": [
-          "Nothing in these conditions prevents the author from selling the plugin through their own site or other channels.",
-          "Cuelith does not ask the author to report sales made outside the marketplace and does not claim a commission on them.",
-          "The author is also not required to charge the same price on Cuelith and on their other channels, except for any terms specifically agreed and compatible with applicable law."
-        ]
-      },
-      {
-        "title": "6. What being in the marketplace offers",
-        "paragraphs": [
-          "Being in the marketplace gives the author, according to the available features and the project's technical conditions:"
-        ],
-        "items": [
-          "exposure of the plugin to Cuelith users;",
-          "simpler installation and distribution of the plugin;",
-          "update management;",
-          "an integrated purchase and licence activation process;",
-          "information on compatibility and versions;",
-          "a dedicated listing with description, image and permissions."
-        ],
-        "after": "Today the catalogue is shown in alphabetical order of name, with no featured or paid positions. If that changes, the criteria will be published here. Being in the marketplace does not guarantee any number of installs, sales, views or revenue."
-      },
-      {
-        "title": "7. Complying with the conditions",
-        "paragraphs": [
-          "If Cuelith finds a possible breach of these conditions, it will tell the author the facts and the conditions it considers not met, at the address given in the proposal form. The project keeps that address while the plugin is in the marketplace, only for this purpose and for security notices.",
-          "When the breach can be corrected, the author normally has 14 days from the notice to correct it.",
-          "If the breach is not corrected within that time, or in case of repeated breaches, Cuelith may remove the plugin from the catalogue. Switching off or lowering the affiliate programme described in article 2 is also a breach.",
-          "The removal must be communicated to the author with a reason. Measures taken must be proportionate to the breach and, where possible, limited to the plugin concerned.",
-          "Removal from the catalogue does not take away the licence of people who already bought the plugin: existing licences keep renewing and can be moved to another computer. Once removed from the catalogue, the plugin can no longer be bought or installed from the marketplace."
-        ]
-      },
-      {
-        "title": "8. No penalty",
-        "paragraphs": [
-          "Removing the plugin from the marketplace is not a penalty on the sales the author makes.",
-          "Cuelith does not claim commissions on sales made outside the marketplace because of the removal or end of the plugin's listing."
-        ]
-      },
-      {
-        "title": "9. Software licence",
-        "paragraphs": [
-          "These conditions govern only access to and presence in the marketplace service. They are not a change to the GPL that applies to the project nor a restriction of the rights the licence grants to users.",
-          "In particular, selling a plugin through a channel other than Cuelith is not, in itself, a breach of these conditions and does not cause any technical block on installing or running the plugin: a licence key bought elsewhere, from the same store and product, activates in Cuelith like any other."
-        ]
-      },
-      {
-        "title": "10. Changes to the conditions",
-        "paragraphs": [
-          "Any change to these conditions will be communicated in the ways and within the terms set by applicable law, and the version and date at the top of this page will change.",
-          "Changes will not apply retroactively, except where the law allows."
-        ]
-      },
-      {
-        "title": "11. Acceptance",
-        "paragraphs": [
-          "Submitting a plugin for publication in the marketplace means the author accepts these conditions. In the form, the author also expressly approves the clauses in articles 7 and 10.",
-          "These conditions are to be read together with the technical requirements for paid plugins given on the “Propose a plugin” page (store, licence keys, 3 devices per key, author signature) and with the affiliate programme terms of the chosen store."
-        ]
-      }
-    ],
     "meta": {
       "title": "Marketplace conditions · Cuelith",
-      "description": "The conditions for having a plugin, free or paid, in the Cuelith marketplace: commission, freedom to sell elsewhere, proper use of the storefront."
-    }
+      "description": "The conditions for publishing a plugin, free or paid, in the Cuelith marketplace: free service, code of conduct, checks and removal."
+    },
+    "sections": [
+      {
+        "title": "1. The service",
+        "paragraphs": [
+          "The marketplace is a free catalogue of plugins for Cuelith, run by the Cuelith project (the “Operator”). It offers a storefront and a simple way to install plugins from the program. The catalogue is in alphabetical order: there are no paid or featured positions.",
+          "The Operator does not sell plugins and is not a party to the sales contract. Paid plugins are sold by their author, from their own store at a registered reseller (today Lemon Squeezy), which collects the payment, pays the VAT and handles refunds.",
+          "These conditions do not change the GPL 3.0 licence of the program nor the exception for plugins."
+        ]
+      },
+      {
+        "title": "2. Free and non-exclusive",
+        "paragraphs": [
+          "Publishing in the marketplace is free: the Operator charges no commission and no fee.",
+          "The author may sell or distribute the plugin anywhere else, and may withdraw it from the catalogue at any time.",
+          "The Operator may introduce commissions or other economic conditions in the future. They apply only to plugins proposed after the change, or to plugins already listed if the author accepts them, and with 15 days' notice."
+        ]
+      },
+      {
+        "title": "3. Who publishes and what they declare",
+        "paragraphs": ["Whoever proposes a plugin declares that they:"],
+        "items": [
+          "are the author of the plugin or have the right to distribute it under the licence they state;",
+          "state the licence, including a proprietary one, and where it can be read;",
+          "respect the licences of any third-party code they use;",
+          "give a real email address that they check and keep active while the plugin is in the catalogue;",
+          "say where users can get support."
+        ]
+      },
+      {
+        "title": "4. Code of conduct",
+        "paragraphs": ["A plugin in the marketplace follows these rules, in letter and in spirit:"],
+        "items": [
+          "Rights. It does not infringe anyone's copyright, trademarks or other rights. It does not copy code from the Cuelith core, which is GPL. It does not use “Cuelith” in its own name: write “for Cuelith”.",
+          "No malware. It contains no malware, hidden or obfuscated code, nor functions the user cannot understand from the description.",
+          "Data. It does not collect, send or store user data without saying so clearly on its page and without the necessary permissions.",
+          "Honest permissions. It declares in the manifest all the permissions it uses, and only those.",
+          "Compatibility. It follows the technical rules published in the developer guide and passes the automatic compatibility checks. It does not interfere with what is on air: a plugin that hangs or answers too slowly is switched off, not the program.",
+          "Transparency. It shows the real price and where to buy. It does not mislead about its functions, name or author.",
+          "Lawful content. No illegal or discriminatory content, nor content that violates others' privacy.",
+          "Security. It fixes vulnerabilities in the plugin as soon as it knows of them and tells the Operator if they are serious.",
+          "Support. It answers the users of its own plugin: support belongs to the author, not to the project."
+        ]
+      },
+      {
+        "title": "5. Checks and responsibility",
+        "paragraphs": [
+          "The Operator runs automatic technical checks and a manual review of every proposal and every new version. They verify compatibility with Cuelith and compliance with these rules.",
+          "Passing the checks is not a guarantee: it does not ensure the absence of bugs, malware or infringements. The author is responsible for their plugin, its content and its support.",
+          "The Operator is not liable for damage caused by third-party plugins, within the limits of article 1229 of the Italian Civil Code (wilful misconduct and gross negligence remain excluded)."
+        ]
+      },
+      {
+        "title": "6. Checking that the author is active",
+        "paragraphs": [
+          "To avoid leaving abandoned plugins in the catalogue, the Operator may periodically check that the package is still reachable and unchanged, and write to the author's address (about every 6 months) to ask for a one-click confirmation.",
+          "If the author does not reply, the request may be repeated twice more (three reminders in all). After the third reminder without a reply the plugin may become “dormant”: it can no longer be installed or bought from the catalogue, and the author receives a fourth, final message explaining what happened and how to fix it.",
+          "People who have already installed or bought the plugin keep using it and licences renew as before. The author can reactivate the plugin at any time by confirming they are there."
+        ]
+      },
+      {
+        "title": "7. Reports",
+        "paragraphs": [
+          "Anyone can report a problem with a plugin (malware, copyright infringement or anything else) by writing to {contact}.",
+          "The Operator notifies the author, who can reply, and then decides with a reasoned message. In case of malware or a serious breach the plugin is removed from the catalogue at once."
+        ]
+      },
+      {
+        "title": "8. Removal from the catalogue",
+        "paragraphs": [
+          "If a plugin does not comply with these conditions, the Operator tells the author the facts, at the email address given in the proposal form. The author has 14 days to fix it.",
+          "If not fixed, the plugin may be removed from the catalogue with a reasoned message. In serious cases (malware) removal is immediate.",
+          "Once removed, the plugin can no longer be installed or bought from the catalogue. Those who already installed or bought it keep it: licences already sold stay valid, renew and can be moved between computers. The Operator cannot uninstall a plugin from users' computers."
+        ]
+      },
+      {
+        "title": "9. Complaints",
+        "paragraphs": [
+          "The author can contest a decision by writing to {contact}. The Operator replies within 30 days."
+        ]
+      },
+      {
+        "title": "10. Personal data",
+        "paragraphs": [
+          "The author's email address is used to reply to the proposal, for the periodic checks, for notices and for reports. It is kept while the plugin is in the catalogue.",
+          "The Operator also keeps a record of the acceptance of these conditions (date, version, plugin identifier and email address) for 10 years after publication ends, as proof of the contract. The rest is in the privacy notice."
+        ]
+      },
+      {
+        "title": "11. Changes, law and jurisdiction",
+        "paragraphs": [
+          "The Operator may change these conditions with 15 days' notice, sent to the author's email address and by publishing the new version on this page.",
+          "Italian law applies. For disputes, the ordinary rules on jurisdiction apply."
+        ]
+      },
+      {
+        "title": "12. Acceptance",
+        "paragraphs": [
+          "Sending the proposal means accepting these conditions. The author also expressly approves, under articles 1341 and 1342 of the Italian Civil Code, the clauses in articles 2 (future changes), 5 (responsibility), 6 (checks and dormancy), 8 (removal) and 11 (changes, law and jurisdiction).",
+          "The technical rules for paid plugins (store, licence keys, 3 devices, signature) are on the “Propose a plugin” page."
+        ]
+      }
+    ]
+  },
+  "privacy": {
+    "path": "/en/privacy/",
+    "eyebrow": "Privacy",
+    "title": "Privacy notice",
+    "lead": "What data this site handles, why, for how long, and how you can exercise your rights.",
+    "version": "Version 1.0 · 6 October 2026",
+    "back": "Back to “Propose a plugin”",
+    "meta": {
+      "title": "Privacy · Cuelith",
+      "description": "The privacy notice for the Cuelith site and marketplace."
+    },
+    "sections": [
+      {
+        "title": "1. Who handles the data",
+        "paragraphs": [
+          "The data controller is the Cuelith project, run by a private individual. Contact: {contact}."
+        ]
+      },
+      {
+        "title": "2. The site and the program",
+        "paragraphs": [
+          "The site uses no cookies of its own, has no analytics tools and does not track visitors. The Cuelith program does not send usage data to the project."
+        ]
+      },
+      {
+        "title": "3. People who propose a plugin",
+        "paragraphs": [
+          "Data: plugin name, description, addresses, licence and contact email address. Purposes: assessing the proposal, communicating with the author, running the periodic checks, sending notices and handling reports and complaints. Legal basis: performance of the relationship with the author and legitimate interest in running a safe catalogue.",
+          "Retention: a pending proposal is deleted after 60 days; if rejected, at once. If approved, the email is kept while the plugin is in the catalogue. A record of the acceptance of the conditions (date, version, plugin identifier, email) is kept for 10 years after publication ends, as proof of the contract.",
+          "The plugin data (name, description, author, licence, addresses) is public in the catalogue. The email is not."
+        ]
+      },
+      {
+        "title": "4. Anti-spam",
+        "paragraphs": [
+          "The proposal form uses Cloudflare Turnstile, which may store information in your browser to tell a person from a program. It loads only on that page.",
+          "To limit submissions (5 a day) a fingerprint of the IP address, not the address, is kept for about 25 hours."
+        ]
+      },
+      {
+        "title": "5. Licences for paid plugins",
+        "paragraphs": [
+          "When a licence is activated, the program sends the “Notary” (a function of the site) the licence key, the plugin identifier and a public key generated by the computer. The Notary checks them with the reseller and replies. It does not store them.",
+          "The reseller (Lemon Squeezy) is an independent controller of the purchase data, which the project does not see."
+        ]
+      },
+      {
+        "title": "6. Providers",
+        "paragraphs": [
+          "The site and its functions are hosted by Cloudflare; the catalogue and the code by GitHub; payments are handled by the reseller. These providers may process data outside the European Union according to their own terms."
+        ]
+      },
+      {
+        "title": "7. Your rights",
+        "paragraphs": [
+          "You can ask for access to your data, rectification, erasure and restriction, and object to the processing, by writing to {contact}. Erasure may be limited for the record of acceptance, which serves as proof. You can also lodge a complaint with the Italian data protection authority."
+        ]
+      },
+      {
+        "title": "8. Changes",
+        "paragraphs": ["If this notice changes, we publish the new version here, with the date."]
+      }
+    ]
   }
 }

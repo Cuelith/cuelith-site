@@ -125,14 +125,15 @@ Cloudflare → **Workers & Pages** → progetto **cuelith** → **Settings** →
 
 Il binding `SUBMISSIONS` (passo 1) non è una variabile: è già collegato.
 
-La **Site Key** di Turnstile non va nelle variabili: serve quando si costruisce il sito. In PowerShell:
+La **Site Key** di Turnstile e l'**indirizzo di contatto** non vanno nelle variabili: servono quando si costruisce il sito (l'indirizzo compare nelle condizioni e nell'informativa; non sta nel codice, che è pubblico). In PowerShell:
 
 ```
 $env:TURNSTILE_SITE_KEY = "LA-SITE-KEY"
+$env:CONTACT_EMAIL = "l-indirizzo-per-segnalazioni-e-reclami"
 pnpm deploy:dev      # anteprima (ramo dev)
 ```
 
-(`pnpm deploy` per il sito vero, solo quando è il momento.) Senza la Site Key la pagina di proposta non mostra il controllo e le proposte non si accettano.
+(`pnpm deploy` per il sito vero, solo quando è il momento: **si ferma se manca CONTACT_EMAIL**.) Senza la Site Key la pagina di proposta non mostra il controllo e le proposte non si accettano. L'indirizzo per le segnalazioni si crea in Cloudflare → **Email** → **Email Routing** (gratuito, inoltra a un indirizzo tuo senza mostrarlo).
 
 Dopo aver cambiato variabili serve una **nuova pubblicazione** perché valgano.
 
@@ -173,18 +174,22 @@ curl -s -H "Content-Type: application/json" -d '{"licenseKey":"LA-CHIAVE","plugi
 Non pubblicare il sito con il marketplace (`pnpm deploy`) finché:
 
 - non c'è la **fase 4** (acquisto, licenza e rinnovo nel programma): i testi della pagina li descrivono;
-- non hai parlato con il **commercialista** per il 10% di affiliazione (`AFFILIATE_PERCENT` in `src/market.mjs`);
-- l'**informativa** copre Turnstile e l'email di chi propone (si conserva fino alla decisione, poi si cancella).
+- l'indirizzo per segnalazioni e reclami esiste e `CONTACT_EMAIL` è impostata;
+- l'**informativa** (`/privacy/`) corrisponde a ciò che il sito conserva (tabella qui sotto);
+- le **condizioni v2** non promettono verifiche che non ci sono: l'art. 6 descrive controlli periodici come facoltà (si rafforza quando esistono);
+- non c'è più nessuna commissione né affiliazione (decisione 0014): il codice del pagamento resta, ma non si usa.
 
 ## Cosa viene conservato e dove
 
-| Dato                                                                       | Dove                                                                          | Per quanto                                               |
-| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------- |
-| Proposta (compresa l'email di chi propone)                                 | KV                                                                            | fino all'approvazione o al rifiuto, e comunque 60 giorni |
-| Esito (nome, versione, link alla pull request, **senza email**)            | KV                                                                            | 14 giorni                                                |
-| Impronta (non l'indirizzo) di chi ha inviato, per il limite di 5 al giorno | KV                                                                            | un giorno                                                |
-| Voce del plugin (nome, descrizione, autore, prezzo, chiavi pubbliche)      | registry su GitHub (pubblico)                                                 | per sempre                                               |
-| Chiavi di licenza e chiavi dei computer                                    | **da nessuna parte**: il Notaio le legge, le gira al fornitore e le dimentica | —                                                        |
+| Dato                                                                                     | Dove                                                                          | Per quanto                                                                                    |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Proposta (compresa l'email di chi propone)                                               | KV                                                                            | fino all'approvazione o al rifiuto, e comunque 60 giorni                                      |
+| Esito (nome, versione, link alla pull request, **senza email**)                          | KV                                                                            | 14 giorni                                                                                     |
+| Contatto di chi ha un plugin pubblicato (nome plugin, email, data)                       | KV (`contact:<id>`)                                                           | finché il plugin è nel catalogo; poi «Dimentica» nel pannello                                 |
+| Traccia dell'accettazione delle condizioni (plugin, email, versione, data, **senza IP**) | KV (`accept:<id>:<proposta>`)                                                 | 10 anni dopo la fine della pubblicazione (si segna da «Dimentica»; la cancellazione è a mano) |
+| Impronta (non l'indirizzo) di chi ha inviato, per il limite di 5 al giorno               | KV                                                                            | un giorno                                                                                     |
+| Voce del plugin (nome, descrizione, autore, prezzo, chiavi pubbliche)                    | registry su GitHub (pubblico)                                                 | per sempre                                                                                    |
+| Chiavi di licenza e chiavi dei computer                                                  | **da nessuna parte**: il Notaio le legge, le gira al fornitore e le dimentica | —                                                                                             |
 
 ## Limiti dei piani gratuiti da tenere d'occhio
 

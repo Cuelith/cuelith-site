@@ -14,7 +14,7 @@
     "test": "node --test test/*.test.mjs",
     "format": "prettier --write .",
     "deploy:dev": "node build.mjs && wrangler pages deploy dist --project-name cuelith --branch dev",
-    "deploy": "node build.mjs && wrangler pages deploy dist --project-name cuelith --branch main",
+    "deploy": "node build.mjs --production && wrangler pages deploy dist --project-name cuelith --branch main",
     "preview:paid": "node scripts/anteprima-pagamento.mjs"
   },
   "devDependencies": {

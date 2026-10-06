@@ -17,9 +17,15 @@ import {
   MODULES_INDEX_V2,
   publicModules,
 } from "../functions/_lib/sources.js";
-import { DEV_LINKS, renderMarketplace, renderSubmit, renderTerms } from "../src/market.mjs";
+import {
+  DEV_LINKS,
+  renderMarketplace,
+  renderPrivacy,
+  renderSubmit,
+  renderTerms,
+} from "../src/market.mjs";
 import { document } from "../src/page.mjs";
-import { CONFIRMATIONS, parseSubmission } from "../src/submission.js";
+import { CONFIRMATIONS, parseSubmission, TERMS_VERSION } from "../src/submission.js";
 
 const json = (file) => JSON.parse(readFileSync(new URL(`../src/${file}`, import.meta.url), "utf8"));
 const snapshot = json("data/snapshot.json");
@@ -80,14 +86,18 @@ for (const lang of ["it", "en"]) {
     assert.doesNotMatch(html, /data-lead="free" hidden/);
   });
 
-  test(`marketplace ${lang}: un plugin a pagamento ha prezzo, Acquista e avviso sull'affiliazione`, () => {
+  test(`marketplace ${lang}: un plugin a pagamento ha prezzo, Acquista e la dicitura su chi vende`, () => {
     const html = market(lang, [...snapshot.modules, paidModule]);
     assert.ok(html.includes('href="/marketplace/buy/acme.lyrics-pro"'));
     assert.ok(html.includes('data-group="paid"'));
     assert.ok(html.includes("9 €"));
     const text = json(`content/${lang}.json`).marketplace;
-    assert.ok(html.includes(text.affiliateNote.replace(/&/g, "&amp;")), "avviso nella scheda");
-    // Filtri e spiegazione sono visibili: l'avviso sull'affiliazione sta anche nella spiegazione.
+    // Chi vende e' scritto nella scheda: il progetto non e' il venditore.
+    assert.ok(html.includes(text.soldBy.replace("{publisher}", "Acme")), "dicitura nella scheda");
+    assert.match(html, /Lemon Squeezy/);
+    // Nessuna commissione: niente affiliazione, ne' nella scheda ne' nella spiegazione.
+    assert.doesNotMatch(html, /affiliaz|affiliate|referral|riferimento di/i);
+    // Filtri e spiegazione sono visibili.
     assert.doesNotMatch(html, /data-filters hidden/);
     assert.doesNotMatch(html, /data-notice hidden/);
     assert.ok(html.includes(text.how.items[1]));
@@ -102,8 +112,15 @@ for (const lang of ["it", "en"]) {
   test(`marketplace ${lang}: un plugin a pagamento senza indirizzo valido non si puo' acquistare`, () => {
     const html = market(lang, [{ ...paidModule, buyable: false }]);
     assert.doesNotMatch(html, /\/marketplace\/buy\//);
-    assert.ok(html.includes(json(`content/${lang}.json`).marketplace.notBuyable));
-    assert.doesNotMatch(html, /plugin__note/);
+    const text = json(`content/${lang}.json`).marketplace;
+    assert.ok(html.includes(text.notBuyable));
+    // La dicitura su chi vende c'e', il suggerimento «si apre il negozio» no (non c'e' nessun negozio da aprire).
+    assert.ok(html.includes(text.soldBy.replace("{publisher}", "Acme")));
+    const notes = [...html.matchAll(/<p class="plugin__note">([^<]*)<\/p>/g)].map((m) => m[1]);
+    assert.equal(notes.length, 1);
+    assert.ok(
+      !notes[0].includes(text.buyHint.replace(/'/g, "&#39;")) && !notes[0].includes(text.buyHint),
+    );
   });
 
   test(`proposta ${lang}: modulo completo, checklist e istruzioni di vendita`, () => {
@@ -111,10 +128,9 @@ for (const lang of ["it", "en"]) {
     // L'infrastruttura non si nomina, tranne Turnstile (controllo anti-spam) nell'informativa.
     assert.doesNotMatch(html.replace(/Cloudflare \(Turnstile\)/g, ""), /Cloudflare|KV/);
     assert.match(html, /Turnstile/);
-    // Condizioni di elencazione: commissione fissa e vendita libera fuori dal marketplace.
+    // Riepilogo delle condizioni: nessuna commissione, nessuna affiliazione.
     assert.match(html, /id="condizioni"/);
-    assert.match(html, /10%/);
-    assert.doesNotMatch(html, /\{percent\}/);
+    assert.doesNotMatch(html, /10%|affiliat|\{percent\}/i);
     const allowed = [DEV_LINKS.guide[lang], DEV_LINKS.template];
     assert.deepEqual(
       externals(html).filter((url) => !isAllowed(url, allowed)),
@@ -134,7 +150,6 @@ for (const lang of ["it", "en"]) {
       "checkoutUrl",
       "storeId",
       "productId",
-      "affiliateUrl",
       "contact",
       "signature",
     ]) {
@@ -145,9 +160,10 @@ for (const lang of ["it", "en"]) {
       assert.ok(html.includes(`name="confirm.${key}"`), key);
     }
     assert.match(html, /data-only="paid" hidden/);
-    // Il progetto chiede una commissione con il programma affiliati del negozio.
-    assert.match(html, /10%/);
     assert.match(html, /Lemon Squeezy/);
+    // Le condizioni e l'informativa si leggono prima di accettare; la seconda casella approva le clausole.
+    assert.match(html, /name="confirm\.termsSpecific" value="1" required/);
+    assert.ok(html.includes(`href="${json(`content/${lang}.json`).privacy.path}"`));
     // Il campo trappola esiste e il modulo non si invia da solo (la pagina usa lo script).
     assert.ok(html.includes('name="company"'));
     assert.doesNotMatch(html, /<form[^>]*action=/);
@@ -249,15 +265,8 @@ test("indirizzi: solo https, senza utente e password, e per il negozio solo il d
   );
 });
 
-test("a pagamento: prezzo, negozio, prodotto, affiliati e chiave d'autore sono obbligatori", () => {
-  for (const field of [
-    "price",
-    "checkoutUrl",
-    "affiliateUrl",
-    "storeId",
-    "productId",
-    "authorKey",
-  ]) {
+test("a pagamento: prezzo, negozio, prodotto e chiave d'autore sono obbligatori; nessuna affiliazione", () => {
+  for (const field of ["price", "checkoutUrl", "storeId", "productId", "authorKey"]) {
     assert.equal(errorsOf({ ...paid(), [field]: "" })[field], "required", field);
   }
   for (const storeId of ["0", "-1", "1.5", "abc", "99999999999999"]) {
@@ -481,26 +490,33 @@ test("pannello: non si indicizza, non ha collegamenti esterni e la pagina e' vuo
   assert.ok(html.includes('src="/assets/admin.js"'));
 });
 
-// ---- condizioni del marketplace ----
+// ---- condizioni del marketplace e informativa ----
 
-const termsPage = (lang) =>
-  document(renderTerms({ content: json(`content/${lang}.json`), assets }), lang);
+const legalPage = (lang, key, contact) => {
+  const content = json(`content/${lang}.json`);
+  const render = key === "terms" ? renderTerms : renderPrivacy;
+  return document(render({ content, assets, contact }), lang);
+};
+const CONTACT = "contatto@example.org";
 
-test("condizioni: le undici sezioni nelle due lingue, con la commissione al posto giusto e nessun segnaposto", () => {
+test("condizioni: dodici articoli nelle due lingue, stessa struttura, nessun segnaposto", () => {
   const [it, en] = [json("content/it.json").terms, json("content/en.json").terms];
-  assert.equal(it.sections.length, 11);
-  assert.equal(en.sections.length, 11);
-  // Stessa struttura nelle due lingue: stesso numero di paragrafi ed elenchi per sezione.
+  assert.equal(it.sections.length, 12);
+  assert.equal(en.sections.length, 12);
+  // Stessa struttura nelle due lingue: stesso numero di paragrafi ed elenchi per articolo.
   assert.deepEqual(
     it.sections.map((s) => [s.paragraphs.length, s.items?.length ?? 0, s.after !== undefined]),
     en.sections.map((s) => [s.paragraphs.length, s.items?.length ?? 0, s.after !== undefined]),
   );
   assert.deepEqual(Object.keys(it).sort(), Object.keys(en).sort());
   for (const lang of ["it", "en"]) {
-    const html = termsPage(lang);
-    assert.match(html, /10%/);
-    assert.doesNotMatch(html, /\{percent\}/);
-    assert.equal((html.match(/<h2>\d+\. /g) ?? []).length, 11);
+    const html = legalPage(lang, "terms", CONTACT);
+    assert.equal((html.match(/<h2>\d+\. /g) ?? []).length, 12);
+    assert.ok(
+      html.includes(CONTACT),
+      "l'indirizzo di contatto e' nelle segnalazioni e nei reclami",
+    );
+    assert.doesNotMatch(html, /\{contact\}|\{percent\}/);
     assert.doesNotMatch(html.replace(/Cloudflare \(Turnstile\)/g, ""), /Cloudflare|KV/);
     assert.match(html, new RegExp(`<html lang="${lang}">`));
     assert.match(
@@ -509,49 +525,142 @@ test("condizioni: le undici sezioni nelle due lingue, con la commissione al post
         `hreflang="${lang === "it" ? "en" : "it"}" href="https://cuelith.lzrhive.it${lang === "it" ? "/en/marketplace/terms/" : "/marketplace/condizioni/"}"`,
       ),
     );
-    // Gli unici collegamenti esterni sono quelli fissi del piede.
     assert.deepEqual(
       externals(html).filter((url) => !isAllowed(url, [DEV_LINKS.template])),
       [],
     );
   }
+  // Senza l'indirizzo la pagina lo dice, non lascia un buco.
+  assert.ok(legalPage("it", "terms", "").includes(json("content/it.json").footer.noContact));
 });
 
-test("condizioni: dicono quello che il software fa (vendita libera altrove, licenze esistenti, nessuna penale)", () => {
-  const html = termsPage("it");
+test("condizioni: nessuna commissione, e dicono quello che il software fa davvero", () => {
+  const it = legalPage("it", "terms", CONTACT);
   for (const phrase of [
-    "non costituisce un accordo di esclusiva",
-    "non toglie la licenza a chi ha già acquistato",
-    "Nessuna penale",
+    "Pubblicare nel marketplace è gratuito",
+    "non chiede commissioni né compensi",
     "ordine alfabetico",
+    "non è parte del contratto di vendita",
+    "non risponde dei danni causati da plugin di terzi",
     "14 giorni",
-    "disattiva o la abbassa",
+    "dormiente",
+    "le licenze già vendute restano valide, si rinnovano e si possono spostare tra computer",
+    "non può disinstallare un plugin dal computer degli utenti",
+    "Non copia codice del nucleo",
+    "10 anni",
+    "preavviso di 15 giorni",
   ]) {
-    assert.ok(html.includes(phrase), phrase);
+    assert.ok(it.includes(phrase), phrase);
   }
-  const en = termsPage("en");
+  assert.doesNotMatch(it, /affiliat|10%|commissione del/i);
+  const en = legalPage("en", "terms", CONTACT);
   for (const phrase of [
-    "not an exclusivity agreement",
-    "does not take away the licence",
-    "No penalty",
-    "alphabetical",
+    "Publishing in the marketplace is free",
+    "charges no commission",
+    "alphabetical order",
+    "is not a party to the sales contract",
+    "is not liable for damage caused by third-party plugins",
     "14 days",
+    "dormant",
+    "licences already sold stay valid, renew and can be moved between computers",
+    "cannot uninstall a plugin from users' computers",
+    "10 years",
+    "15 days' notice",
   ]) {
     assert.ok(en.includes(phrase), phrase);
   }
+  assert.doesNotMatch(en, /affiliate|10%/i);
 });
 
-test("condizioni: la pagina di proposta le richiama, la casella e' obbligatoria e il piede porta il collegamento", () => {
+test("condizioni: le verifiche periodiche sono una facolta' (nessuna funzione promessa e non ancora attiva)", () => {
+  const it = json("content/it.json").terms.sections[5].paragraphs.join(" ");
+  assert.match(it, /può controllare periodicamente/);
+  assert.match(it, /può essere ripetuta/);
+  assert.match(it, /può diventare «dormiente»/);
+  const en = json("content/en.json").terms.sections[5].paragraphs.join(" ");
+  assert.match(en, /may periodically check/);
+  assert.match(en, /may become “dormant”/);
+});
+
+test("condizioni: l'accettazione cita gli articoli giusti e la versione e' una sola", () => {
   for (const lang of ["it", "en"]) {
-    const path = json(`content/${lang}.json`).terms.path;
-    const submitHtml = submitPage(lang);
-    assert.ok(submitHtml.includes(`href="${path}"`));
-    assert.match(submitHtml, /name="confirm\.terms" value="1" required/);
-    assert.ok(market(lang, [paidModule]).includes(`href="${path}"`), "piede del marketplace");
+    const content = json(`content/${lang}.json`);
+    const sections = content.terms.sections;
+    // L'ultima clausola e le conferme del modulo nominano gli stessi articoli (2, 5, 6, 8, 11) e i loro titoli.
+    const approved = [2, 5, 6, 8, 11];
+    const specific = content.submit.checklist.items.termsSpecific;
+    for (const n of approved) {
+      assert.ok(sections[n - 1].title.startsWith(`${String(n)}. `), `articolo ${String(n)}`);
+      assert.ok(new RegExp(`\\b${String(n)}\\b`).test(specific), `casella: articolo ${String(n)}`);
+      assert.ok(
+        new RegExp(`\\b${String(n)}\\b`).test(sections[11].paragraphs[0]),
+        `articolo 12: ${String(n)}`,
+      );
+    }
+    assert.ok(
+      content.terms.version.includes(TERMS_VERSION),
+      "la versione sul sito e' quella del codice",
+    );
   }
-  // L'invio senza la conferma delle condizioni e' rifiutato dal server.
-  const input = free();
-  input.confirm.terms = false;
-  assert.equal(errorsOf(input).confirm, "mustConfirm");
-  assert.ok(CONFIRMATIONS.free.includes("terms") && CONFIRMATIONS.paid.includes("terms"));
+  const ok = parseSubmission(free());
+  assert.equal(ok.value.termsVersion, TERMS_VERSION);
+});
+
+test("condizioni: la pagina di proposta le richiama, le due caselle sono obbligatorie e il piede porta i collegamenti", () => {
+  for (const lang of ["it", "en"]) {
+    const content = json(`content/${lang}.json`);
+    const submitHtml = submitPage(lang);
+    assert.ok(submitHtml.includes(`href="${content.terms.path}"`));
+    assert.match(submitHtml, /name="confirm\.terms" value="1" required/);
+    assert.match(submitHtml, /name="confirm\.termsSpecific" value="1" required/);
+    const footer = market(lang, [paidModule]);
+    assert.ok(footer.includes(`href="${content.terms.path}"`), "piede: condizioni");
+    assert.ok(footer.includes(`href="${content.privacy.path}"`), "piede: privacy");
+  }
+  // Il server rifiuta l'invio senza una delle due conferme.
+  for (const key of ["terms", "termsSpecific"]) {
+    const input = free();
+    input.confirm[key] = false;
+    assert.equal(errorsOf(input).confirm, "mustConfirm", key);
+  }
+  assert.ok(
+    CONFIRMATIONS.free.includes("termsSpecific") && CONFIRMATIONS.paid.includes("termsSpecific"),
+  );
+});
+
+test("informativa: otto punti nelle due lingue, con l'indirizzo e senza promesse che il software non mantiene", () => {
+  const [it, en] = [json("content/it.json").privacy, json("content/en.json").privacy];
+  assert.equal(it.sections.length, 8);
+  assert.equal(en.sections.length, 8);
+  assert.deepEqual(
+    it.sections.map((s) => s.paragraphs.length),
+    en.sections.map((s) => s.paragraphs.length),
+  );
+  for (const lang of ["it", "en"]) {
+    const html = legalPage(lang, "privacy", CONTACT);
+    assert.ok(html.includes(CONTACT));
+    assert.doesNotMatch(html, /\{contact\}/);
+    assert.equal((html.match(/<h2>\d+\. /g) ?? []).length, 8);
+    assert.match(html, new RegExp(`<html lang="${lang}">`));
+    assert.match(
+      html,
+      new RegExp(
+        `hreflang="${lang === "it" ? "en" : "it"}" href="https://cuelith.lzrhive.it${lang === "it" ? "/en/privacy/" : "/privacy/"}"`,
+      ),
+    );
+    assert.deepEqual(
+      externals(html).filter((url) => !isAllowed(url, [DEV_LINKS.template])),
+      [],
+    );
+  }
+  const text = legalPage("it", "privacy", CONTACT);
+  // Cio' che il software fa davvero: nessun cookie propri, nessun IP in chiaro, il Notaio non conserva nulla.
+  for (const phrase of [
+    "non usa cookie propri",
+    "un'impronta dell'indirizzo IP, non l'indirizzo",
+    "Non li conserva",
+    "10 anni",
+  ]) {
+    assert.ok(text.includes(phrase), phrase);
+  }
 });

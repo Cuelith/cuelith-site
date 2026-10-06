@@ -8,6 +8,8 @@ import {
   listContacts,
   listOutcomes,
   listPending,
+  markAcceptancesWithdrawn,
+  saveAcceptance,
   saveContact,
   saveOutcome,
 } from "../../../_lib/store.js";
@@ -55,6 +57,7 @@ export async function onRequest({ request, env, params }) {
       return reply({ error: "not_found" }, 404);
     }
     await deleteContact(kv, pluginId);
+    await markAcceptancesWithdrawn(kv, pluginId);
     return reply({ ok: true });
   }
   if (!["analyze", "approve", "reject"].includes(action)) return reply({ error: "not_found" }, 404);
@@ -103,6 +106,15 @@ export async function onRequest({ request, env, params }) {
       autoMerge: pr.autoMerge,
     });
     await saveContact(kv, { pluginId: pr.id, name: pr.name, email: submission.contact });
+    await saveAcceptance(kv, {
+      pluginId: pr.id,
+      name: pr.name,
+      email: submission.contact,
+      termsVersion: submission.termsVersion,
+      acceptedAt: record.receivedAt,
+      approvedAt: new Date().toISOString(),
+      submissionId: record.id,
+    });
     await deleteSubmission(kv, record.id);
     return reply({ ok: true, pr: { number: pr.number, url: pr.url, autoMerge: pr.autoMerge } });
   } catch (error) {

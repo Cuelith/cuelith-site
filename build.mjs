@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { loadModules, loadReleases } from "./functions/_lib/sources.js";
 import { ADMIN_PATH, renderAdmin } from "./src/admin.mjs";
-import { renderMarketplace, renderSubmit, renderTerms } from "./src/market.mjs";
+import { renderMarketplace, renderPrivacy, renderSubmit, renderTerms } from "./src/market.mjs";
 import { document, renderPage } from "./src/page.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -30,6 +30,19 @@ const offline = process.argv.includes("--offline");
 // si passa alla costruzione, non e' un segreto. Senza, il modulo non mostra il controllo
 // e le proposte non si accettano (vedi MARKETPLACE_SETUP.md).
 const turnstileSiteKey = process.env.TURNSTILE_SITE_KEY ?? "";
+// Indirizzo email di contatto del progetto (segnalazioni, reclami, privacy): compare nelle
+// condizioni e nell'informativa. Si passa alla costruzione, cosi' non sta nel codice.
+// Con --production senza indirizzo la costruzione si ferma: non si pubblica senza.
+const contactEmail = (process.env.CONTACT_EMAIL ?? "").trim();
+if (contactEmail === "") {
+  const message =
+    "CONTACT_EMAIL non impostata: le condizioni e l'informativa non hanno un indirizzo di contatto.";
+  if (process.argv.includes("--production")) {
+    console.error("ERRORE: " + message);
+    process.exit(1);
+  }
+  console.warn("Attenzione: " + message);
+}
 const read = (file) => readFileSync(path.join(src, file), "utf8");
 const json = (file) => JSON.parse(read(file));
 
@@ -158,7 +171,8 @@ for (const lang of LANGS) {
   for (const [render, page, extra] of [
     [renderMarketplace, content.marketplace, { modules, catalog }],
     [renderSubmit, content.submit, { turnstileSiteKey }],
-    [renderTerms, content.terms, {}],
+    [renderTerms, content.terms, { contact: contactEmail }],
+    [renderPrivacy, content.privacy, { contact: contactEmail }],
   ]) {
     const sub = document(render({ content, assets: subAssets, ...extra }), lang);
     const subDir = path.join(dist, page.path);
@@ -235,6 +249,8 @@ writeFileSync(
   <url><loc>https://cuelith.lzrhive.it/en/marketplace/submit/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/marketplace/condizioni/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/en/marketplace/terms/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/privacy/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/en/privacy/</loc></url>
 </urlset>
 `,
 );

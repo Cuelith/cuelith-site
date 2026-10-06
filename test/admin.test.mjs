@@ -126,7 +126,14 @@ const body = (extra = {}) => ({
   license: "Proprietaria (EULA)",
   packageUrl: PACKAGE,
   contact: EMAIL,
-  confirm: { noMalware: true, permissions: true, licence: true, name: true, terms: true },
+  confirm: {
+    noMalware: true,
+    permissions: true,
+    licence: true,
+    name: true,
+    terms: true,
+    termsSpecific: true,
+  },
   turnstileToken: "valido",
   ...extra,
 });
@@ -313,10 +320,27 @@ test("percorso intero: invio, analisi, approvazione e pull request, senza dati p
   assert.equal(list.pending.length, 0);
   assert.equal(list.done[0].result, "approved");
   assert.equal(list.done[0].prUrl, "https://github.com/Cuelith/cuelith-registry/pull/9");
-  // L'indirizzo resta in un solo posto: il contatto del plugin pubblicato (serve
-  // ad avvisare per iscritto se le condizioni non sono rispettate).
-  const holders = [...kv.data.entries()].filter(([, v]) => v.value.includes(EMAIL)).map(([k]) => k);
-  assert.deepEqual(holders, ["contact:acme.lyrics-pro"]);
+  // L'indirizzo resta in due posti e basta: il contatto del plugin pubblicato (serve ad
+  // avvisare per iscritto) e la traccia dell'accettazione delle condizioni (la prova).
+  const holders = [...kv.data.entries()]
+    .filter(([, v]) => v.value.includes(EMAIL))
+    .map(([k]) => k.replace(/:[0-9a-f]{32}$/, ":<proposta>"))
+    .sort();
+  assert.deepEqual(holders, ["accept:acme.lyrics-pro:<proposta>", "contact:acme.lyrics-pro"]);
+  // La traccia: data, versione, plugin, email. Niente IP, e nessuna scadenza automatica.
+  const [acceptKey, acceptItem] = [...kv.data.entries()].find(([k]) => k.startsWith("accept:"));
+  const accepted = JSON.parse(acceptItem.value);
+  assert.deepEqual(Object.keys(accepted).sort(), [
+    "acceptedAt",
+    "approvedAt",
+    "email",
+    "name",
+    "pluginId",
+    "termsVersion",
+  ]);
+  assert.equal(accepted.termsVersion, "2.0");
+  assert.ok(!acceptItem.value.includes("203.0.113.7"), "nessun IP");
+  assert.equal(kv.puts.find((p) => p.key === acceptKey).options.expirationTtl, undefined);
   assert.equal(
     kv.puts.find((p) => p.key === "contact:acme.lyrics-pro").options.expirationTtl,
     undefined,
@@ -336,7 +360,18 @@ test("contatti: il fondatore dimentica l'indirizzo quando il plugin esce; id str
   assert.equal((await (await asAdmin("pending")).json()).contacts.length, 1);
   assert.equal((await asAdmin("forget", { pluginId: "acme.lyrics-pro" })).status, 200);
   assert.deepEqual((await (await asAdmin("pending")).json()).contacts, []);
-  assert.ok(![...kv.data.values()].some((v) => v.value.includes(EMAIL)));
+  // Il contatto sparisce; la traccia dell'accettazione resta (prova per 10 anni) e segna da quando.
+  assert.ok(![...kv.data.keys()].some((k) => k.startsWith("contact:")));
+  const left = [...kv.data.entries()].filter(([k]) => k.startsWith("accept:"));
+  assert.equal(left.length, 1);
+  assert.match(JSON.parse(left[0][1].value).withdrawnAt, /^\d{4}-\d\d-\d\dT/);
+  // Dimenticare due volte non cambia la data di uscita.
+  const first = JSON.parse(left[0][1].value).withdrawnAt;
+  await asAdmin("forget", { pluginId: "acme.lyrics-pro" });
+  assert.equal(
+    JSON.parse([...kv.data.entries()].find(([k]) => k.startsWith("accept:"))[1].value).withdrawnAt,
+    first,
+  );
 });
 
 test("contatti: senza il token di Access non si legge ne' si dimentica nulla", async () => {
@@ -375,6 +410,7 @@ test("approvazione di un plugin a pagamento: il fondatore sceglie il link con l'
       confirm: {
         noMalware: true,
         terms: true,
+        termsSpecific: true,
         permissions: true,
         licence: true,
         name: true,

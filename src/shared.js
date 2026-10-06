@@ -227,7 +227,7 @@ export function marketCards(plugins, strings) {
         : `<p class="plugin__soon">${esc(strings.notBuyable)}</p>`
     }
   </div>
-  ${plugin.buyable ? `<p class="plugin__note">${esc(strings.buyHint)} ${esc(strings.affiliateNote)}</p>` : ""}`
+  <p class="plugin__note">${esc(fill(strings.soldBy, { publisher: plugin.publisher || "?" }))}${plugin.buyable ? ` ${esc(strings.buyHint)}` : ""}</p>`
         : `<p class="plugin__note">${esc(strings.install)}</p>`;
       return `<li class="plugin" data-group="${paid ? "paid" : "free"}" data-plugin="${esc(plugin.id)}">
   <div class="plugin__head">

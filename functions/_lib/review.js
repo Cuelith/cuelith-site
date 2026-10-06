@@ -61,7 +61,6 @@ export async function reviewSubmission(record, env, { fetcher = fetch, checkoutU
         permissions: version.permissions,
         price: submission.price ?? null,
         checkoutUrl: built.entry.checkoutUrl ?? null,
-        affiliateUrl: submission.affiliateUrl ?? null,
       },
     },
     built,

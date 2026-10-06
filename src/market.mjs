@@ -1,4 +1,10 @@
-import { MARKETPLACE_PATHS, SUBMIT_PATHS, TERMS_PATHS, siteFooter } from "./page.mjs";
+import {
+  MARKETPLACE_PATHS,
+  PRIVACY_PATHS,
+  SUBMIT_PATHS,
+  TERMS_PATHS,
+  siteFooter,
+} from "./page.mjs";
 import { esc, fill, marketCards, pluginList } from "./shared.js";
 import { CONFIRMATIONS, LIMITS } from "./submission.js";
 
@@ -7,8 +13,6 @@ import { CONFIRMATIONS, LIMITS } from "./submission.js";
 // restituiscono l'HTML. Sono pagine semplici: niente animazioni d'ingresso.
 
 const SITE = "https://cuelith.lzrhive.it";
-/** Commissione che il progetto chiede tramite il programma affiliati del negozio dell'autore. */
-export const AFFILIATE_PERCENT = 10;
 /**
  * Per chi sviluppa: la guida e il modello stanno nei repository del progetto.
  * Sono gli unici collegamenti esterni di queste pagine, oltre a quelli del
@@ -27,7 +31,13 @@ function shell({ c, page, assets, single, body, strings, extraScripts = "" }) {
   const url = `${SITE}${page.path}`;
   const other = c.lang === "it" ? "en" : "it";
   const alternates =
-    page === c.marketplace ? MARKETPLACE_PATHS : page === c.terms ? TERMS_PATHS : SUBMIT_PATHS;
+    page === c.marketplace
+      ? MARKETPLACE_PATHS
+      : page === c.terms
+        ? TERMS_PATHS
+        : page === c.privacy
+          ? PRIVACY_PATHS
+          : SUBMIT_PATHS;
   const head = `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(page.meta.title)}</title>
@@ -158,15 +168,18 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
   });
 }
 
-/** Le condizioni per comparire nel marketplace: testo intero, una sezione dopo l'altra. */
-export function renderTerms({ content: c, assets, single = false }) {
-  const t = c.terms;
-  const percent = String(AFFILIATE_PERCENT);
-  const paragraph = (text) => `<p>${esc(fill(text, { percent }))}</p>`;
+/**
+ * Una pagina di testo legale (condizioni o informativa): una sezione dopo l'altra.
+ * `{contact}` e' l'indirizzo email di contatto (variabile di build CONTACT_EMAIL).
+ */
+function legalPage({ content: c, key, assets, single, contact }) {
+  const t = c[key];
+  const mail = contact === "" ? c.footer.noContact : contact;
+  const paragraph = (text) => `<p>${esc(fill(text, { contact: mail }))}</p>`;
   const section = (s) => `<section class="terms__section">
       <h2>${esc(s.title)}</h2>
       ${s.paragraphs.map(paragraph).join("")}
-      ${s.items === undefined ? "" : `<ul class="steps steps--plain">${s.items.map((i) => `<li>${esc(fill(i, { percent }))}</li>`).join("")}</ul>`}
+      ${s.items === undefined ? "" : `<ul class="steps steps--plain">${s.items.map((i) => `<li>${esc(fill(i, { contact: mail }))}</li>`).join("")}</ul>`}
       ${s.after === undefined ? "" : paragraph(s.after)}
     </section>`;
   const body = `<section class="section subpage">
@@ -187,15 +200,24 @@ export function renderTerms({ content: c, assets, single = false }) {
   return shell({ c, page: t, assets, single, body, strings: { lang: c.lang } });
 }
 
+/** Le condizioni per pubblicare nel marketplace. */
+export function renderTerms({ content, assets, single = false, contact = "" }) {
+  return legalPage({ content, key: "terms", assets, single, contact });
+}
+
+/** L'informativa sulla privacy. */
+export function renderPrivacy({ content, assets, single = false, contact = "" }) {
+  return legalPage({ content, key: "privacy", assets, single, contact });
+}
+
 /** Dove si carica il controllo "sei una persona" (Turnstile): solo la pagina di proposta ne ha bisogno. */
 export const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
 export function renderSubmit({ content: c, assets, single = false, turnstileSiteKey = "" }) {
   const s = c.submit;
   const f = s.form;
-  const percent = String(AFFILIATE_PERCENT);
   const check = (key) =>
-    `<li><label class="check"><input type="checkbox" name="confirm.${key}" value="1" required><span>${esc(fill(s.checklist.items[key], { percent }))}${key === "terms" ? ` <a class="link" href="${c.terms.path}" target="_blank" rel="noopener">${esc(s.paid.terms.link)}</a>` : ""}</span></label></li>`;
+    `<li><label class="check"><input type="checkbox" name="confirm.${key}" value="1" required><span>${esc(s.checklist.items[key])}${key === "terms" ? ` <a class="link" href="${c.terms.path}" target="_blank" rel="noopener">${esc(s.paid.terms.link)}</a> · <a class="link" href="${c.privacy.path}" target="_blank" rel="noopener">${esc(f.privacyLink)}</a>` : ""}</span></label></li>`;
   const freeChecks = CONFIRMATIONS.free;
   const paidChecks = CONFIRMATIONS.paid.filter((key) => !freeChecks.includes(key));
   const radio = (value) =>
@@ -229,12 +251,12 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
       <h3 class="notice__title">${esc(s.paid.terms.title)}</h3>
       <p>${esc(s.paid.terms.intro)}</p>
       <ol>
-        ${s.paid.terms.items.map((t) => `<li>${esc(fill(t, { percent }))}</li>`).join("")}
+        ${s.paid.terms.items.map((t) => `<li>${esc(t)}</li>`).join("")}
       </ol>
       <p><a class="link" href="${c.terms.path}">${esc(s.paid.terms.link)}</a></p>
     </div>
     <ol class="steps steps--plain">
-      ${s.paid.steps.map((step) => `<li>${esc(fill(step, { percent }))}</li>`).join("\n      ")}
+      ${s.paid.steps.map((step) => `<li>${esc(step)}</li>`).join("\n      ")}
     </ol>
     <p class="plugins__note">${esc(s.paid.refunds)}</p>
     <ul class="steps steps--plain">
@@ -273,7 +295,6 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
         ${field(f.fields, "checkoutUrl", { type: "url", only: "paid" })}
         ${field(f.fields, "storeId", { only: "paid" })}
         ${field(f.fields, "productId", { only: "paid" })}
-        ${field(f.fields, "affiliateUrl", { type: "url", only: "paid" })}
       </fieldset>
 
       <fieldset class="form__group">
@@ -303,7 +324,7 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
         <button type="submit" class="button button--primary">${esc(f.submit)}</button>
         <p class="form__status" role="status" aria-live="polite" data-status></p>
       </div>
-      <p class="field__hint">${esc(f.privacy)}</p>
+      <p class="field__hint">${esc(f.privacy)} <a class="link" href="${c.privacy.path}" target="_blank" rel="noopener">${esc(f.privacyLink)}</a></p>
     </form>
   </div>
 </section>`;

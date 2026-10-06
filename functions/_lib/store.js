@@ -95,6 +95,42 @@ export async function listContacts(kv) {
 
 export const deleteContact = (kv, pluginId) => kv.delete(`contact:${pluginId}`);
 
+/**
+ * Traccia dell'accettazione delle condizioni (decisione 0014): data, versione,
+ * plugin ed email. Niente IP. Si conserva per 10 anni dopo la fine della
+ * pubblicazione, come prova del contratto: non ha scadenza automatica, perche'
+ * il conto parte da quando il plugin esce (withdrawnAt).
+ */
+export async function saveAcceptance(kv, entry) {
+  const record = {
+    pluginId: entry.pluginId,
+    name: entry.name,
+    email: entry.email,
+    termsVersion: entry.termsVersion,
+    acceptedAt: entry.acceptedAt,
+    approvedAt: entry.approvedAt,
+  };
+  await kv.put(`accept:${entry.pluginId}:${entry.submissionId}`, JSON.stringify(record), {
+    metadata: record,
+  });
+}
+
+export async function listAcceptances(kv, pluginId) {
+  const { keys } = await kv.list({ prefix: `accept:${pluginId}:`, limit: 500 });
+  return keys.map((key) => key.metadata).filter((meta) => meta !== undefined && meta !== null);
+}
+
+/** Il plugin e' uscito: da qui partono i 10 anni di conservazione della traccia. */
+export async function markAcceptancesWithdrawn(kv, pluginId, now = new Date()) {
+  const { keys } = await kv.list({ prefix: `accept:${pluginId}:`, limit: 500 });
+  for (const key of keys) {
+    const record = await kv.get(key.name, "json");
+    if (record === null || record.withdrawnAt !== undefined) continue;
+    const next = { ...record, withdrawnAt: now.toISOString() };
+    await kv.put(key.name, JSON.stringify(next), { metadata: next });
+  }
+}
+
 export async function listOutcomes(kv) {
   const { keys } = await kv.list({ prefix: "done:", limit: 50 });
   return keys

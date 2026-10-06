@@ -272,7 +272,9 @@ test("Ed25519: firma e verifica, e la firma non vale per altro", async () => {
     ),
     false,
   );
-  assert.equal(await verifyEd25519(publicKey, message, signature.slice(0, -2) + "AA"), false);
+  // Due caratteri cambiati davvero (la firma e' casuale: con "AA" fisso, ogni tanto coincideva).
+  const altered = signature.slice(0, -2) + (signature.endsWith("AA") ? "BB" : "AA");
+  assert.equal(await verifyEd25519(publicKey, message, altered), false);
   const other = b64uEncode(
     new Uint8Array(
       await crypto.subtle.exportKey(

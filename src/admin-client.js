@@ -112,7 +112,6 @@ function renderReport(box, report) {
     if (s.kind === "paid") {
       table.append(
         row("Prezzo mostrato", s.price),
-        row("Negozio dell'autore (iscrizione affiliati)", s.affiliateUrl),
         row("Link di acquisto che verrà pubblicato", s.checkoutUrl),
       );
     }
@@ -197,13 +196,13 @@ function proposal(meta) {
       });
       field.append(
         make("label", {
-          text: "Link di acquisto da pubblicare (con il tuo riferimento di affiliazione)",
+          text: "Link di acquisto da pubblicare",
           htmlFor: `c-${meta.id}`,
         }),
         checkout,
         make("p", {
           class: "field__hint",
-          text: "Iscriviti come affiliato dalla pagina indicata dall'autore, poi incolla qui il tuo link e premi Analizza.",
+          text: "È quello indicato dall'autore. Puoi cambiarlo solo con un altro indirizzo del suo negozio (lemonsqueezy.com).",
         }),
       );
       details.append(field);

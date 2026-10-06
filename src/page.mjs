@@ -35,6 +35,7 @@ export function siteFooter(c, assets, { single = false, alternate }) {
       <li><a href="${single ? "#" : MARKETPLACE_PATHS[c.lang]}">${esc(c.footer.marketplace)}</a></li>
       <li><a href="${single ? "#" : SUBMIT_PATHS[c.lang]}">${esc(c.footer.submit)}</a></li>
       <li><a href="${single ? "#" : TERMS_PATHS[c.lang]}">${esc(c.footer.terms)}</a></li>
+      <li><a href="${single ? "#" : PRIVACY_PATHS[c.lang]}">${esc(c.footer.privacyLink)}</a></li>
       <li><a href="${KOFI}" target="_blank" rel="noopener">${esc(c.footer.kofi)}</a></li>
       <li><a href="${c.lang === "it" ? HUB : `${HUB}en`}" target="_blank" rel="noopener">${esc(c.footer.hub)}</a></li>
       <li><a href="${single ? "#" : alternate}" lang="${c.lang === "it" ? "en" : "it"}">${esc(c.nav.language)}</a></li>
@@ -49,6 +50,7 @@ export function siteFooter(c, assets, { single = false, alternate }) {
 export const MARKETPLACE_PATHS = { it: "/marketplace/", en: "/en/marketplace/" };
 export const SUBMIT_PATHS = { it: "/marketplace/submit/", en: "/en/marketplace/submit/" };
 export const TERMS_PATHS = { it: "/marketplace/condizioni/", en: "/en/marketplace/terms/" };
+export const PRIVACY_PATHS = { it: "/privacy/", en: "/en/privacy/" };
 
 export function renderPage({
   content: c,

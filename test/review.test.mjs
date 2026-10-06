@@ -168,7 +168,14 @@ const submissionOf = (extra = {}) => {
     license: "Proprietaria (EULA)",
     packageUrl: URL_OK,
     contact: "dev@acme.example",
-    confirm: { noMalware: true, permissions: true, licence: true, name: true, terms: true },
+    confirm: {
+      noMalware: true,
+      permissions: true,
+      licence: true,
+      name: true,
+      terms: true,
+      termsSpecific: true,
+    },
     ...extra,
   });
   assert.equal(result.ok, true, JSON.stringify(result.errors));
@@ -219,6 +226,7 @@ test("voce a pagamento: prezzo, negozio scelto dal fondatore, licenza e chiave d
     confirm: {
       noMalware: true,
       terms: true,
+      termsSpecific: true,
       permissions: true,
       licence: true,
       name: true,
@@ -381,6 +389,7 @@ test(
       confirm: {
         noMalware: true,
         terms: true,
+        termsSpecific: true,
         permissions: true,
         licence: true,
         name: true,
