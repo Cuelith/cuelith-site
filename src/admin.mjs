@@ -34,6 +34,9 @@ ${assets.styles}`;
     <div class="admin__list" data-pending></div>
     <h2 class="admin__title">Esiti recenti</h2>
     <div class="admin__done" data-done></div>
+    <h2 class="admin__title">Autori dei plugin pubblicati</h2>
+    <p class="plugins__note">L'indirizzo resta solo finché il plugin è nel marketplace: serve ad avvisare per iscritto se le condizioni non sono rispettate. Quando un plugin esce, premi «Dimentica».</p>
+    <div class="admin__done" data-contacts></div>
   </div>
 </section>
 </main>

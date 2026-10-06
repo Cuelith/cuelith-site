@@ -1,5 +1,5 @@
 import { b64uDecode, b64uEncode, sha256Hex, signEd25519, verifyEd25519 } from "./crypto.js";
-import { MODULES_INDEX_V2 } from "./sources.js";
+import { LICENSES_INDEX, MODULES_INDEX_V2 } from "./sources.js";
 
 // Il Notaio (decisione 0013): verifica una chiave di licenza presso il
 // fornitore (API pubblica di Lemon Squeezy, che custodisce chiavi e posti) e
@@ -47,13 +47,34 @@ export function parseLicenseInput(input, fields) {
   return value;
 }
 
-/** Il plugin deve essere nel catalogo come "a pagamento" con licenza verificabile. */
+/** Legge un indice pubblicato del registry. */
+async function readIndex(url, fetcher) {
+  const response = await fetcher(url, { cf: { cacheTtl: 300 } });
+  if (!response.ok) throw new Error("catalogo");
+  return response.json();
+}
+
+/**
+ * Il plugin deve essere a pagamento con licenza verificabile. Si guarda prima
+ * licenses.json, che comprende anche i plugin ritirati dalla vetrina: chi li ha
+ * comprati deve poter rinnovare e spostare la licenza (le condizioni lo
+ * promettono). Se quel file manca o non nomina il plugin, vale il catalogo.
+ */
 async function paidPlugin(pluginId, fetcher) {
+  let licensing;
+  try {
+    const list = await readIndex(LICENSES_INDEX, fetcher);
+    licensing = (list.plugins ?? []).find((p) => p?.id === pluginId)?.licensing;
+  } catch {
+    licensing = undefined;
+  }
+  if (licensing !== undefined) {
+    if (licensing.provider !== "lemonsqueezy") throw new NotaryError("notPaid", 404);
+    return licensing;
+  }
   let index;
   try {
-    const response = await fetcher(MODULES_INDEX_V2, { cf: { cacheTtl: 300 } });
-    if (!response.ok) throw new Error("catalogo");
-    index = await response.json();
+    index = await readIndex(MODULES_INDEX_V2, fetcher);
   } catch {
     throw new NotaryError("unavailable", 503);
   }

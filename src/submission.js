@@ -26,8 +26,17 @@ export const LIMITS = {
 
 /** Conferme da dare per ogni tipo di proposta (le chiavi dei testi stanno in submit.checklist). */
 export const CONFIRMATIONS = {
-  free: ["noMalware", "permissions", "licence", "name"],
-  paid: ["noMalware", "permissions", "licence", "name", "merchant", "devices", "affiliate"],
+  free: ["noMalware", "permissions", "licence", "name", "terms"],
+  paid: [
+    "noMalware",
+    "permissions",
+    "licence",
+    "name",
+    "terms",
+    "merchant",
+    "devices",
+    "affiliate",
+  ],
 };
 
 const str = (value) => (typeof value === "string" ? value.trim() : "");

@@ -126,7 +126,7 @@ const body = (extra = {}) => ({
   license: "Proprietaria (EULA)",
   packageUrl: PACKAGE,
   contact: EMAIL,
-  confirm: { noMalware: true, permissions: true, licence: true, name: true },
+  confirm: { noMalware: true, permissions: true, licence: true, name: true, terms: true },
   turnstileToken: "valido",
   ...extra,
 });
@@ -313,7 +313,43 @@ test("percorso intero: invio, analisi, approvazione e pull request, senza dati p
   assert.equal(list.pending.length, 0);
   assert.equal(list.done[0].result, "approved");
   assert.equal(list.done[0].prUrl, "https://github.com/Cuelith/cuelith-registry/pull/9");
+  // L'indirizzo resta in un solo posto: il contatto del plugin pubblicato (serve
+  // ad avvisare per iscritto se le condizioni non sono rispettate).
+  const holders = [...kv.data.entries()].filter(([, v]) => v.value.includes(EMAIL)).map(([k]) => k);
+  assert.deepEqual(holders, ["contact:acme.lyrics-pro"]);
+  assert.equal(
+    kv.puts.find((p) => p.key === "contact:acme.lyrics-pro").options.expirationTtl,
+    undefined,
+  );
+  assert.deepEqual(
+    list.contacts.map((c) => [c.pluginId, c.name, c.email]),
+    [["acme.lyrics-pro", "Lyrics Pro", EMAIL]],
+  );
+});
+
+test("contatti: il fondatore dimentica l'indirizzo quando il plugin esce; id strani = 404; solo POST", async () => {
+  await send(body());
+  await asAdmin("approve", { id: await pendingId() });
+  assert.equal((await asAdmin("forget", undefined, { method: "GET" })).status, 405);
+  assert.equal((await asAdmin("forget", { pluginId: "../../x" })).status, 404);
+  assert.equal((await asAdmin("forget", {})).status, 404);
+  assert.equal((await (await asAdmin("pending")).json()).contacts.length, 1);
+  assert.equal((await asAdmin("forget", { pluginId: "acme.lyrics-pro" })).status, 200);
+  assert.deepEqual((await (await asAdmin("pending")).json()).contacts, []);
   assert.ok(![...kv.data.values()].some((v) => v.value.includes(EMAIL)));
+});
+
+test("contatti: senza il token di Access non si legge ne' si dimentica nulla", async () => {
+  const refused = await admin({
+    env,
+    params: { action: "forget" },
+    request: new Request("https://cuelith.test/api/marketplace/admin/forget", {
+      method: "POST",
+      headers: { "X-Cuelith-Admin": "1", Origin: "https://cuelith.test" },
+      body: JSON.stringify({ pluginId: "acme.lyrics-pro" }),
+    }),
+  });
+  assert.equal(refused.status, 401);
 });
 
 test("approvazione di un plugin a pagamento: il fondatore sceglie il link con l'affiliazione, e solo di un negozio ammesso", async () => {
@@ -338,6 +374,7 @@ test("approvazione di un plugin a pagamento: il fondatore sceglie il link con l'
       productId: "67890",
       confirm: {
         noMalware: true,
+        terms: true,
         permissions: true,
         licence: true,
         name: true,

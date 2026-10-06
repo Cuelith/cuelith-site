@@ -14,6 +14,10 @@ export const LIMITS = {
   maxPackage: 25 * 1024 * 1024,
   maxManifest: 256 * 1024,
   maxIcon: 40 * 1024,
+  /** Controllo delle condizioni (vetrina): file di testo letti dal pacchetto, con tetti. */
+  maxTextFile: 128 * 1024,
+  maxTextFiles: 40,
+  maxTextTotal: 1024 * 1024,
   timeoutMs: 20_000,
 };
 
@@ -76,6 +80,34 @@ async function readLimited(response, max) {
     offset += chunk.byteLength;
   }
   return data;
+}
+
+const TEXT_FILE = /\.(?:json|md|txt|html?|m?js|cjs)$/i;
+
+/**
+ * File di testo del pacchetto, per cercare inviti ad acquistare altrove. Solo
+ * file piccoli, pochi e con un tetto sul totale; se qualcosa non va si lascia
+ * stare (e' un avviso in piu', non un controllo che blocca).
+ */
+function readTexts(data, limits) {
+  let total = 0;
+  let count = 0;
+  try {
+    const files = unzipSync(data, {
+      filter: (file) => {
+        if (!TEXT_FILE.test(file.name) || file.name === "cuelith-plugin.json") return false;
+        if (file.originalSize > limits.maxTextFile) return false;
+        if (count >= limits.maxTextFiles || total + file.originalSize > limits.maxTextTotal)
+          return false;
+        count += 1;
+        total += file.originalSize;
+        return true;
+      },
+    });
+    return Object.entries(files).map(([name, bytes]) => ({ name, text: strFromU8(bytes) }));
+  } catch {
+    return [];
+  }
 }
 
 /** Percorso relativo dentro il pacchetto: niente "..", niente percorsi assoluti. */
@@ -148,5 +180,5 @@ export async function analyzePackage(url, { fetcher = fetch, limits = LIMITS } =
   const icon = strFromU8(rawIcon);
   if (!checkIcon(icon)) throw new PackageError("badIcon");
 
-  return { sha256, size: data.byteLength, manifest, icon };
+  return { sha256, size: data.byteLength, manifest, icon, texts: readTexts(data, limits) };
 }

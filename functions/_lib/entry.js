@@ -1,4 +1,5 @@
 import { packageSignatureMessage, verifyEd25519 } from "./crypto.js";
+import { steeringWarnings } from "./steering.js";
 
 // Dalla proposta approvata e dall'analisi del pacchetto alla voce del
 // registry (plugins/<id>.json). Qui si decide cosa va scritto e si segnalano i
@@ -88,6 +89,9 @@ export async function buildEntry({
       `licenza: modulo «${submission.license}», manifesto «${String(manifest.license)}»`,
     );
   }
+
+  // Condizioni del marketplace, art. 4: inviti ad acquistare altrove.
+  warnings.push(...steeringWarnings({ submission, manifest, texts: analysis.texts }));
 
   // Firma dell'autore sul pacchetto (id, versione, impronta).
   if (submission.authorKey !== "") {

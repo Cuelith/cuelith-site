@@ -17,7 +17,7 @@ import {
   MODULES_INDEX_V2,
   publicModules,
 } from "../functions/_lib/sources.js";
-import { DEV_LINKS, renderMarketplace, renderSubmit } from "../src/market.mjs";
+import { DEV_LINKS, renderMarketplace, renderSubmit, renderTerms } from "../src/market.mjs";
 import { document } from "../src/page.mjs";
 import { CONFIRMATIONS, parseSubmission } from "../src/submission.js";
 
@@ -479,4 +479,79 @@ test("pannello: non si indicizza, non ha collegamenti esterni e la pagina e' vuo
   assert.deepEqual(externals(html), []);
   assert.ok(html.includes("data-pending") && html.includes("data-done"));
   assert.ok(html.includes('src="/assets/admin.js"'));
+});
+
+// ---- condizioni del marketplace ----
+
+const termsPage = (lang) =>
+  document(renderTerms({ content: json(`content/${lang}.json`), assets }), lang);
+
+test("condizioni: le undici sezioni nelle due lingue, con la commissione al posto giusto e nessun segnaposto", () => {
+  const [it, en] = [json("content/it.json").terms, json("content/en.json").terms];
+  assert.equal(it.sections.length, 11);
+  assert.equal(en.sections.length, 11);
+  // Stessa struttura nelle due lingue: stesso numero di paragrafi ed elenchi per sezione.
+  assert.deepEqual(
+    it.sections.map((s) => [s.paragraphs.length, s.items?.length ?? 0, s.after !== undefined]),
+    en.sections.map((s) => [s.paragraphs.length, s.items?.length ?? 0, s.after !== undefined]),
+  );
+  assert.deepEqual(Object.keys(it).sort(), Object.keys(en).sort());
+  for (const lang of ["it", "en"]) {
+    const html = termsPage(lang);
+    assert.match(html, /10%/);
+    assert.doesNotMatch(html, /\{percent\}/);
+    assert.equal((html.match(/<h2>\d+\. /g) ?? []).length, 11);
+    assert.doesNotMatch(html.replace(/Cloudflare \(Turnstile\)/g, ""), /Cloudflare|KV/);
+    assert.match(html, new RegExp(`<html lang="${lang}">`));
+    assert.match(
+      html,
+      new RegExp(
+        `hreflang="${lang === "it" ? "en" : "it"}" href="https://cuelith.lzrhive.it${lang === "it" ? "/en/marketplace/terms/" : "/marketplace/condizioni/"}"`,
+      ),
+    );
+    // Gli unici collegamenti esterni sono quelli fissi del piede.
+    assert.deepEqual(
+      externals(html).filter((url) => !isAllowed(url, [DEV_LINKS.template])),
+      [],
+    );
+  }
+});
+
+test("condizioni: dicono quello che il software fa (vendita libera altrove, licenze esistenti, nessuna penale)", () => {
+  const html = termsPage("it");
+  for (const phrase of [
+    "non costituisce un accordo di esclusiva",
+    "non toglie la licenza a chi ha già acquistato",
+    "Nessuna penale",
+    "ordine alfabetico",
+    "14 giorni",
+    "disattiva o la abbassa",
+  ]) {
+    assert.ok(html.includes(phrase), phrase);
+  }
+  const en = termsPage("en");
+  for (const phrase of [
+    "not an exclusivity agreement",
+    "does not take away the licence",
+    "No penalty",
+    "alphabetical",
+    "14 days",
+  ]) {
+    assert.ok(en.includes(phrase), phrase);
+  }
+});
+
+test("condizioni: la pagina di proposta le richiama, la casella e' obbligatoria e il piede porta il collegamento", () => {
+  for (const lang of ["it", "en"]) {
+    const path = json(`content/${lang}.json`).terms.path;
+    const submitHtml = submitPage(lang);
+    assert.ok(submitHtml.includes(`href="${path}"`));
+    assert.match(submitHtml, /name="confirm\.terms" value="1" required/);
+    assert.ok(market(lang, [paidModule]).includes(`href="${path}"`), "piede del marketplace");
+  }
+  // L'invio senza la conferma delle condizioni e' rifiutato dal server.
+  const input = free();
+  input.confirm.terms = false;
+  assert.equal(errorsOf(input).confirm, "mustConfirm");
+  assert.ok(CONFIRMATIONS.free.includes("terms") && CONFIRMATIONS.paid.includes("terms"));
 });

@@ -5,6 +5,7 @@
 const statusLine = document.querySelector("[data-admin-status]");
 const pendingBox = document.querySelector("[data-pending]");
 const doneBox = document.querySelector("[data-done]");
+const contactsBox = document.querySelector("[data-contacts]");
 
 function make(tag, props = {}, ...children) {
   const el = document.createElement(tag);
@@ -273,6 +274,7 @@ async function load(message) {
     return;
   }
   pendingBox.replaceChildren(...body.pending.map(proposal));
+  showContacts(Array.isArray(body.contacts) ? body.contacts : []);
   const count =
     body.pending.length === 0
       ? "Nessuna proposta in attesa."
@@ -298,6 +300,42 @@ async function load(message) {
             link.href = d.prUrl;
             line.append(link);
           }
+          return line;
+        })),
+  );
+}
+
+/** Autori dei plugin pubblicati: l'indirizzo si conserva finché il plugin è nel marketplace. */
+function showContacts(contacts) {
+  contactsBox.replaceChildren(
+    ...(contacts.length === 0
+      ? [make("p", { class: "plugins__note", text: "Nessun contatto conservato." })]
+      : contacts.map((c) => {
+          const line = make("p", {
+            class: "plugins__note",
+            text: `${c.name} (${c.pluginId}) · ${c.email} · dal ${new Date(c.since).toLocaleDateString("it-IT")} `,
+          });
+          const button = make("button", {
+            class: "button button--small",
+            type: "button",
+            text: "Dimentica",
+          });
+          button.addEventListener("click", async () => {
+            if (
+              !window.confirm(
+                `Dimenticare l'indirizzo di ${c.name}? Fallo solo se il plugin non è più nel marketplace.`,
+              )
+            )
+              return;
+            button.disabled = true;
+            const { status } = await call("forget", { pluginId: c.pluginId });
+            if (status === 200) void load(`Indirizzo di ${c.name} dimenticato.`);
+            else {
+              button.disabled = false;
+              say(WHY[status] ?? "Non riesco a dimenticare l'indirizzo.", true);
+            }
+          });
+          line.append(button);
           return line;
         })),
   );

@@ -18,7 +18,7 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { loadModules, loadReleases } from "./functions/_lib/sources.js";
 import { ADMIN_PATH, renderAdmin } from "./src/admin.mjs";
-import { renderMarketplace, renderSubmit } from "./src/market.mjs";
+import { renderMarketplace, renderSubmit, renderTerms } from "./src/market.mjs";
 import { document, renderPage } from "./src/page.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
@@ -158,6 +158,7 @@ for (const lang of LANGS) {
   for (const [render, page, extra] of [
     [renderMarketplace, content.marketplace, { modules, catalog }],
     [renderSubmit, content.submit, { turnstileSiteKey }],
+    [renderTerms, content.terms, {}],
   ]) {
     const sub = document(render({ content, assets: subAssets, ...extra }), lang);
     const subDir = path.join(dist, page.path);
@@ -232,6 +233,8 @@ writeFileSync(
   <url><loc>https://cuelith.lzrhive.it/en/marketplace/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/marketplace/submit/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/en/marketplace/submit/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/marketplace/condizioni/</loc></url>
+  <url><loc>https://cuelith.lzrhive.it/en/marketplace/terms/</loc></url>
 </urlset>
 `,
 );

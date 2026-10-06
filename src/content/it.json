@@ -304,7 +304,8 @@
     "kofi": "Sostienici su Ko-fi",
     "hub": "Altri progetti su lzrhive",
     "marketplace": "Marketplace dei plugin",
-    "submit": "Proponi un plugin"
+    "submit": "Proponi un plugin",
+    "terms": "Condizioni del marketplace"
   },
   "os": {
     "windows": "Windows",
@@ -412,7 +413,8 @@
         "name": "Non usa «Cuelith» nel proprio nome (si scrive «per Cuelith») e non copia codice del nucleo di Cuelith, che è GPL.",
         "merchant": "Lo vendo con il mio negozio presso Lemon Squeezy, che incassa, versa l'IVA e gestisce i rimborsi. Il progetto Cuelith non incassa né tocca il mio denaro.",
         "devices": "Nel prodotto ho attivato le chiavi di licenza con limite di 3 dispositivi per chiave.",
-        "affiliate": "Ho attivato il programma affiliati del mio negozio con commissione del {percent}% e indico qui sotto la pagina di iscrizione."
+        "affiliate": "Ho attivato il programma affiliati del mio negozio con commissione del {percent}% e indico qui sotto la pagina di iscrizione.",
+        "terms": "Ho letto e accetto le Condizioni per la presenza dei plugin nel marketplace e approvo espressamente le clausole degli articoli 7 (rispetto delle condizioni e rimozione dal catalogo) e 10 (modifiche)."
       }
     },
     "paid": {
@@ -432,15 +434,15 @@
         "Dopo un rimborso la chiave si disattiva e il plugin, al prossimo controllo, si spegne fuori dalle dirette: durante una diretta non si ferma mai nulla."
       ],
       "terms": {
-        "title": "Condizioni per comparire a pagamento",
-        "intro": "Il marketplace è un servizio del progetto Cuelith. Per elencarvi un plugin a pagamento valgono queste condizioni, che accetti inviando la proposta.",
+        "title": "Condizioni del marketplace",
+        "intro": "Il testo completo è nella pagina delle condizioni, che accetti inviando la proposta. In sintesi:",
         "items": [
-          "Commissione del {percent}%. Il negozio dell'autore riconosce al progetto il {percent}% di ogni vendita fatta dal link di acquisto del marketplace, con il programma affiliati di Lemon Squeezy. Non è facoltativa né negoziabile: senza, il plugin non compare a pagamento.",
-          "Il prezzo per chi compra non cambia: la commissione è a carico dell'autore.",
-          "Il programma affiliati resta attivo, con almeno il {percent}%, per tutto il tempo in cui il plugin è nel marketplace. Se viene disattivato o abbassato, il plugin è tolto dal catalogo.",
-          "La commissione riguarda solo l'inserimento nel marketplace: non è un canone sulla licenza del plugin né sul programma. Puoi sempre vendere il tuo plugin per conto tuo, fuori dal marketplace, senza alcuna commissione al progetto: l'eccezione per i plugin della licenza GPL di Cuelith lo garantisce.",
-          "Il progetto riceve la commissione come affiliato del tuo negozio presso Lemon Squeezy, che la versa e ne rilascia la documentazione, e la dichiara secondo la legge. Il progetto non incassa nulla dagli acquirenti e non tocca il denaro delle vendite."
-        ]
+          "Commissione del {percent}% sulle vendite fatte dal link del marketplace, con il programma affiliati del tuo negozio: è una condizione fissa per comparire a pagamento, e il programma deve restare attivo.",
+          "Sei libero di vendere il plugin anche sul tuo sito e altrove, senza commissioni su quelle vendite.",
+          "Nella scheda e nel pacchetto non si invita ad acquistare fuori dal marketplace: se succede ti avvisiamo e hai 14 giorni per correggere, poi il plugin può essere tolto dal catalogo.",
+          "Chi ha già comprato non perde la licenza se il plugin esce dal catalogo."
+        ],
+        "link": "Leggi le condizioni complete"
       }
     },
     "form": {
@@ -550,6 +552,125 @@
         "spam": "Proposta non accettata.",
         "invalidSignature": "Firma non valida: servono 86 caratteri (lettere, numeri, - e _)."
       }
+    }
+  },
+  "terms": {
+    "path": "/marketplace/condizioni/",
+    "eyebrow": "Per chi scrive plugin",
+    "title": "Condizioni per la presenza dei plugin nel marketplace",
+    "lead": "Le regole per avere un plugin nel catalogo di Cuelith: cosa offre il marketplace, la commissione, la libertà di vendere altrove e cosa non si deve fare nella vetrina.",
+    "version": "Versione 1 · 6 ottobre 2026",
+    "back": "Torna a «Proponi un plugin»",
+    "sections": [
+      {
+        "title": "1. Oggetto",
+        "paragraphs": [
+          "Cuelith offre agli autori una vetrina per presentare e distribuire i propri plugin agli utenti del progetto.",
+          "La presenza di un plugin nel marketplace è soggetta alle presenti condizioni.",
+          "Queste condizioni disciplinano esclusivamente il rapporto tra l'autore e il servizio marketplace Cuelith. Non modificano la licenza applicabile al programma, né i diritti concessi dalla GPL o dall'eccezione prevista per i plugin."
+        ]
+      },
+      {
+        "title": "2. Commissione sulle vendite",
+        "paragraphs": [
+          "Per le vendite generate attraverso il link di acquisto del marketplace, Cuelith partecipa alla vendita tramite il programma affiliati applicabile al negozio dell'autore.",
+          "La commissione prevista per la presenza nel marketplace è del {percent}%, salvo diversa percentuale espressamente indicata nelle condizioni applicabili al momento dell'adesione.",
+          "La commissione si applica esclusivamente alle vendite attribuite al link del marketplace. Cuelith non applica alcuna commissione alle vendite effettuate autonomamente dall'autore sul proprio sito o attraverso altri canali non riconducibili al link del marketplace.",
+          "Il prezzo pagato dall'acquirente non viene aumentato da Cuelith per effetto della commissione.",
+          "Per tutto il tempo in cui il plugin a pagamento è nel catalogo, l'autore mantiene attivo il programma affiliati del proprio negozio con la commissione indicata. Se lo disattiva o la abbassa, si applica l'articolo 7."
+        ]
+      },
+      {
+        "title": "3. Libertà di vendita dell'autore",
+        "paragraphs": ["L'autore rimane libero di vendere il proprio plugin:"],
+        "items": [
+          "sul proprio sito;",
+          "attraverso altri marketplace;",
+          "attraverso altri canali di vendita;",
+          "direttamente ai propri clienti."
+        ],
+        "after": "La presenza del plugin nel marketplace Cuelith non costituisce un accordo di esclusiva. L'autore può quindi continuare a utilizzare i propri canali commerciali anche durante la permanenza del plugin nel catalogo."
+      },
+      {
+        "title": "4. Uso corretto della vetrina",
+        "paragraphs": [
+          "Il marketplace Cuelith è una vetrina destinata a consentire agli utenti di conoscere, installare e acquistare i plugin presenti nel catalogo.",
+          "Per mantenere il plugin nel catalogo, l'autore non deve utilizzare le superfici del marketplace per indirizzare intenzionalmente gli utenti verso un canale di acquisto alternativo.",
+          "In particolare, nella scheda del plugin, nelle immagini, nei testi promozionali e nel pacchetto del plugin sottoposto alla revisione (compresa la sua interfaccia), l'autore non deve:"
+        ],
+        "items": [
+          "a) inserire link, pulsanti o messaggi che invitino ad acquistare lo stesso plugin, una sua versione o una sua licenza attraverso un canale diverso dal marketplace;",
+          "b) inserire codici sconto o promozioni destinati specificamente a incentivare l'acquisto al di fuori del marketplace;",
+          "c) utilizzare pulsanti o interfacce con diciture come «Acquista», «Compra», «Upgrade» o equivalenti che conducano a un checkout esterno invece che al canale di acquisto previsto dal marketplace;",
+          "d) presentare come gratuito un plugin la cui funzionalità principale richiede necessariamente un pagamento effettuato al di fuori del marketplace."
+        ],
+        "after": "L'autore può invece indicare un sito ufficiale, una pagina informativa, la documentazione, il supporto tecnico o altri contenuti informativi, purché tali contenuti non siano utilizzati per invitare l'utente ad acquistare il plugin attraverso un canale alternativo. Il progetto controlla questi punti alla revisione di ogni proposta e di ogni nuova versione."
+      },
+      {
+        "title": "5. Vendite esterne",
+        "paragraphs": [
+          "Nulla nelle presenti condizioni impedisce all'autore di vendere il plugin attraverso il proprio sito o altri canali.",
+          "Cuelith non richiede all'autore di comunicare le vendite effettuate al di fuori del marketplace e non pretende commissioni su tali vendite.",
+          "L'autore non è inoltre tenuto a praticare lo stesso prezzo su Cuelith e sugli altri propri canali, salvo eventuali condizioni specificamente concordate e compatibili con la normativa applicabile."
+        ]
+      },
+      {
+        "title": "6. Cosa offre la presenza nel marketplace",
+        "paragraphs": [
+          "La presenza nel marketplace offre all'autore, secondo le funzionalità disponibili e le condizioni tecniche del progetto:"
+        ],
+        "items": [
+          "esposizione del plugin agli utenti Cuelith;",
+          "installazione semplificata e distribuzione del plugin;",
+          "gestione degli aggiornamenti;",
+          "integrazione del processo di acquisto e attivazione della licenza;",
+          "informazioni sulla compatibilità e sulle versioni;",
+          "una scheda dedicata con descrizione, immagine e permessi."
+        ],
+        "after": "Il catalogo oggi si mostra in ordine alfabetico del nome, senza posizioni in evidenza né a pagamento. Se in futuro cambierà, i criteri saranno pubblicati qui. La presenza nel marketplace non garantisce un determinato numero di installazioni, vendite, visualizzazioni o ricavi."
+      },
+      {
+        "title": "7. Rispetto delle condizioni",
+        "paragraphs": [
+          "Qualora Cuelith rilevi una possibile violazione delle presenti condizioni, comunicherà all'autore i fatti e le condizioni che ritiene non rispettate, all'indirizzo indicato nel modulo di proposta. Il progetto conserva quell'indirizzo finché il plugin è nel marketplace, solo per questo scopo e per avvisi di sicurezza.",
+          "Quando la violazione è correggibile, l'autore dispone normalmente di 14 giorni dalla comunicazione per correggerla.",
+          "Se la violazione non viene corretta entro tale termine, oppure in caso di violazioni ripetute, Cuelith può rimuovere il plugin dal catalogo. Rientra tra le violazioni anche la disattivazione o la riduzione del programma affiliati di cui all'articolo 2.",
+          "La rimozione deve essere comunicata all'autore con una motivazione. Le misure adottate devono essere proporzionate alla violazione e, ove possibile, limitate al plugin interessato.",
+          "La rimozione dal catalogo non toglie la licenza a chi ha già acquistato il plugin: le licenze esistenti continuano a rinnovarsi e possono essere spostate su un altro computer. Il plugin, tolto dal catalogo, non si può più acquistare né installare dal marketplace."
+        ]
+      },
+      {
+        "title": "8. Nessuna penale",
+        "paragraphs": [
+          "La rimozione del plugin dal marketplace non costituisce una penale sulle vendite effettuate dall'autore.",
+          "Cuelith non pretende commissioni sulle vendite effettuate al di fuori del marketplace a causa della rimozione o della cessazione della presenza del plugin."
+        ]
+      },
+      {
+        "title": "9. Licenza del software",
+        "paragraphs": [
+          "Le presenti condizioni disciplinano esclusivamente l'accesso e la permanenza nel servizio marketplace. Esse non costituiscono una modifica della GPL applicabile al progetto né una restrizione dei diritti concessi agli utenti dalla licenza.",
+          "In particolare, la vendita di un plugin attraverso un canale diverso da Cuelith non costituisce, di per sé, una violazione delle presenti condizioni e non determina il blocco tecnico dell'installazione o dell'esecuzione del plugin: una chiave di licenza acquistata altrove, dello stesso negozio e prodotto, si attiva in Cuelith come qualsiasi altra."
+        ]
+      },
+      {
+        "title": "10. Modifiche alle condizioni",
+        "paragraphs": [
+          "Eventuali modifiche alle presenti condizioni saranno comunicate secondo le modalità e i termini previsti dalla normativa applicabile, e la versione e la data in cima a questa pagina cambieranno.",
+          "Le modifiche non avranno effetto retroattivo, salvo nei casi consentiti dalla legge."
+        ]
+      },
+      {
+        "title": "11. Accettazione",
+        "paragraphs": [
+          "L'invio di un plugin per la pubblicazione nel marketplace comporta l'accettazione delle presenti condizioni da parte dell'autore. Nel modulo, l'autore approva espressamente anche le clausole degli articoli 7 e 10.",
+          "Le presenti condizioni devono essere lette insieme ai requisiti tecnici dei plugin a pagamento indicati nella pagina «Proponi un plugin» (negozio, chiavi di licenza, 3 dispositivi per chiave, firma dell'autore) e alle condizioni del programma di affiliazione del negozio scelto."
+        ]
+      }
+    ],
+    "meta": {
+      "title": "Condizioni del marketplace · Cuelith",
+      "description": "Le condizioni per avere un plugin, gratuito o a pagamento, nel marketplace di Cuelith: commissione, libertà di vendere altrove, uso corretto della vetrina."
     }
   }
 }

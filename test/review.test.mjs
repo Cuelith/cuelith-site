@@ -9,6 +9,7 @@ import {
   openRegistryPullRequest,
   readRegistryEntry,
 } from "../functions/_lib/github.js";
+import { steeringWarnings } from "../functions/_lib/steering.js";
 import { analyzePackage, checkPackageUrl, PackageError } from "../functions/_lib/package.js";
 import { parseSubmission } from "../src/submission.js";
 import { ed25519Pair, fakeNetwork, makeZip, manifestOf, SVG, signPackage } from "./helpers.mjs";
@@ -167,7 +168,7 @@ const submissionOf = (extra = {}) => {
     license: "Proprietaria (EULA)",
     packageUrl: URL_OK,
     contact: "dev@acme.example",
-    confirm: { noMalware: true, permissions: true, licence: true, name: true },
+    confirm: { noMalware: true, permissions: true, licence: true, name: true, terms: true },
     ...extra,
   });
   assert.equal(result.ok, true, JSON.stringify(result.errors));
@@ -217,6 +218,7 @@ test("voce a pagamento: prezzo, negozio scelto dal fondatore, licenza e chiave d
     productId: "67890",
     confirm: {
       noMalware: true,
+      terms: true,
       permissions: true,
       licence: true,
       name: true,
@@ -378,6 +380,7 @@ test(
       productId: "67890",
       confirm: {
         noMalware: true,
+        terms: true,
         permissions: true,
         licence: true,
         name: true,
@@ -548,4 +551,83 @@ test("lettura di una voce del registry: assente, presente, illeggibile", async (
     readRegistryEntry({ token: "t", repo: REPO, id: "acme.z", fetcher: bad.fetcher }),
     GitHubError,
   );
+});
+
+// ---- condizioni del marketplace: uso corretto della vetrina (art. 4) ----
+
+const steering = async (extra, submission) => {
+  const analysis = await analysisOf({ extra });
+  const built = await buildEntry({ submission: submissionOf(submission), analysis, now: NOW });
+  return built.warnings.filter((w) => w.startsWith("vetrina") && !w.includes("art. 4, d"));
+};
+
+test("vetrina: un pacchetto pulito non da' avvisi, e un link al sito di documentazione non e' un segnale", async () => {
+  assert.deepEqual(
+    await steering({
+      "README.md": "Guida: https://docs.acme.example/lyrics e https://github.com/acme/x",
+    }),
+    [],
+  );
+});
+
+test("vetrina: link a negozi o codici sconto nel pacchetto, nella descrizione o nelle pagine indicate = avviso (mai un blocco)", async () => {
+  const inPackage = await steering({
+    "panel/index.html": '<a href="https://acme.gumroad.com/l/pro">Compra qui</a>',
+  });
+  assert.equal(inPackage.length, 1);
+  assert.match(inPackage[0], /gumroad\.com.*panel\/index\.html/);
+
+  const code = await steering({ "README.md": "Usa il codice sconto CUELITH20 sul nostro sito" });
+  assert.match(code[0], /sconti o codici/);
+
+  const field = await steering(
+    {},
+    { description: "Costa meno su https://buy.stripe.com/abc: 20% off" },
+  );
+  assert.equal(field.length, 2);
+
+  const eula = await steering({}, { eulaUrl: "https://acme.lemonsqueezy.com/checkout/buy/x" });
+  assert.match(eula[0], /lemonsqueezy\.com.*EULA/);
+
+  // Nel codice (js) un link a un negozio si segnala, la parola "discount" no (e' rumore).
+  assert.equal((await steering({ "dist/app.js": 'const d = "discount"; const s = 1;' })).length, 0);
+  assert.equal((await steering({ "dist/app.js": 'open("https://paypal.me/acme")' })).length, 1);
+
+  // Nome di sito simile non e' un negozio.
+  assert.deepEqual(
+    await steering({
+      "README.md": "https://notgumroad.com.example/x e https://gumroad.com.evil.example/",
+    }),
+    [],
+  );
+});
+
+test("vetrina: un plugin gratuito con segnali riceve anche l'avviso sul pagamento esterno (art. 4, d); uno a pagamento no", async () => {
+  const text = { "README.md": "Versione completa: https://acme.gumroad.com/l/pro" };
+  const analysis = await analysisOf({ extra: text });
+  const free = await buildEntry({ submission: submissionOf(), analysis, now: NOW });
+  assert.equal(free.warnings.filter((w) => w.startsWith("vetrina")).length, 2);
+  assert.match(free.warnings.at(-1), /gratuito/);
+  const paid = steeringWarnings({
+    submission: { kind: "paid", description: "Testi", eulaUrl: "", repositoryUrl: "" },
+    manifest: analysis.manifest,
+    texts: analysis.texts,
+  });
+  assert.equal(paid.length, 1);
+  assert.ok(!paid.some((w) => /gratuito/.test(w)));
+  assert.deepEqual(steeringWarnings({ submission: { kind: "free" }, manifest: {}, texts: [] }), []);
+});
+
+test("vetrina: i file di testo del pacchetto si leggono con dei tetti (grandi, troppi o fuori elenco si saltano)", async () => {
+  const big = "x".repeat(200 * 1024) + " https://acme.gumroad.com/l/pro";
+  const analysis = await analysisOf({
+    extra: { "huge.txt": big, "image.png": "https://acme.gumroad.com/l/pro" },
+  });
+  assert.ok(analysis.texts.every((t) => t.name !== "huge.txt" && t.name !== "image.png"));
+  assert.ok(analysis.texts.some((t) => t.name === "locales/it.json"));
+  assert.ok(analysis.texts.every((t) => t.name !== "cuelith-plugin.json"));
+  const many = Object.fromEntries(
+    Array.from({ length: 60 }, (_, i) => [`docs/${String(i)}.md`, "ciao"]),
+  );
+  assert.equal((await analysisOf({ extra: many })).texts.length <= 40, true);
 });

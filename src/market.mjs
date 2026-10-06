@@ -1,4 +1,4 @@
-import { MARKETPLACE_PATHS, SUBMIT_PATHS, siteFooter } from "./page.mjs";
+import { MARKETPLACE_PATHS, SUBMIT_PATHS, TERMS_PATHS, siteFooter } from "./page.mjs";
 import { esc, fill, marketCards, pluginList } from "./shared.js";
 import { CONFIRMATIONS, LIMITS } from "./submission.js";
 
@@ -27,9 +27,7 @@ function shell({ c, page, assets, single, body, strings, extraScripts = "" }) {
   const url = `${SITE}${page.path}`;
   const other = c.lang === "it" ? "en" : "it";
   const alternates =
-    page === c.marketplace
-      ? { it: MARKETPLACE_PATHS.it, en: MARKETPLACE_PATHS.en }
-      : { it: SUBMIT_PATHS.it, en: SUBMIT_PATHS.en };
+    page === c.marketplace ? MARKETPLACE_PATHS : page === c.terms ? TERMS_PATHS : SUBMIT_PATHS;
   const head = `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(page.meta.title)}</title>
@@ -160,6 +158,35 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
   });
 }
 
+/** Le condizioni per comparire nel marketplace: testo intero, una sezione dopo l'altra. */
+export function renderTerms({ content: c, assets, single = false }) {
+  const t = c.terms;
+  const percent = String(AFFILIATE_PERCENT);
+  const paragraph = (text) => `<p>${esc(fill(text, { percent }))}</p>`;
+  const section = (s) => `<section class="terms__section">
+      <h2>${esc(s.title)}</h2>
+      ${s.paragraphs.map(paragraph).join("")}
+      ${s.items === undefined ? "" : `<ul class="steps steps--plain">${s.items.map((i) => `<li>${esc(fill(i, { percent }))}</li>`).join("")}</ul>`}
+      ${s.after === undefined ? "" : paragraph(s.after)}
+    </section>`;
+  const body = `<section class="section subpage">
+  <div class="wrap wrap--narrow">
+    <p class="eyebrow">${esc(t.eyebrow)}</p>
+    <h1 class="subpage__title">${esc(t.title)}</h1>
+    <p class="lead lead--section">${esc(t.lead)}</p>
+    <p class="plugins__note">${esc(t.version)}</p>
+  </div>
+</section>
+
+<section class="section section--tint" id="condizioni">
+  <div class="wrap wrap--narrow terms">
+    ${t.sections.map(section).join("")}
+    <p><a class="link" href="${single ? "#" : SUBMIT_PATHS[c.lang]}">${esc(t.back)}</a></p>
+  </div>
+</section>`;
+  return shell({ c, page: t, assets, single, body, strings: { lang: c.lang } });
+}
+
 /** Dove si carica il controllo "sei una persona" (Turnstile): solo la pagina di proposta ne ha bisogno. */
 export const TURNSTILE_SCRIPT = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
@@ -168,7 +195,7 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
   const f = s.form;
   const percent = String(AFFILIATE_PERCENT);
   const check = (key) =>
-    `<li><label class="check"><input type="checkbox" name="confirm.${key}" value="1" required><span>${esc(fill(s.checklist.items[key], { percent }))}</span></label></li>`;
+    `<li><label class="check"><input type="checkbox" name="confirm.${key}" value="1" required><span>${esc(fill(s.checklist.items[key], { percent }))}${key === "terms" ? ` <a class="link" href="${c.terms.path}" target="_blank" rel="noopener">${esc(s.paid.terms.link)}</a>` : ""}</span></label></li>`;
   const freeChecks = CONFIRMATIONS.free;
   const paidChecks = CONFIRMATIONS.paid.filter((key) => !freeChecks.includes(key));
   const radio = (value) =>
@@ -204,6 +231,7 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
       <ol>
         ${s.paid.terms.items.map((t) => `<li>${esc(fill(t, { percent }))}</li>`).join("")}
       </ol>
+      <p><a class="link" href="${c.terms.path}">${esc(s.paid.terms.link)}</a></p>
     </div>
     <ol class="steps steps--plain">
       ${s.paid.steps.map((step) => `<li>${esc(fill(step, { percent }))}</li>`).join("\n      ")}

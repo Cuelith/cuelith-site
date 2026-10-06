@@ -11,6 +11,8 @@ export const SOURCE_ARCHIVE =
 /** Indice con tutti i plugin, anche a pagamento (schema 2); l'indice 1 e' il ripiego. */
 export const MODULES_INDEX_V2 = "https://cuelith.github.io/cuelith-registry/index-2.json";
 export const MODULES_INDEX = "https://cuelith.github.io/cuelith-registry/index.json";
+/** Licenze di tutti i plugin a pagamento, anche ritirati dalla vetrina: lo legge solo il Notaio. */
+export const LICENSES_INDEX = "https://cuelith.github.io/cuelith-registry/licenses.json";
 
 /** Versioni nel formato 1.2.3 (con eventuale suffisso): niente altro entra in un indirizzo. */
 export const VERSION = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?$/;

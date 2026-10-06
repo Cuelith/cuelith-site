@@ -2,10 +2,13 @@ import { requireAdmin } from "../../../_lib/access.js";
 import { GitHubError } from "../../../_lib/github.js";
 import { approveSubmission, reviewSubmission } from "../../../_lib/review.js";
 import {
+  deleteContact,
   deleteSubmission,
   getSubmission,
+  listContacts,
   listOutcomes,
   listPending,
+  saveContact,
   saveOutcome,
 } from "../../../_lib/store.js";
 
@@ -38,7 +41,21 @@ export async function onRequest({ request, env, params }) {
 
   if (action === "pending") {
     if (request.method !== "GET") return reply({ error: "method" }, 405);
-    return reply({ pending: await listPending(kv), done: await listOutcomes(kv) });
+    return reply({
+      pending: await listPending(kv),
+      done: await listOutcomes(kv),
+      contacts: await listContacts(kv),
+    });
+  }
+  if (action === "forget") {
+    if (request.method !== "POST") return reply({ error: "method" }, 405);
+    const data = await readJson(request);
+    const pluginId = typeof data?.pluginId === "string" ? data.pluginId : "";
+    if (!/^[a-z0-9]+(?:\.[a-z0-9]+(?:-[a-z0-9]+)*)+$/.test(pluginId)) {
+      return reply({ error: "not_found" }, 404);
+    }
+    await deleteContact(kv, pluginId);
+    return reply({ ok: true });
   }
   if (!["analyze", "approve", "reject"].includes(action)) return reply({ error: "not_found" }, 404);
   if (request.method !== "POST") return reply({ error: "method" }, 405);
@@ -85,6 +102,7 @@ export async function onRequest({ request, env, params }) {
       prUrl: pr.url,
       autoMerge: pr.autoMerge,
     });
+    await saveContact(kv, { pluginId: pr.id, name: pr.name, email: submission.contact });
     await deleteSubmission(kv, record.id);
     return reply({ ok: true, pr: { number: pr.number, url: pr.url, autoMerge: pr.autoMerge } });
   } catch (error) {

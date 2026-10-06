@@ -12,7 +12,7 @@ import {
   RENEW_AFTER_DAYS,
   verifyLicense,
 } from "../functions/_lib/notary.js";
-import { MODULES_INDEX_V2 } from "../functions/_lib/sources.js";
+import { LICENSES_INDEX, MODULES_INDEX_V2 } from "../functions/_lib/sources.js";
 import {
   onRequest as activateAny,
   onRequestPost as activate,
@@ -65,9 +65,10 @@ let network;
 const realFetch = globalThis.fetch;
 
 /** Rete: catalogo + una funzione per ogni azione del fornitore (registra i parametri ricevuti). */
-function install({ catalogReply = catalog(), handlers = {} } = {}) {
+function install({ catalogReply = catalog(), handlers = {}, licensesReply } = {}) {
   ls = [];
   network = fakeNetwork([
+    ...(licensesReply === undefined ? [] : [[LICENSES_INDEX, licensesReply]]),
     [MODULES_INDEX_V2, catalogReply],
     [
       (u) => u.startsWith(`${LS}/`),
@@ -173,7 +174,12 @@ test("permesso: non si falsifica, non si altera, scade", async () => {
   const forged = `${b64uEncode(new TextEncoder().encode(JSON.stringify(altered)))}.${signature}`;
   assert.equal(await verifyLicense(forged, notary.publicKey, now), undefined);
   assert.equal(
-    await verifyLicense(`${body}.${signature.slice(0, -2)}AA`, notary.publicKey, now),
+    // Due caratteri cambiati davvero (la firma e' casuale: con "AA" fisso, ogni tanto coincideva).
+    await verifyLicense(
+      `${body}.${signature.slice(0, -2)}${signature.endsWith("AA") ? "BB" : "AA"}`,
+      notary.publicKey,
+      now,
+    ),
     undefined,
   );
   assert.equal(await verifyLicense("a.b.c", notary.publicKey, now), undefined);
@@ -439,6 +445,75 @@ test("disattivazione: libera il posto; chiave o posto sbagliati = errore", async
   });
   assert.equal(await codeOf(deactivateLicense(renewInput(), env)), "invalidKey");
   assert.equal(await codeOf(deactivateLicense(input(), env)), "invalidInput");
+});
+
+// ---- plugin ritirati dalla vetrina ----
+
+const licenses = (plugins) => json({ schema: 1, plugins });
+const withdrawnEntry = {
+  id: PLUGIN,
+  withdrawn: true,
+  licensing: { provider: "lemonsqueezy", storeId: STORE, productId: PRODUCT },
+};
+/** Catalogo senza il plugin: come dopo un ritiro dalla vetrina. */
+const catalogWithoutIt = () => json({ plugins: [{ id: "cuelith.songs", access: "free" }] });
+
+test("ritirato: chi l'ha comprato attiva, rinnova e disattiva come prima", async () => {
+  install({ catalogReply: catalogWithoutIt(), licensesReply: licenses([withdrawnEntry]) });
+  const now = Date.UTC(2026, 10, 10);
+  const first = await activateLicense(input(), env, fetch, now);
+  assert.equal(first.ok, true);
+  const again = await refreshLicense(renewInput(), env, fetch, now);
+  assert.equal(again.ok, true);
+  assert.deepEqual(await deactivateLicense(renewInput(), env), { ok: true });
+});
+
+test("ritirato: senza licenses.json (non ancora pubblicato) vale il catalogo, come prima", async () => {
+  install({ licensesReply: new Response("non trovato", { status: 404 }) });
+  assert.equal((await activateLicense(input(), env)).ok, true);
+  install({
+    catalogReply: catalogWithoutIt(),
+    licensesReply: new Response("non trovato", { status: 404 }),
+  });
+  assert.equal(await codeOf(activateLicense(input(), env)), "notPaid");
+});
+
+test("ritirato: licenses.json non nomina il plugin o non e' del fornitore ammesso = rifiutato; ambedue i file giu' = 503", async () => {
+  install({
+    catalogReply: catalogWithoutIt(),
+    licensesReply: licenses([{ id: "altro.plugin", licensing: withdrawnEntry.licensing }]),
+  });
+  assert.equal(await codeOf(activateLicense(input(), env)), "notPaid");
+  install({
+    catalogReply: catalogWithoutIt(),
+    licensesReply: licenses([
+      { ...withdrawnEntry, licensing: { provider: "altro", storeId: 1, productId: 2 } },
+    ]),
+  });
+  assert.equal(await codeOf(activateLicense(input(), env)), "notPaid");
+  install({
+    catalogReply: new Response("giu", { status: 500 }),
+    licensesReply: new Response("giu", { status: 500 }),
+  });
+  assert.equal(await codeOf(activateLicense(input(), env)), "unavailable");
+});
+
+test("ritirato: il prodotto della chiave si controlla lo stesso (negozio o prodotto diversi = rifiutato)", async () => {
+  install({
+    catalogReply: catalogWithoutIt(),
+    licensesReply: licenses([withdrawnEntry]),
+    handlers: {
+      activate: async (p) =>
+        json({
+          activated: true,
+          error: null,
+          license_key: licenseObject(),
+          instance: { id: "inst-0001-aaaa", name: p.instance_name },
+          meta: meta({ product_id: PRODUCT + 1 }),
+        }),
+    },
+  });
+  assert.equal(await codeOf(activateLicense(input(), env)), "wrongProduct");
 });
 
 // ---- le funzioni (HTTP) ----

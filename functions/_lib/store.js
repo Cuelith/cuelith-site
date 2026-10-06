@@ -5,7 +5,10 @@ import { sha256Hex } from "./crypto.js";
 // che serve per l'elenco nei "metadati" della chiave, cosi' l'elenco non
 // richiede una lettura per ogni proposta. Chi ha deciso non resta: dopo
 // l'approvazione o il rifiuto la proposta sparisce e resta solo un breve
-// promemoria del risultato (senza email).
+// promemoria del risultato (senza email). Unica eccezione: l'indirizzo di chi ha
+// un plugin PUBBLICATO resta finche' il plugin e' nel marketplace, perche' le
+// condizioni prevedono di avvisarlo per iscritto (contact:<id plugin>, senza
+// scadenza); sparisce quando il fondatore lo dimentica dal pannello.
 
 const PENDING_DAYS = 60;
 const DONE_DAYS = 14;
@@ -75,6 +78,22 @@ export async function saveOutcome(kv, outcome, now = new Date()) {
     metadata: { ...outcome, at: now.toISOString() },
   });
 }
+
+/** Contatto di chi ha un plugin pubblicato: nome del plugin, indirizzo, da quando. */
+export async function saveContact(kv, { pluginId, name, email }, now = new Date()) {
+  const contact = { pluginId, name, email, since: now.toISOString() };
+  await kv.put(`contact:${pluginId}`, JSON.stringify(contact), { metadata: contact });
+}
+
+export async function listContacts(kv) {
+  const { keys } = await kv.list({ prefix: "contact:", limit: 500 });
+  return keys
+    .map((key) => key.metadata)
+    .filter((meta) => meta !== undefined && meta !== null)
+    .sort((a, b) => String(a.pluginId).localeCompare(String(b.pluginId)));
+}
+
+export const deleteContact = (kv, pluginId) => kv.delete(`contact:${pluginId}`);
 
 export async function listOutcomes(kv) {
   const { keys } = await kv.list({ prefix: "done:", limit: 50 });
