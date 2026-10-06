@@ -430,7 +430,18 @@
         "Each key works on 3 computers. Whoever changes computer deactivates the old one from the plugin (Plugins → Installed → “Deactivate this computer”) and activates the new one.",
         "If a computer breaks and cannot be deactivated, free the seat yourself from your store (Lemon Squeezy: License keys → the key → activations): buyers must be able to contact you.",
         "After a refund the key is deactivated and the plugin, at the next check, switches off outside live shows: nothing is ever stopped during a live show."
-      ]
+      ],
+      "terms": {
+        "title": "Conditions to be listed as paid",
+        "intro": "The marketplace is a service of the Cuelith project. To list a paid plugin in it, these conditions apply, and you accept them by sending the proposal.",
+        "items": [
+          "A {percent}% commission. The author's store pays the project {percent}% of every sale made through the marketplace purchase link, using Lemon Squeezy's affiliate programme. It is neither optional nor negotiable: without it, the plugin is not listed as paid.",
+          "The price for buyers does not change: the commission is paid by the author.",
+          "The affiliate programme stays on, at {percent}% or more, for as long as the plugin is in the marketplace. If it is switched off or lowered, the plugin is removed from the catalogue.",
+          "The commission covers only being listed in the marketplace: it is not a fee on the plugin's licence or on the program. You can always sell your plugin yourself, outside the marketplace, with no commission to the project: the plugin exception in Cuelith's GPL licence guarantees it.",
+          "The project receives the commission as an affiliate of your store at Lemon Squeezy, which pays it and issues the paperwork, and declares it as the law requires. The project collects nothing from buyers and never handles the money of the sales."
+        ]
+      }
     },
     "form": {
       "title": "The form",

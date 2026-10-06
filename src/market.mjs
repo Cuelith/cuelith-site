@@ -198,6 +198,13 @@ export function renderSubmit({ content: c, assets, single = false, turnstileSite
   <div class="wrap wrap--narrow">
     <h2>${esc(s.paid.title)}</h2>
     <p class="lead lead--section">${esc(s.paid.intro)}</p>
+    <div class="notice" id="condizioni">
+      <h3 class="notice__title">${esc(s.paid.terms.title)}</h3>
+      <p>${esc(s.paid.terms.intro)}</p>
+      <ol>
+        ${s.paid.terms.items.map((t) => `<li>${esc(fill(t, { percent }))}</li>`).join("")}
+      </ol>
+    </div>
     <ol class="steps steps--plain">
       ${s.paid.steps.map((step) => `<li>${esc(fill(step, { percent }))}</li>`).join("\n      ")}
     </ol>

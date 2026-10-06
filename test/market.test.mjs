@@ -111,6 +111,10 @@ for (const lang of ["it", "en"]) {
     // L'infrastruttura non si nomina, tranne Turnstile (controllo anti-spam) nell'informativa.
     assert.doesNotMatch(html.replace(/Cloudflare \(Turnstile\)/g, ""), /Cloudflare|KV/);
     assert.match(html, /Turnstile/);
+    // Condizioni di elencazione: commissione fissa e vendita libera fuori dal marketplace.
+    assert.match(html, /id="condizioni"/);
+    assert.match(html, /10%/);
+    assert.doesNotMatch(html, /\{percent\}/);
     const allowed = [DEV_LINKS.guide[lang], DEV_LINKS.template];
     assert.deepEqual(
       externals(html).filter((url) => !isAllowed(url, allowed)),

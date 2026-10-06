@@ -430,7 +430,18 @@
         "Ogni chiave vale per 3 computer. Chi cambia computer disattiva il vecchio dal plugin (Plugin → Installati → «Disattiva questo computer») e attiva il nuovo.",
         "Se un computer si rompe e non si riesce a disattivarlo, libera tu il posto dal tuo negozio (Lemon Squeezy: License keys → la chiave → attivazioni): chi compra deve poterti scrivere.",
         "Dopo un rimborso la chiave si disattiva e il plugin, al prossimo controllo, si spegne fuori dalle dirette: durante una diretta non si ferma mai nulla."
-      ]
+      ],
+      "terms": {
+        "title": "Condizioni per comparire a pagamento",
+        "intro": "Il marketplace è un servizio del progetto Cuelith. Per elencarvi un plugin a pagamento valgono queste condizioni, che accetti inviando la proposta.",
+        "items": [
+          "Commissione del {percent}%. Il negozio dell'autore riconosce al progetto il {percent}% di ogni vendita fatta dal link di acquisto del marketplace, con il programma affiliati di Lemon Squeezy. Non è facoltativa né negoziabile: senza, il plugin non compare a pagamento.",
+          "Il prezzo per chi compra non cambia: la commissione è a carico dell'autore.",
+          "Il programma affiliati resta attivo, con almeno il {percent}%, per tutto il tempo in cui il plugin è nel marketplace. Se viene disattivato o abbassato, il plugin è tolto dal catalogo.",
+          "La commissione riguarda solo l'inserimento nel marketplace: non è un canone sulla licenza del plugin né sul programma. Puoi sempre vendere il tuo plugin per conto tuo, fuori dal marketplace, senza alcuna commissione al progetto: l'eccezione per i plugin della licenza GPL di Cuelith lo garantisce.",
+          "Il progetto riceve la commissione come affiliato del tuo negozio presso Lemon Squeezy, che la versa e ne rilascia la documentazione, e la dichiara secondo la legge. Il progetto non incassa nulla dagli acquirenti e non tocca il denaro delle vendite."
+        ]
+      }
     },
     "form": {
       "title": "Il modulo",
