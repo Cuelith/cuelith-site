@@ -227,10 +227,8 @@ async function refresh() {
     const { releases } = await read("/api/releases");
     if (Array.isArray(releases) && releases.length > 0) {
       const latest = releases[0];
-      swap(
-        document.querySelector("[data-versions]"),
-        versionList(releases, strings.versions, strings.locale),
-      );
+      const versionsBox = document.querySelector("[data-versions]");
+      if (versionsBox) swap(versionsBox, versionList(releases, strings.versions, strings.locale));
       const meta = document.querySelector("[data-hero-meta]");
       if (meta) meta.textContent = fill(strings.hero.meta, { version: latest.version });
       const line = document.querySelector("[data-download-version]");
@@ -248,11 +246,14 @@ async function refresh() {
     const { modules } = await read("/api/modules");
     if (Array.isArray(modules) && modules.length > 0) {
       const active = chips.find((chip) => chip.getAttribute("aria-pressed") === "true");
-      swap(
-        document.querySelector("[data-plugins]"),
-        pluginCards(pluginList(modules, strings.catalog, strings.lang), strings.plugins),
-      );
-      applyFilter(active?.dataset.filter ?? "all");
+      const pluginsBox = document.querySelector("[data-plugins]");
+      if (pluginsBox) {
+        swap(
+          pluginsBox,
+          pluginCards(pluginList(modules, strings.catalog, strings.lang), strings.plugins),
+        );
+        applyFilter(active?.dataset.filter ?? "all");
+      }
     }
   } catch {
     // Restano i plugin scritti nella pagina.

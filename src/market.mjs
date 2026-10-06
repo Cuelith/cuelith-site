@@ -4,6 +4,7 @@ import {
   SUBMIT_PATHS,
   TERMS_PATHS,
   siteFooter,
+  siteHeader,
 } from "./page.mjs";
 import { esc, fill, marketCards, pluginList } from "./shared.js";
 import { CONFIRMATIONS, LIMITS } from "./submission.js";
@@ -29,7 +30,6 @@ export const DEV_LINKS = {
 /** Intestazione, barra in alto e piede: uguali per le due pagine. */
 function shell({ c, page, assets, single, body, strings, extraScripts = "" }) {
   const url = `${SITE}${page.path}`;
-  const other = c.lang === "it" ? "en" : "it";
   const alternates =
     page === c.marketplace
       ? MARKETPLACE_PATHS
@@ -57,19 +57,8 @@ function shell({ c, page, assets, single, body, strings, extraScripts = "" }) {
 <link rel="icon" href="${assets.icon}" type="image/svg+xml">
 ${assets.styles}`;
 
-  const current = (path) => (path === page.path ? ' aria-current="page"' : "");
-  const full = `<a class="skip" href="#contenuto">${esc(page.eyebrow)}</a>
-<header class="top">
-  <div class="wrap top__row">
-    <a class="brand" href="${single ? "#" : c.path}" aria-label="Cuelith"><img src="${assets.logo}" alt="Cuelith" width="150" height="40"></a>
-    <nav aria-label="${esc(c.nav.label)}" class="top__nav">
-      <a href="${single ? "#" : MARKETPLACE_PATHS[c.lang]}"${current(MARKETPLACE_PATHS[c.lang])}>${esc(c.nav.marketplace)}</a>
-      <a href="${single ? "#" : SUBMIT_PATHS[c.lang]}"${current(SUBMIT_PATHS[c.lang])}>${esc(c.footer.submit)}</a>
-    </nav>
-    <a class="top__lang" href="${single ? "#" : page.alternate}" lang="${other}" aria-label="${esc(c.nav.languageLabel)}">${esc(c.nav.language)}</a>
-    <a class="button button--primary button--small" href="${single ? "#" : c.path}#download">${esc(c.nav.download)}</a>
-  </div>
-</header>
+  const current = page === c.privacy ? "" : "marketplace";
+  const full = `${siteHeader(c, assets, { single, current, alternate: page.alternate })}
 
 <main id="contenuto">
 ${body}

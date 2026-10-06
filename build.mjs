@@ -19,7 +19,16 @@ import sharp from "sharp";
 import { loadModules, loadReleases } from "./functions/_lib/sources.js";
 import { ADMIN_PATH, renderAdmin } from "./src/admin.mjs";
 import { renderMarketplace, renderPrivacy, renderSubmit, renderTerms } from "./src/market.mjs";
-import { document, renderPage } from "./src/page.mjs";
+import {
+  document,
+  PAGE_PATHS,
+  renderContact,
+  renderDownload,
+  renderFaq,
+  renderFeatures,
+  renderPage,
+  renderPlugins,
+} from "./src/page.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const src = path.join(root, "src");
@@ -144,6 +153,14 @@ const assets = {
   flag: `<script src="/assets/motion-flag.js?v=${stamp(flag)}"></script>`,
   script: `<script src="/assets/site.js?v=${stamp(script)}" defer></script>`,
 };
+/** Quale pagina (chiave di PAGE_PATHS) produce ogni funzione. */
+const pageDirs = new Map([
+  [renderFeatures, "features"],
+  [renderPlugins, "plugins"],
+  [renderDownload, "download"],
+  [renderFaq, "faq"],
+  [renderContact, "contact"],
+]);
 for (const lang of LANGS) {
   const content = json(`content/${lang}.json`);
   const html = document(
@@ -160,6 +177,30 @@ for (const lang of LANGS) {
   const dir = path.join(dist, content.path);
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, "index.html"), html);
+
+  // Le pagine del sito (funzioni, plugin, download, domande, contatti): stesso stile e stesse
+  // animazioni della home, con i dati del momento gia' scritti dentro.
+  for (const [render, extra] of [
+    [renderFeatures, {}],
+    [renderPlugins, {}],
+    [renderDownload, {}],
+    [renderFaq, {}],
+    [renderContact, { contact: contactEmail }],
+  ]) {
+    const page = render({
+      content,
+      releases,
+      modules,
+      catalog,
+      shots: shots[lang],
+      assets: { ...assets, social: `/assets/social-${lang}.jpg` },
+      ...extra,
+    });
+    const target = pageDirs.get(render);
+    const dir2 = path.join(dist, PAGE_PATHS[target][lang]);
+    mkdirSync(dir2, { recursive: true });
+    writeFileSync(path.join(dir2, "index.html"), document(page, lang));
+  }
 
   // Marketplace e proposta di un plugin: pagine semplici, senza animazioni d'ingresso.
   const subAssets = {
@@ -249,6 +290,10 @@ writeFileSync(
   <url><loc>https://cuelith.lzrhive.it/en/marketplace/submit/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/marketplace/condizioni/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/en/marketplace/terms/</loc></url>
+  ${Object.values(PAGE_PATHS)
+    .flatMap((paths) => [paths.it, paths.en])
+    .map((p) => `<url><loc>https://cuelith.lzrhive.it${p}</loc></url>`)
+    .join("\n  ")}
   <url><loc>https://cuelith.lzrhive.it/privacy/</loc></url>
   <url><loc>https://cuelith.lzrhive.it/en/privacy/</loc></url>
 </urlset>

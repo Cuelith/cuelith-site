@@ -56,15 +56,11 @@ for (const lang of ["it", "en"]) {
     }
   });
 
-  test(`la pagina ${lang} ha download, versioni e plugin`, () => {
+  test(`la pagina ${lang} ha il download e porta alle altre pagine`, () => {
     const html = page(lang);
-    for (const href of ["/download/windows", "/download/linux", "/download/source"]) {
-      assert.ok(html.includes(`href="${href}"`), href);
-    }
-    const latest = snapshot.releases[0].version;
-    assert.ok(html.includes(`/download/${latest}/windows`));
-    assert.ok(html.includes('class="roadmap__group" data-group="audio"'));
-    assert.ok(html.includes('<li class="plugin" data-group='));
+    assert.ok(html.includes('href="/download/windows" data-download'));
+    // Versioni e plugin stanno nelle loro pagine (vedi pages.test.mjs).
+    assert.doesNotMatch(html, /data-versions|data-plugins/);
   });
 }
 

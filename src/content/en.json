@@ -16,7 +16,10 @@
     "download": "Download",
     "language": "Italiano",
     "languageLabel": "Leggi questa pagina in italiano",
-    "marketplace": "Marketplace"
+    "marketplace": "Marketplace",
+    "skip": "Skip to content",
+    "menu": "Menu",
+    "contact": "Contact"
   },
   "hero": {
     "eyebrow": "Live projection software · free and open source",
@@ -255,7 +258,7 @@
     "items": [
       {
         "q": "Is it really free?",
-        "a": "Yes. The app is open source and will stay free, along with everything you need to use it. Today all plugins are free too."
+        "a": "Yes. The app is open source and will stay free, along with everything you need to use it. Today all available plugins are free too; whoever writes a plugin may decide to sell it."
       },
       {
         "q": "Who can use and modify the source code?",
@@ -263,7 +266,7 @@
       },
       {
         "q": "Will there be paid plugins?",
-        "a": "In the future some advanced plugins may have a price, which we intend to keep low. That will not apply to anything essential for using Cuelith: the app and its core features stay free. If it happens, we will say so clearly beforehand."
+        "a": "Yes, but not for anything essential: the app and its core features stay free. Whoever writes a plugin can sell it from their own store and the marketplace shows it with its price. The project charges authors no commission and never sees your payment details: you buy from the author's store, through a registered reseller."
       },
       {
         "q": "Does it work offline?",
@@ -291,9 +294,29 @@
       },
       {
         "q": "What happens if a plugin has a problem?",
-        "a": "It is closed and restarted automatically, while the projection carries on. If it stops several times in a row it stays off and tells you."
+        "a": "It is closed and restarted automatically, while the projection carries on. If it stops several times in a row it stays off and tells you. If the problem is in the plugin itself, support belongs to its author (you will find it on the plugin's page); to report it to the project, write from the Contact page."
       }
-    ]
+    ],
+    "groups": [
+      {
+        "title": "Cost and licence",
+        "items": [0, 1]
+      },
+      {
+        "title": "Plugins",
+        "items": [2, 9]
+      },
+      {
+        "title": "Data and internet",
+        "items": [3, 5]
+      },
+      {
+        "title": "Using it",
+        "items": [4, 6, 7, 8]
+      }
+    ],
+    "more": "Can't find the answer?",
+    "moreLink": "Write to us"
   },
   "footer": {
     "tagline": "Live projection, lightweight and modular.",
@@ -307,7 +330,8 @@
     "submit": "Propose a plugin",
     "terms": "Marketplace conditions",
     "privacyLink": "Privacy",
-    "noContact": "(contact address being set up)"
+    "noContact": "(contact address being set up)",
+    "contact": "Contact"
   },
   "os": {
     "windows": "Windows",
@@ -727,6 +751,102 @@
       {
         "title": "8. Changes",
         "paragraphs": ["If this notice changes, we publish the new version here, with the date."]
+      }
+    ]
+  },
+  "cta": {
+    "more": "All versions and release notes"
+  },
+  "doors": {
+    "eyebrow": "Explore",
+    "title": "Everything else, one page at a time",
+    "items": [
+      {
+        "key": "features",
+        "title": "Features",
+        "text": "How you work at the desk, and who it is made for.",
+        "action": "See the features"
+      },
+      {
+        "key": "plugins",
+        "title": "Plugins",
+        "text": "What you can add, what is coming and how to write one.",
+        "action": "Discover the plugins"
+      },
+      {
+        "key": "download",
+        "title": "Download and news",
+        "text": "Windows and Linux, with every version and its notes.",
+        "action": "Download"
+      },
+      {
+        "key": "faq",
+        "title": "Questions",
+        "text": "Price, data, internet, computer and plugins.",
+        "action": "Read the answers"
+      }
+    ]
+  },
+  "pages": {
+    "features": {
+      "meta": {
+        "title": "Features · Cuelith",
+        "description": "How you work with Cuelith at the desk: what is on air, a different screen for every audience, songs with sections, a team with tablet and phone."
+      }
+    },
+    "plugins": {
+      "meta": {
+        "title": "Plugins · Cuelith",
+        "description": "Cuelith plugins: what installs from inside the app, what is available today and what is coming."
+      }
+    },
+    "download": {
+      "meta": {
+        "title": "Download and versions · Cuelith",
+        "description": "Download Cuelith for Windows or Linux, free and with no sign-up, and read the notes of every version."
+      }
+    },
+    "faq": {
+      "meta": {
+        "title": "Frequently asked questions · Cuelith",
+        "description": "Answers to the most common questions about Cuelith: price, licence, data, internet, computer and plugins."
+      }
+    },
+    "contact": {
+      "meta": {
+        "title": "Contact · Cuelith",
+        "description": "How to write to the Cuelith project: reports about a plugin, complaints, requests about personal data and security."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Write to us",
+    "lead": "One address for reports, complaints and requests about your data.",
+    "items": [
+      {
+        "title": "A problem in a plugin",
+        "text": "Malware, copyright infringement or anything else: write to {contact}. We tell the author, who can reply, and then decide with a reasoned message."
+      },
+      {
+        "title": "Complaints",
+        "text": "If you disagree with a decision about your plugin, write to {contact}. We reply within 30 days."
+      },
+      {
+        "title": "Your data",
+        "text": "To access, correct or delete your data, write to {contact}. The privacy notice explains what we keep and for how long."
+      },
+      {
+        "title": "Security",
+        "text": "A vulnerability in the program, the SDK or an official plugin: write to {contact} with “Security” at the start of the subject. We reply within a week."
+      },
+      {
+        "title": "Support for a plugin",
+        "text": "Support for a plugin belongs to its author: you will find it on the plugin's page. The project answers for the catalogue, not for the code of third-party plugins."
+      },
+      {
+        "title": "Questions about the program",
+        "text": "The most common answers are on the questions page. If you cannot find yours, write to us."
       }
     ]
   }

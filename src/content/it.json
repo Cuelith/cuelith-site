@@ -16,7 +16,10 @@
     "download": "Download",
     "language": "English",
     "languageLabel": "Read this page in English",
-    "marketplace": "Marketplace"
+    "marketplace": "Marketplace",
+    "skip": "Vai al contenuto",
+    "menu": "Menu",
+    "contact": "Contatti"
   },
   "hero": {
     "eyebrow": "Software di proiezione live · gratuito e open source",
@@ -255,7 +258,7 @@
     "items": [
       {
         "q": "È davvero gratuito?",
-        "a": "Sì. Il programma è open source e resterà gratuito, insieme a tutto ciò che serve per usarlo. Oggi sono gratuiti anche tutti i plugin."
+        "a": "Sì. Il programma è open source e resterà gratuito, insieme a tutto ciò che serve per usarlo. Oggi sono gratuiti anche tutti i plugin disponibili; chi scrive un plugin può decidere di venderlo."
       },
       {
         "q": "Chi può usare e modificare il codice sorgente?",
@@ -263,7 +266,7 @@
       },
       {
         "q": "Ci saranno plugin a pagamento?",
-        "a": "In futuro alcuni plugin avanzati potrebbero avere un prezzo, che vogliamo tenere contenuto. Non riguarderà ciò che è essenziale per usare Cuelith: il programma e le funzioni di base restano gratuiti. Se succederà, lo diremo con chiarezza prima."
+        "a": "Sì, ma non per ciò che è essenziale: il programma e le funzioni di base restano gratuiti. Chi scrive un plugin può venderlo dal proprio negozio e il marketplace lo mostra con il prezzo. Il progetto non chiede commissioni agli autori e non vede i tuoi dati di pagamento: compri dal negozio dell'autore, tramite un rivenditore registrato."
       },
       {
         "q": "Funziona senza internet?",
@@ -291,9 +294,29 @@
       },
       {
         "q": "Cosa succede se un plugin ha un problema?",
-        "a": "Viene chiuso e fatto ripartire da solo, mentre la proiezione continua. Se si ferma più volte di seguito resta spento e te lo dice."
+        "a": "Viene chiuso e fatto ripartire da solo, mentre la proiezione continua. Se si ferma più volte di seguito resta spento e te lo dice. Se il problema è del plugin stesso, il supporto è dell'autore (lo trovi nella scheda del plugin); per segnalarlo al progetto scrivi dalla pagina Contatti."
       }
-    ]
+    ],
+    "groups": [
+      {
+        "title": "Costo e licenza",
+        "items": [0, 1]
+      },
+      {
+        "title": "Plugin",
+        "items": [2, 9]
+      },
+      {
+        "title": "Dati e internet",
+        "items": [3, 5]
+      },
+      {
+        "title": "Uso",
+        "items": [4, 6, 7, 8]
+      }
+    ],
+    "more": "Non trovi la risposta?",
+    "moreLink": "Scrivici"
   },
   "footer": {
     "tagline": "Proiezione live, leggera e modulare.",
@@ -307,7 +330,8 @@
     "submit": "Proponi un plugin",
     "terms": "Condizioni del marketplace",
     "privacyLink": "Privacy",
-    "noContact": "(indirizzo di contatto in attivazione)"
+    "noContact": "(indirizzo di contatto in attivazione)",
+    "contact": "Contatti"
   },
   "os": {
     "windows": "Windows",
@@ -731,6 +755,102 @@
         "paragraphs": [
           "Se questa informativa cambia, pubblichiamo qui la nuova versione, con la data."
         ]
+      }
+    ]
+  },
+  "cta": {
+    "more": "Tutte le versioni e le novità"
+  },
+  "doors": {
+    "eyebrow": "Esplora",
+    "title": "Tutto il resto, una pagina alla volta",
+    "items": [
+      {
+        "key": "features",
+        "title": "Funzioni",
+        "text": "Come si lavora alla regia, e per chi è pensato.",
+        "action": "Vedi le funzioni"
+      },
+      {
+        "key": "plugins",
+        "title": "Plugin",
+        "text": "Cosa puoi aggiungere, cosa arriverà e come scriverne uno.",
+        "action": "Scopri i plugin"
+      },
+      {
+        "key": "download",
+        "title": "Download e novità",
+        "text": "Windows e Linux, con tutte le versioni e le loro note.",
+        "action": "Scarica"
+      },
+      {
+        "key": "faq",
+        "title": "Domande",
+        "text": "Prezzo, dati, internet, computer e plugin.",
+        "action": "Leggi le risposte"
+      }
+    ]
+  },
+  "pages": {
+    "features": {
+      "meta": {
+        "title": "Funzioni · Cuelith",
+        "description": "Come si lavora con Cuelith alla regia: cosa c'è in onda, uno schermo diverso per ogni pubblico, canti con sezioni, squadra con tablet e telefono."
+      }
+    },
+    "plugins": {
+      "meta": {
+        "title": "Plugin · Cuelith",
+        "description": "I plugin di Cuelith: cosa si installa dal programma, cosa è disponibile oggi e cosa arriverà."
+      }
+    },
+    "download": {
+      "meta": {
+        "title": "Download e versioni · Cuelith",
+        "description": "Scarica Cuelith per Windows o Linux, gratuito e senza registrazione, e leggi le note di tutte le versioni."
+      }
+    },
+    "faq": {
+      "meta": {
+        "title": "Domande frequenti · Cuelith",
+        "description": "Le risposte alle domande più frequenti su Cuelith: prezzo, licenza, dati, internet, computer e plugin."
+      }
+    },
+    "contact": {
+      "meta": {
+        "title": "Contatti · Cuelith",
+        "description": "Come scrivere al progetto Cuelith: segnalazioni su un plugin, reclami, richieste sui dati personali e sicurezza."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Contatti",
+    "title": "Scrivici",
+    "lead": "Un solo indirizzo per segnalazioni, reclami e richieste sui dati.",
+    "items": [
+      {
+        "title": "Un problema in un plugin",
+        "text": "Malware, violazione di copyright o altro: scrivi a {contact}. Avvisiamo l'autore, che può rispondere, e decidiamo con una comunicazione motivata."
+      },
+      {
+        "title": "Reclami",
+        "text": "Se non sei d'accordo con una decisione sul tuo plugin, scrivi a {contact}. Rispondiamo entro 30 giorni."
+      },
+      {
+        "title": "I tuoi dati",
+        "text": "Per accedere ai tuoi dati, correggerli o cancellarli, scrivi a {contact}. L'informativa spiega cosa conserviamo e per quanto."
+      },
+      {
+        "title": "Sicurezza",
+        "text": "Una vulnerabilità nel programma, nell'SDK o in un plugin ufficiale: scrivi a {contact} con «Security» all'inizio dell'oggetto. Rispondiamo entro una settimana."
+      },
+      {
+        "title": "Supporto per un plugin",
+        "text": "Il supporto di un plugin è dell'autore: lo trovi nella scheda del plugin. Il progetto risponde del catalogo, non del codice dei plugin di terzi."
+      },
+      {
+        "title": "Domande sul programma",
+        "text": "Le risposte più frequenti sono nella pagina delle domande. Se non trovi la tua, scrivici."
       }
     ]
   }
