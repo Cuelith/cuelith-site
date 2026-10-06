@@ -89,12 +89,22 @@ for (const lang of ["it", "en"]) {
         );
       }
       assert.ok(html.includes('<details class="menu">'), `${key}: menu a pulsante`);
+      // Il pulsante Home e' esplicito: non tutti sanno che il logo e' un collegamento.
+      const home = lang === "it" ? "/" : "/en/";
+      assert.equal(
+        (html.match(new RegExp(`<a href="${home}"[^>]*>Home</a>`, "g")) ?? []).length,
+        2,
+        `${key}: Home nel menu e nel menu a pulsante`,
+      );
       assert.ok(html.includes(`href="${PAGE_PATHS.contact[lang]}"`), `${key}: contatti`);
       assert.ok(html.includes(`href="${PAGE_PATHS.download[lang]}"`), `${key}: download`);
       // La voce della pagina in lettura e' segnata (la home non ne ha).
       const marked = [...html.matchAll(/href="([^"]+)" aria-current="page"/g)].map((m) => m[1]);
-      if (key === "home") assert.deepEqual(marked, []);
-      else
+      if (key === "home") {
+        // La voce e' segnata nel menu in linea e in quello a pulsante.
+        const home = lang === "it" ? "/" : "/en/";
+        assert.deepEqual(marked, [home, home]);
+      } else
         assert.ok(
           marked.includes(PAGE_PATHS[key][lang]) || key === "contact",
           `${key}: voce attiva`,

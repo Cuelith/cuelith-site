@@ -19,7 +19,8 @@
     "marketplace": "Marketplace",
     "skip": "Skip to content",
     "menu": "Menu",
-    "contact": "Contact"
+    "contact": "Contact",
+    "home": "Home"
   },
   "hero": {
     "eyebrow": "Live projection software · free and open source",

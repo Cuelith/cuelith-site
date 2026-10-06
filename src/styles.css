@@ -2023,3 +2023,171 @@ details[open] > summary::after {
   text-decoration-thickness: 2px;
   text-underline-offset: 6px;
 }
+
+/* ---------- telefono: tutto piu' compatto ---------- */
+/* Meno aria tra le parti, testi un poco piu' piccoli, riquadri piu' stretti. */
+
+@media (max-width: 520px) {
+  .section {
+    padding-block: 40px;
+  }
+
+  .section--first {
+    padding-top: 24px;
+  }
+
+  .section.cta {
+    padding-block: 32px;
+  }
+
+  .hero {
+    padding-block: 22px 0;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .eyebrow {
+    margin-bottom: 8px;
+    font-size: 11px;
+  }
+
+  .lead,
+  .lead--section {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .hero__actions {
+    gap: 8px;
+  }
+
+  .hero__actions .button + .button {
+    padding-block: 10px;
+  }
+
+  .hero__meta {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .facts__grid div {
+    padding: 14px 10px;
+  }
+
+  .facts__grid dt {
+    font-size: 30px;
+  }
+
+  .facts__grid dd {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .facts__note {
+    font-size: 12px;
+  }
+
+  .pillars {
+    gap: 22px;
+    margin-top: 22px;
+  }
+
+  .pillars h3 {
+    font-size: 20px;
+  }
+
+  .pillars p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Le porte: due colonne, solo titolo e freccia; il testo sta nella pagina. */
+  .doors {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .door {
+    gap: 8px;
+    padding: 14px;
+  }
+
+  .door h3 {
+    font-size: 18px;
+  }
+
+  .door p {
+    display: none;
+  }
+
+  .door__go {
+    font-size: 13px;
+  }
+
+  .audience {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .audience li {
+    padding: 16px;
+  }
+
+  .feature {
+    gap: 14px;
+    margin-block: 24px;
+  }
+
+  .support__row {
+    padding: 20px;
+  }
+
+  .contact {
+    gap: 10px;
+  }
+
+  .contact li {
+    padding: 16px;
+  }
+
+  .faq-group {
+    margin-top: 28px;
+  }
+
+  .foot {
+    padding-block: 26px;
+  }
+
+  .foot__row {
+    gap: 16px;
+  }
+
+  .foot ul {
+    gap: 6px 18px;
+    font-size: 14px;
+  }
+
+  .foot__small {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Lo schermo del telefono nelle funzioni: stretto e centrato, non a tutta larghezza. */
+  .feature__media .window--phone {
+    max-width: 190px;
+    margin-inline: auto;
+  }
+
+  .feature h3 {
+    font-size: 22px;
+  }
+
+  .feature ul {
+    gap: 6px;
+    font-size: 15px;
+  }
+}

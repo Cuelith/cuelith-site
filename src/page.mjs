@@ -34,8 +34,10 @@ export const PAGE_PATHS = {
   contact: { it: "/contatti/", en: "/en/contact/" },
 };
 /** Le voci del menu, in ordine: la chiave dice anche quale testo (nav.<chiave>) e quale indirizzo. */
-const MENU = ["features", "plugins", "marketplace", "faq"];
-const pathOf = (key, lang) => (key === "marketplace" ? MARKETPLACE_PATHS : PAGE_PATHS[key])[lang];
+const MENU = ["home", "features", "plugins", "marketplace", "faq"];
+const HOME_PATHS = { it: "/", en: "/en/" };
+const pathOf = (key, lang) =>
+  (key === "home" ? HOME_PATHS : key === "marketplace" ? MARKETPLACE_PATHS : PAGE_PATHS[key])[lang];
 
 /**
  * Il piede della pagina, uguale in tutte le pagine del sito. `alternate` e'
@@ -537,7 +539,7 @@ export function renderHome(input) {
     c,
     page: c,
     alt: { it: "/", en: "/en/" },
-    current: "",
+    current: "home",
     body,
     assets,
     single,
