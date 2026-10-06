@@ -1,6 +1,9 @@
 name = "cuelith-liveness"
 main = "worker.js"
 compatibility_date = "2026-10-01"
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "liveness-cuelith.lzrhive.it", custom_domain = true }]
 
 # Una volta al giorno, alle 05:30 UTC.
 [triggers]
@@ -10,9 +13,10 @@ crons = ["30 5 * * *"]
 binding = "KV"
 id = "e2608e3d2f4b4e839b1cf326efde8064" # cuelith-submissions: gli stessi contatti del sito
 
+
 [vars]
 MAIL_FROM = "Cuelith <contact@lzrhive.it>"
 # Indirizzo pubblico del Worker (da impostare dopo la pubblicazione).
-SITE_ORIGIN = "https://liveness.cuelith.lzrhive.it"
+SITE_ORIGIN = "https://liveness-cuelith.lzrhive.it"
 
 # Segreto (non qui): npx wrangler secret put RESEND_API_KEY
