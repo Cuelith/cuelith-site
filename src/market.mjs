@@ -174,12 +174,23 @@ export function renderMarketplace({ content: c, modules, catalog, assets, single
  */
 function legalPage({ content: c, key, assets, single, contact }) {
   const t = c[key];
-  const mail = contact === "" ? c.footer.noContact : contact;
-  const paragraph = (text) => `<p>${esc(fill(text, { contact: mail }))}</p>`;
+  // Cloudflare nasconde da solo gli indirizzi email nelle pagine (li mostra come
+  // «[email protected]» e li rimette con uno script): per un contatto legale deve
+  // restare in chiaro, quindi lo si esclude con <!--email_off-->.
+  const mark = String.fromCharCode(1);
+  const link =
+    contact === ""
+      ? esc(c.footer.noContact)
+      : `<!--email_off--><a class="link" href="mailto:${esc(contact)}">${esc(contact)}</a><!--/email_off-->`;
+  const inline = (text) =>
+    esc(fill(text, { contact: mark }))
+      .split(mark)
+      .join(link);
+  const paragraph = (text) => `<p>${inline(text)}</p>`;
   const section = (s) => `<section class="terms__section">
       <h2>${esc(s.title)}</h2>
       ${s.paragraphs.map(paragraph).join("")}
-      ${s.items === undefined ? "" : `<ul class="steps steps--plain">${s.items.map((i) => `<li>${esc(fill(i, { contact: mail }))}</li>`).join("")}</ul>`}
+      ${s.items === undefined ? "" : `<ul class="steps steps--plain">${s.items.map((i) => `<li>${inline(i)}</li>`).join("")}</ul>`}
       ${s.after === undefined ? "" : paragraph(s.after)}
     </section>`;
   const body = `<section class="section subpage">

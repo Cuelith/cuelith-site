@@ -639,6 +639,12 @@ test("informativa: otto punti nelle due lingue, con l'indirizzo e senza promesse
   for (const lang of ["it", "en"]) {
     const html = legalPage(lang, "privacy", CONTACT);
     assert.ok(html.includes(CONTACT));
+    // In chiaro e cliccabile, fuori dall'offuscamento automatico degli indirizzi di Cloudflare.
+    assert.ok(
+      html.includes(
+        `<!--email_off--><a class="link" href="mailto:${CONTACT}">${CONTACT}</a><!--/email_off-->`,
+      ),
+    );
     assert.doesNotMatch(html, /\{contact\}/);
     assert.equal((html.match(/<h2>\d+\. /g) ?? []).length, 8);
     assert.match(html, new RegExp(`<html lang="${lang}">`));
