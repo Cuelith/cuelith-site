@@ -432,6 +432,14 @@ export function renderPluginDetail({ content: c, plugin, assets, single = false 
   );
   const row = (label, value) =>
     value === "" ? "" : `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
+  const support =
+    typeof plugin.support === "string" && plugin.support !== ""
+      ? `<div><dt>${esc(st.support)}</dt><dd><a href="${esc(plugin.support)}" rel="noopener nofollow">${esc(
+          plugin.support.startsWith("mailto:")
+            ? plugin.support.slice(7)
+            : plugin.support.replace(/^https:\/\//, ""),
+        )}</a></dd></div>`
+      : "";
   const when = (iso) => (iso ? formatDate(iso, c.locale) : "");
 
   const cta = paid
@@ -490,6 +498,7 @@ export function renderPluginDetail({ content: c, plugin, assets, single = false 
       <dl class="store-facts">
         ${row(st.publisher, plugin.publisher)}
         ${row(st.license, plugin.license)}
+        ${support}
         ${row(st.version, plugin.version)}
         ${row(st.updated, when(plugin.published))}
         ${row(st.category, group)}

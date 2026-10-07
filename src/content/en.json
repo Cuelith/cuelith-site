@@ -301,19 +301,33 @@
     "groups": [
       {
         "title": "Cost and licence",
-        "items": [0, 1]
+        "items": [
+          0,
+          1
+        ]
       },
       {
         "title": "Plugins",
-        "items": [2, 9]
+        "items": [
+          2,
+          9
+        ]
       },
       {
         "title": "Data and internet",
-        "items": [3, 5]
+        "items": [
+          3,
+          5
+        ]
       },
       {
         "title": "Using it",
-        "items": [4, 6, 7, 8]
+        "items": [
+          4,
+          6,
+          7,
+          8
+        ]
       }
     ],
     "more": "Can't find the answer?",
@@ -615,7 +629,9 @@
       },
       {
         "title": "3. Who publishes and what they declare",
-        "paragraphs": ["Whoever proposes a plugin declares that they:"],
+        "paragraphs": [
+          "Whoever proposes a plugin declares that they:"
+        ],
         "items": [
           "are the author of the plugin or have the right to distribute it under the licence they state;",
           "state the licence, including a proprietary one, and where it can be read;",
@@ -626,7 +642,9 @@
       },
       {
         "title": "4. Code of conduct",
-        "paragraphs": ["A plugin in the marketplace follows these rules, in letter and in spirit:"],
+        "paragraphs": [
+          "A plugin in the marketplace follows these rules, in letter and in spirit:"
+        ],
         "items": [
           "Rights. It does not infringe anyone's copyright, trademarks or other rights. It does not copy code from the Cuelith core, which is GPL. It does not use “Cuelith” in its own name: write “for Cuelith”.",
           "No malware. It contains no malware, hidden or obfuscated code, nor functions the user cannot understand from the description.",
@@ -759,7 +777,9 @@
       },
       {
         "title": "8. Changes",
-        "paragraphs": ["If this notice changes, we publish the new version here, with the date."]
+        "paragraphs": [
+          "If this notice changes, we publish the new version here, with the date."
+        ]
       }
     ]
   },
@@ -898,6 +918,7 @@
     "priceNote": "The price is the one in the author's store.",
     "rangeBetween": "from {from} up to {to} (excluded)",
     "rangeCaret": "{version} and later in the {major}.x series",
-    "rangeZero": "the {major}.{minor}.x series (from {version})"
+    "rangeZero": "the {major}.{minor}.x series (from {version})",
+    "support": "Support"
   }
 }

@@ -301,19 +301,33 @@
     "groups": [
       {
         "title": "Costo e licenza",
-        "items": [0, 1]
+        "items": [
+          0,
+          1
+        ]
       },
       {
         "title": "Plugin",
-        "items": [2, 9]
+        "items": [
+          2,
+          9
+        ]
       },
       {
         "title": "Dati e internet",
-        "items": [3, 5]
+        "items": [
+          3,
+          5
+        ]
       },
       {
         "title": "Uso",
-        "items": [4, 6, 7, 8]
+        "items": [
+          4,
+          6,
+          7,
+          8
+        ]
       }
     ],
     "more": "Non trovi la risposta?",
@@ -615,7 +629,9 @@
       },
       {
         "title": "3. Chi pubblica e cosa dichiara",
-        "paragraphs": ["Chi propone un plugin dichiara che:"],
+        "paragraphs": [
+          "Chi propone un plugin dichiara che:"
+        ],
         "items": [
           "è l'autore del plugin o ha il diritto di distribuirlo con la licenza che indica;",
           "indica la licenza, anche proprietaria, e dove si può leggere;",
@@ -902,6 +918,7 @@
     "priceNote": "Il prezzo è quello del negozio dell'autore.",
     "rangeBetween": "dalla {from} alla {to} (esclusa)",
     "rangeCaret": "{version} e successive della serie {major}.x",
-    "rangeZero": "la serie {major}.{minor}.x (da {version})"
+    "rangeZero": "la serie {major}.{minor}.x (da {version})",
+    "support": "Assistenza"
   }
 }

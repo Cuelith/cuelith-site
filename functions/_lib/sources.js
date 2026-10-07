@@ -11,6 +11,15 @@ export const SOURCE_ARCHIVE =
 /** Indice con tutti i plugin, anche a pagamento (schema 2); l'indice 1 e' il ripiego. */
 export const MODULES_INDEX_V2 = "https://cuelith.github.io/cuelith-registry/index-2.json";
 export const MODULES_INDEX = "https://cuelith.github.io/cuelith-registry/index.json";
+/** Dove chiedere aiuto per ogni plugin (scritto dagli autori; non e' nell'indice che leggono le app). */
+export const SUPPORT_INDEX = "https://cuelith.github.io/cuelith-registry/support.json";
+
+/** Solo una pagina https o un indirizzo di posta: niente altro diventa un collegamento. */
+export const isSupportLink = (value) =>
+  typeof value === "string" &&
+  value.length <= 300 &&
+  (/^https:\/\/[^\s@]+$/i.test(value) || /^mailto:[^\s@,;?]+@[^\s@,;?]+$/i.test(value));
+
 /** Licenze di tutti i plugin a pagamento, anche ritirati dalla vetrina: lo legge solo il Notaio. */
 export const LICENSES_INDEX = "https://cuelith.github.io/cuelith-registry/licenses.json";
 
@@ -162,6 +171,18 @@ export async function readText(url, fetcher = fetch) {
 export async function loadReleases(fetcher = fetch) {
   const feed = await readText(RELEASES_FEED, fetcher);
   return feed === undefined ? undefined : parseReleases(feed);
+}
+
+/** Dove chiedere aiuto, per id di plugin. Se il file non risponde, nessuno: il sito resta in piedi. */
+export async function loadSupport(fetcher = fetch) {
+  const text = await readText(SUPPORT_INDEX, fetcher);
+  if (text === undefined) return {};
+  try {
+    const found = JSON.parse(text).support ?? {};
+    return Object.fromEntries(Object.entries(found).filter(([, link]) => isSupportLink(link)));
+  } catch {
+    return {};
+  }
 }
 
 /** I plugin del marketplace: dall'indice 2, e se non risponde dall'indice 1. */

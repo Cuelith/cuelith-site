@@ -348,3 +348,36 @@ test("funzione: plugin sconosciuto o solo incluso = 404 senza cache; catalogo o 
   const noStyle = await pluginPage(context({ id: "acme.lyrics-pro", manifest: null }), "it");
   assert.equal(noStyle.status, 503);
 });
+
+test("assistenza: compare nella scheda come collegamento, solo se e' https o posta; i valori strani sono scartati", async () => {
+  const c = json("content/it.json");
+  const withSupport = (support) =>
+    document(
+      renderPluginDetail({ content: c, plugin: { ...plugin(entry(), "it"), support }, assets }),
+      "it",
+    );
+  const web = withSupport("https://example.com/aiuto");
+  assert.ok(web.includes(`<dt>${c.store.support}</dt>`));
+  assert.ok(web.includes('href="https://example.com/aiuto"'));
+  assert.ok(web.includes('rel="noopener nofollow"'));
+  assert.ok(withSupport("mailto:aiuto@example.com").includes(">aiuto@example.com</a>"));
+  assert.equal(withSupport(undefined).includes(`<dt>${c.store.support}</dt>`), false);
+  // Quel che arriva dal registro si filtra di nuovo qui: niente javascript:, niente http, niente credenziali.
+  const { isSupportLink, loadSupport, SUPPORT_INDEX } =
+    await import("../functions/_lib/sources.js");
+  for (const bad of ["javascript:alert(1)", "http://example.com", "https://u@example.com", 7, ""]) {
+    assert.equal(isSupportLink(bad), false, String(bad));
+  }
+  const fetcher = (url) =>
+    Promise.resolve(
+      url === SUPPORT_INDEX
+        ? new Response(
+            JSON.stringify({
+              support: { "a.b": "https://example.com", "c.d": "javascript:alert(1)" },
+            }),
+          )
+        : new Response("", { status: 404 }),
+    );
+  assert.deepEqual(await loadSupport(fetcher), { "a.b": "https://example.com" });
+  assert.deepEqual(await loadSupport(() => Promise.resolve(new Response("", { status: 500 }))), {});
+});

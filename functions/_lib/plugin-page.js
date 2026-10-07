@@ -4,7 +4,7 @@ import it from "../../src/content/it.json" with { type: "json" };
 import { renderPluginDetail, renderPluginNotFound } from "../../src/market.mjs";
 import { document } from "../../src/page.mjs";
 import { pluginList } from "../../src/shared.js";
-import { loadModules } from "./sources.js";
+import { loadModules, loadSupport } from "./sources.js";
 
 // La scheda di un plugin del marketplace (/marketplace/<id>/ e /en/marketplace/<id>/):
 // si disegna al momento con i dati del catalogo, cosi' un plugin appena pubblicato ha
@@ -58,9 +58,10 @@ export async function pluginPage(context, lang) {
     // Il catalogo non risponde: meglio dirlo che far credere che il plugin non esista.
     return html("Marketplace unavailable", 503, "no-store");
   }
-  const plugin = pluginList(modules, catalog, lang).find(
+  const found = pluginList(modules, catalog, lang).find(
     (p) => p.id === id && p.status === "available",
   );
+  const plugin = found === undefined ? undefined : { ...found, support: (await loadSupport())[id] };
   if (plugin === undefined) {
     return html(document(renderPluginNotFound({ content, id, assets }), lang), 404, "no-store");
   }
