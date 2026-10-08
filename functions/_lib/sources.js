@@ -13,6 +13,8 @@ export const MODULES_INDEX_V2 = "https://cuelith.github.io/cuelith-registry/inde
 export const MODULES_INDEX = "https://cuelith.github.io/cuelith-registry/index.json";
 /** Dove chiedere aiuto per ogni plugin (scritto dagli autori; non e' nell'indice che leggono le app). */
 export const SUPPORT_INDEX = "https://cuelith.github.io/cuelith-registry/support.json";
+/** Immagini di copertina e guide d'uso dei plugin (protocollo 1.19). */
+export const EXTRAS_INDEX = "https://cuelith.github.io/cuelith-registry/extras.json";
 
 /** Solo una pagina https o un indirizzo di posta: niente altro diventa un collegamento. */
 export const isSupportLink = (value) =>
@@ -180,6 +182,56 @@ export async function loadSupport(fetcher = fetch) {
   try {
     const found = JSON.parse(text).support ?? {};
     return Object.fromEntries(Object.entries(found).filter(([, link]) => isSupportLink(link)));
+  } catch {
+    return {};
+  }
+}
+
+const COVER = /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/;
+const isStep = (step) =>
+  step !== null &&
+  typeof step === "object" &&
+  typeof step.title === "string" &&
+  step.title.length > 0 &&
+  step.title.length <= 80 &&
+  typeof step.body === "string" &&
+  step.body.length > 0 &&
+  step.body.length <= 600;
+
+/**
+ * Immagine e guida d'uso per id di plugin. Quello che non ha la forma giusta si scarta (il
+ * sito mostra solo dati controllati); se il file non risponde, nessuno: il sito resta in piedi.
+ */
+export async function loadExtras(fetcher = fetch) {
+  const text = await readText(EXTRAS_INDEX, fetcher);
+  if (text === undefined) return {};
+  try {
+    const plugins = JSON.parse(text).plugins ?? {};
+    const out = {};
+    for (const [id, extra] of Object.entries(plugins)) {
+      const image =
+        typeof extra?.image === "string" && extra.image.length < 210_000 && COVER.test(extra.image)
+          ? extra.image
+          : undefined;
+      const guide = {};
+      for (const [lang, steps] of Object.entries(extra?.guide ?? {})) {
+        if (
+          /^[a-z]{2}$/.test(lang) &&
+          Array.isArray(steps) &&
+          steps.length <= 8 &&
+          steps.every(isStep)
+        ) {
+          guide[lang] = steps.map(({ title, body }) => ({ title, body }));
+        }
+      }
+      if (image !== undefined || Object.keys(guide).length > 0) {
+        out[id] = {
+          ...(image === undefined ? {} : { image }),
+          ...(Object.keys(guide).length === 0 ? {} : { guide }),
+        };
+      }
+    }
+    return out;
   } catch {
     return {};
   }

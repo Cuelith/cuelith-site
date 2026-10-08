@@ -58,7 +58,9 @@ export function makeZip({ manifest = manifestOf(), icon = SVG, extra = {} } = {}
     "locales/it.json": strToU8("{}"),
   };
   if (icon !== undefined) files["icon.svg"] = strToU8(icon);
-  for (const [name, content] of Object.entries(extra)) files[name] = strToU8(content);
+  for (const [name, content] of Object.entries(extra)) {
+    files[name] = typeof content === "string" ? strToU8(content) : content;
+  }
   return zipSync(files);
 }
 

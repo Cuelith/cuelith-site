@@ -381,3 +381,66 @@ test("assistenza: compare nella scheda come collegamento, solo se e' https o pos
   assert.deepEqual(await loadSupport(fetcher), { "a.b": "https://example.com" });
   assert.deepEqual(await loadSupport(() => Promise.resolve(new Response("", { status: 500 }))), {});
 });
+
+test("immagine e guida d'uso (1.19): nella scheda e dagli extra del registry, filtrati", async () => {
+  const c = json("content/it.json");
+  const png = `data:image/png;base64,${Buffer.from("immagine").toString("base64")}`;
+  const guide = {
+    it: [{ title: "Primo passo", body: "Apri lo strumento dalla colonna a sinistra." }],
+    en: [{ title: "First step", body: "Open the tool from the left column." }],
+  };
+  const html = document(
+    renderPluginDetail({
+      content: c,
+      plugin: { ...plugin(entry(), "it"), image: png, guide },
+      assets,
+    }),
+    "it",
+  );
+  assert.ok(html.includes(`class="store-cover" src="${png}"`));
+  assert.ok(html.includes(`<h2>${c.store.guideTitle}</h2>`));
+  assert.ok(
+    html.includes("<strong>Primo passo</strong> Apri lo strumento dalla colonna a sinistra."),
+  );
+  // In inglese la guida inglese; senza la lingua della pagina, l'italiano.
+  const en = json("content/en.json");
+  const inEnglish = document(
+    renderPluginDetail({ content: en, plugin: { ...plugin(entry(), "en"), guide }, assets }),
+    "en",
+  );
+  assert.ok(inEnglish.includes("<strong>First step</strong>"));
+  // Senza niente, niente: nessuna immagine e nessuna sezione vuota.
+  const none = document(
+    renderPluginDetail({ content: c, plugin: plugin(entry(), "it"), assets }),
+    "it",
+  );
+  assert.equal(none.includes("store-cover"), false);
+  assert.equal(none.includes(`<h2>${c.store.guideTitle}</h2>`), false);
+
+  // Dagli extra del registry: si tiene solo cio' che ha la forma giusta.
+  const { loadExtras, EXTRAS_INDEX } = await import("../functions/_lib/sources.js");
+  const serve = (body) => (url) =>
+    Promise.resolve(
+      url === EXTRAS_INDEX ? new Response(JSON.stringify(body)) : new Response("", { status: 404 }),
+    );
+  const extras = await loadExtras(
+    serve({
+      schema: 1,
+      plugins: {
+        "acme.ok": { image: png, guide },
+        "acme.finta": {
+          image: "https://esempio.it/a.png",
+          guide: { it: [{ title: "x", body: "" }] },
+        },
+        "acme.lunga": { guide: { it: Array(9).fill(guide.it[0]) } },
+        "acme.svg": { image: "data:image/svg+xml;base64,AAAA" },
+      },
+    }),
+  );
+  assert.deepEqual(Object.keys(extras), ["acme.ok"]);
+  assert.equal(extras["acme.ok"].image, png);
+  assert.deepEqual(extras["acme.ok"].guide.it, guide.it);
+  // Il file non risponde o non e' JSON: nessun extra, il sito resta in piedi.
+  assert.deepEqual(await loadExtras(() => Promise.resolve(new Response("", { status: 500 }))), {});
+  assert.deepEqual(await loadExtras(() => Promise.resolve(new Response("non json"))), {});
+});

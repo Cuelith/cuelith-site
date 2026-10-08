@@ -109,7 +109,7 @@ export async function openRegistryPullRequest({
         method: "PUT",
         body: {
           message: file.message ?? `Aggiorna ${file.path}`,
-          content: toBase64(file.content),
+          content: toBase64(file.bytes ?? file.content),
           branch,
           ...(sha === undefined ? {} : { sha }),
         },

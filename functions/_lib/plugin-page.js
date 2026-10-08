@@ -4,7 +4,7 @@ import it from "../../src/content/it.json" with { type: "json" };
 import { renderPluginDetail, renderPluginNotFound } from "../../src/market.mjs";
 import { document } from "../../src/page.mjs";
 import { pluginList } from "../../src/shared.js";
-import { loadModules, loadSupport } from "./sources.js";
+import { loadExtras, loadModules, loadSupport } from "./sources.js";
 
 // La scheda di un plugin del marketplace (/marketplace/<id>/ e /en/marketplace/<id>/):
 // si disegna al momento con i dati del catalogo, cosi' un plugin appena pubblicato ha
@@ -61,7 +61,11 @@ export async function pluginPage(context, lang) {
   const found = pluginList(modules, catalog, lang).find(
     (p) => p.id === id && p.status === "available",
   );
-  const plugin = found === undefined ? undefined : { ...found, support: (await loadSupport())[id] };
+  const extra = found === undefined ? undefined : (await loadExtras())[id];
+  const plugin =
+    found === undefined
+      ? undefined
+      : { ...found, support: (await loadSupport())[id], image: extra?.image, guide: extra?.guide };
   if (plugin === undefined) {
     return html(document(renderPluginNotFound({ content, id, assets }), lang), 404, "no-store");
   }

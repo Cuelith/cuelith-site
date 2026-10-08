@@ -91,6 +91,8 @@
         "points": [
           "Cinque disposizioni della regia: per chi presenta, per le band, per le conferenze",
           "Tasti rapidi per tutto: avanti, indietro, nero, sezioni del brano",
+          "Programma e anteprima si scambiano di dimensione con un clic; le miniature delle slide si ingrandiscono per leggere il testo",
+          "Cerca e vai (Ctrl+K): plugin, comandi, impostazioni e scaletta con una sola ricerca",
           "Timer e messaggi per chi è sul palco"
         ],
         "alt": "Regia di Cuelith con scaletta, slide, programma e anteprima."
@@ -102,7 +104,9 @@
         "points": [
           "Tutte le uscite che il computer può collegare",
           "Nero e blocco su una singola uscita, senza toccare le altre",
-          "Sfondi per slide, per elemento o predefiniti, con velo per la leggibilità"
+          "Sfondi per slide, per elemento o predefiniti, anche animati (GIF), con velo per la leggibilità",
+          "Stili del testo creati da te, con bordo e ombra: il testo si rimpicciolisce invece di spezzare le righe",
+          "«Solo sfondo»: con un clic togli il testo dalle uscite e lasci lo sfondo"
         ],
         "alt": "Due uscite con lo stesso contenuto: in sala il testo sullo sfondo, sul palco il testo con la prossima slide e l'orologio.",
         "shot2": "uscita-palco"
@@ -113,6 +117,7 @@
         "text": "Verse, Chorus e Bridge diventano grossi pulsanti: se la band torna al ritornello, ci sei con un tocco. I brani si importano ed esportano nei formati aperti OpenLyrics e ChordPro.",
         "points": [
           "Librerie con ricerca per titolo, testo, autore e numero",
+          "Editor con l'anteprima di cosa vede il pubblico, slide per slide",
           "Ordine di proiezione separato dal testo",
           "Crediti e autori sempre a posto"
         ],
@@ -137,7 +142,9 @@
         "points": [
           "Fotogrammi al secondo di ogni uscita",
           "Consumo di ogni plugin, dichiarato e misurato",
-          "Un colore solo da guardare: verde, giallo, rosso"
+          "Un colore solo da guardare: verde, giallo, rosso",
+          "Se la memoria del computer sta per finire, Cuelith ferma il plugin più pesante prima che cada tutto, e te lo dice",
+          "Misurato: dodici plugin insieme occupano circa 300 MB e da fermi non consumano processore"
         ],
         "alt": "Impostazioni, sezione Risorse: memoria, processore e fotogrammi delle uscite."
       }
@@ -172,7 +179,7 @@
   "plugins": {
     "eyebrow": "Plugin",
     "title": "Il programma fa poco. Il resto lo scegli tu.",
-    "lead": "Ogni plugin si installa dal programma, dichiara cosa può fare prima che tu lo accenda e si può spegnere in qualsiasi momento. Alcuni aggiungono uno strumento alla regia; altri lavorano in background, come i protocolli audio e video.",
+    "lead": "Ogni plugin si installa dal programma, dichiara cosa può fare prima che tu lo accenda e si può spegnere in qualsiasi momento. Alcuni aggiungono uno strumento alla regia; altri lavorano in background, come i protocolli audio e video. Li trovi in un attimo con la ricerca (Ctrl+K), li configuri tutti dalla stessa finestra e, al primo avvio, una guida ti propone i più utili.",
     "filterLabel": "Cosa ti serve?",
     "filters": {
       "all": "Tutto",
@@ -228,7 +235,7 @@
   "download": {
     "eyebrow": "Download",
     "title": "Pronto in due minuti",
-    "lead": "Gratuito, senza registrazione. Gli aggiornamenti arrivano da soli e si installano solo quando lo decidi tu, mai mentre sei in onda.",
+    "lead": "Gratuito, senza registrazione. Gli aggiornamenti arrivano da soli e si installano solo quando lo decidi tu, mai mentre sei in onda. L'installazione ti chiede la lingua; se Cuelith è già installato, la procedura lo aggiorna e lascia i tuoi show, le impostazioni e i plugin dove sono.",
     "windows": "Download per Windows",
     "windowsHint": "Windows 10 e 11, 64 bit · installatore",
     "linux": "Download per Linux",
@@ -296,6 +303,10 @@
       {
         "q": "Cosa succede se un plugin ha un problema?",
         "a": "Viene chiuso e fatto ripartire da solo, mentre la proiezione continua. Se si ferma più volte di seguito resta spento e te lo dice. Se il problema è del plugin stesso, il supporto è dell'autore (lo trovi nella scheda del plugin); per segnalarlo al progetto scrivi dalla pagina Contatti."
+      },
+      {
+        "q": "Quanti plugin posso usare insieme?",
+        "a": "Non c'è un limite fisso: ogni plugin gira nel suo processo, con una priorità più bassa della regia e delle uscite. Nelle nostre prove dodici plugin leggeri occupano circa 27 MB l'uno e da fermi non consumano; e con tutti i core del computer occupati da plugin che lavorano al massimo la regia resta pronta e l'uscita fluida. Più plugin accendi, più il computer deve essere potente: l'indicatore in alto ti dice se regge, e se la memoria sta per finire Cuelith ferma il plugin più pesante."
       }
     ],
     "groups": [
@@ -310,7 +321,8 @@
         "title": "Plugin",
         "items": [
           2,
-          9
+          9,
+          10
         ]
       },
       {
@@ -532,7 +544,7 @@
         },
         "packageUrl": {
           "label": "Indirizzo del pacchetto (.cpkg)",
-          "hint": "https, stabile e raggiungibile da chiunque. Controlliamo dimensione, impronta e permessi."
+          "hint": "https, stabile e raggiungibile da chiunque. Controlliamo dimensione, impronta e permessi. Se il pacchetto contiene un'immagine di copertina (campo image) e una guida al primo uso (campo onboarding), le mostriamo nella scheda del plugin."
         },
         "repositoryUrl": {
           "label": "Pagina del progetto (facoltativo)",
@@ -919,6 +931,7 @@
     "rangeBetween": "dalla {from} alla {to} (esclusa)",
     "rangeCaret": "{version} e successive della serie {major}.x",
     "rangeZero": "la serie {major}.{minor}.x (da {version})",
-    "support": "Assistenza"
+    "support": "Assistenza",
+    "guideTitle": "Come si usa"
   }
 }

@@ -61,6 +61,8 @@ export async function reviewSubmission(record, env, { fetcher = fetch, checkoutU
         permissions: version.permissions,
         price: submission.price ?? null,
         checkoutUrl: built.entry.checkoutUrl ?? null,
+        hasImage: built.image !== undefined,
+        hasGuide: built.entry.guide !== undefined,
       },
     },
     built,
@@ -101,6 +103,16 @@ export async function approveSubmission(record, env, { fetcher = fetch, checkout
         content: built.icon,
         message: `${entry.name}: icona`,
       },
+      // Immagine di copertina del pacchetto, se ne ha una (protocollo 1.19).
+      ...(built.image === undefined
+        ? []
+        : [
+            {
+              path: `plugins/${id}.${built.image.ext}`,
+              bytes: built.image.bytes,
+              message: `${entry.name}: immagine di copertina`,
+            },
+          ]),
     ],
     title: `${entry.name} ${version.version} (proposta approvata)`,
     body: [

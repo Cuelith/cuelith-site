@@ -91,6 +91,8 @@
         "points": [
           "Five layouts: for presenting, for bands, for conferences",
           "Keyboard shortcuts for everything: next, back, blackout, song sections",
+          "Program and preview swap sizes with one click; slide thumbnails grow so you can read the text",
+          "Search and go (Ctrl+K): plugins, commands, settings and playlist in one search",
           "Timer and messages for the people on stage"
         ],
         "alt": "Cuelith control view with playlist, slides, program and preview."
@@ -102,7 +104,9 @@
         "points": [
           "As many outputs as your computer can connect",
           "Blackout and freeze on a single output, leaving the others alone",
-          "Backgrounds per slide, per item or by default, with a dim layer for legibility"
+          "Backgrounds per slide, per item or by default, animated ones (GIF) too, with a dim layer for legibility",
+          "Text styles you create, with outline and shadow: text shrinks instead of breaking its lines",
+          "\"Background only\": one click hides the text on the outputs and keeps the background"
         ],
         "alt": "Two outputs with the same content: the room shows the text over a background, the stage shows the text with the next slide and the clock.",
         "shot2": "uscita-palco"
@@ -113,6 +117,7 @@
         "text": "Verse, Chorus and Bridge become large buttons: when the band goes back to the chorus, you are there in one tap. Songs import and export in the open OpenLyrics and ChordPro formats.",
         "points": [
           "Libraries searchable by title, lyrics, author and number",
+          "Editor with a preview of what the audience sees, slide by slide",
           "Projection order kept separate from the lyrics",
           "Credits and authors always in place"
         ],
@@ -137,7 +142,9 @@
         "points": [
           "Frames per second for every output",
           "Usage for every plugin, declared and measured",
-          "One colour to watch: green, yellow, red"
+          "One colour to watch: green, yellow, red",
+          "If the computer is about to run out of memory, Cuelith stops the heaviest plugin before everything falls over, and tells you",
+          "Measured: twelve plugins together take about 300 MB and use no processor while idle"
         ],
         "alt": "Settings, Resources section: memory, processor and output frame rates."
       }
@@ -172,7 +179,7 @@
   "plugins": {
     "eyebrow": "Plugins",
     "title": "The core does little. You choose the rest.",
-    "lead": "Every plugin installs from inside the app, declares what it can do before you switch it on, and can be turned off at any time. Some add a tool to the control view; others work in the background, like audio and video protocols.",
+    "lead": "Every plugin installs from inside the app, declares what it can do before you switch it on, and can be turned off at any time. Some add a tool to the control view; others work in the background, like audio and video protocols. You find them in an instant with search (Ctrl+K), set them all up from the same window and, the first time you start, a guide suggests the most useful ones.",
     "filterLabel": "What do you need?",
     "filters": {
       "all": "Everything",
@@ -228,7 +235,7 @@
   "download": {
     "eyebrow": "Download",
     "title": "Ready in two minutes",
-    "lead": "Free, with no sign-up. Updates arrive on their own and install only when you decide, never while you are on air.",
+    "lead": "Free, with no sign-up. Updates arrive on their own and install only when you decide, never while you are on air. The installer asks for your language; if Cuelith is already installed, it updates it and leaves your shows, settings and plugins where they are.",
     "windows": "Download for Windows",
     "windowsHint": "Windows 10 and 11, 64-bit · installer",
     "linux": "Download for Linux",
@@ -296,6 +303,10 @@
       {
         "q": "What happens if a plugin has a problem?",
         "a": "It is closed and restarted automatically, while the projection carries on. If it stops several times in a row it stays off and tells you. If the problem is in the plugin itself, support belongs to its author (you will find it on the plugin's page); to report it to the project, write from the Contact page."
+      },
+      {
+        "q": "How many plugins can I use together?",
+        "a": "There is no fixed limit: every plugin runs in its own process, at a lower priority than the control view and the outputs. In our tests twelve light plugins take about 27 MB each and use nothing while idle; and with every core of the computer busy with plugins working flat out, the control view stays ready and the output smooth. The more plugins you switch on, the more powerful the computer needs to be: the indicator at the top tells you whether it copes, and if memory is about to run out Cuelith stops the heaviest plugin."
       }
     ],
     "groups": [
@@ -310,7 +321,8 @@
         "title": "Plugins",
         "items": [
           2,
-          9
+          9,
+          10
         ]
       },
       {
@@ -532,7 +544,7 @@
         },
         "packageUrl": {
           "label": "Package address (.cpkg)",
-          "hint": "https, stable and reachable by anyone. We check size, fingerprint and permissions."
+          "hint": "https, stable and reachable by anyone. We check size, fingerprint and permissions. If the package has a cover image (the image field) and a first-use guide (the onboarding field), we show them on the plugin page."
         },
         "repositoryUrl": {
           "label": "Project page (optional)",
@@ -919,6 +931,7 @@
     "rangeBetween": "from {from} up to {to} (excluded)",
     "rangeCaret": "{version} and later in the {major}.x series",
     "rangeZero": "the {major}.{minor}.x series (from {version})",
-    "support": "Support"
+    "support": "Support",
+    "guideTitle": "How to use it"
   }
 }

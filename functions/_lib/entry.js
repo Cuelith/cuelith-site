@@ -178,11 +178,20 @@ export async function buildEntry({
   // lo sceglie, l'indirizzo di acquisto aggiornato).
   const entry = {
     ...base,
+    // La guida d'uso e' quella dell'ultimo pacchetto (protocollo 1.19).
+    ...(analysis.guide === undefined ? {} : { guide: analysis.guide }),
     ...(existing !== undefined && submission.kind === "paid" && shop !== undefined
       ? { checkoutUrl: shop }
       : {}),
     versions,
   };
 
-  return { checks, ok: checks.every((c) => c.ok), entry, icon: analysis.icon, warnings };
+  return {
+    checks,
+    ok: checks.every((c) => c.ok),
+    entry,
+    icon: analysis.icon,
+    image: analysis.image,
+    warnings,
+  };
 }

@@ -448,6 +448,22 @@ export function renderPluginDetail({ content: c, plugin, assets, single = false 
       : `<p class="plugin__soon">${esc(m.notBuyable)}</p>`
     : "";
 
+  // Immagine di copertina e guida d'uso (protocollo 1.19), se il plugin le ha: dati gia' controllati.
+  const cover =
+    typeof plugin.image === "string" && plugin.image !== ""
+      ? `<img class="store-cover" src="${esc(plugin.image)}" alt="${esc(plugin.name)}" width="960" height="540" loading="lazy">`
+      : "";
+  const guideSteps = plugin.guide?.[c.lang] ?? plugin.guide?.it ?? plugin.guide?.en ?? [];
+  const guide =
+    guideSteps.length === 0
+      ? ""
+      : `<section class="store-block">
+      <h2>${esc(st.guideTitle)}</h2>
+      <ol class="store-steps store-guide">${guideSteps
+        .map((step) => `<li><strong>${esc(step.title)}</strong> ${esc(step.body)}</li>`)
+        .join("")}</ol>
+    </section>`;
+
   const body = `<section class="section subpage store-detail">
   <div class="wrap wrap--narrow">
     <p class="store__back"><a class="link" href="${single ? "#" : base}">← ${esc(st.back)}</a></p>
@@ -467,10 +483,13 @@ export function renderPluginDetail({ content: c, plugin, assets, single = false 
       <a class="link" href="${single ? "#" : PAGE_PATHS.download[c.lang]}">${esc(st.phoneLink)}</a>
     </div>
 
+    ${cover}
     <section class="store-block">
       <h2>${esc(st.whatTitle)}</h2>
       <p class="lead lead--section">${esc(plugin.text)}</p>
     </section>
+
+    ${guide}
 
     <section class="store-block">
       <h2>${esc(st.installTitle)}</h2>

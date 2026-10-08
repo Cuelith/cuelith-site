@@ -640,3 +640,83 @@ test("vetrina: i file di testo del pacchetto si leggono con dei tetti (grandi, t
   );
   assert.equal((await analysisOf({ extra: many })).texts.length <= 40, true);
 });
+
+// ---- immagine di copertina e guida d'uso (protocollo 1.19) ----
+
+const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2, 3, 4]);
+const GUIDE_MANIFEST = {
+  image: "media/cover.png",
+  onboarding: [
+    { title: "acme.lyrics-pro.tour.1.title", body: "acme.lyrics-pro.tour.1.body" },
+    { title: "acme.lyrics-pro.tour.2.title", body: "acme.lyrics-pro.tour.2.body" },
+  ],
+  contributes: {
+    locales: [
+      { lang: "it", file: "locales/it.json" },
+      { lang: "en", file: "locales/en.json" },
+    ],
+  },
+};
+const IT = JSON.stringify({
+  "acme.lyrics-pro.tour.1.title": "Primo passo",
+  "acme.lyrics-pro.tour.1.body": "Apri lo strumento dalla colonna a sinistra.",
+  "acme.lyrics-pro.tour.2.title": "Secondo passo",
+  "acme.lyrics-pro.tour.2.body": "Scegli un testo e mandalo in anteprima.",
+});
+// L'inglese e' incompleto: manca un testo, quindi non entra nella guida.
+const EN = JSON.stringify({
+  "acme.lyrics-pro.tour.1.title": "First step",
+  "acme.lyrics-pro.tour.1.body": "Open the tool from the left column.",
+  "acme.lyrics-pro.tour.2.title": "Second step",
+});
+const withExtras = (extra = {}, manifestExtra = {}) =>
+  makeZip({
+    manifest: manifestOf({ ...GUIDE_MANIFEST, ...manifestExtra }),
+    extra: { "media/cover.png": PNG, "locales/it.json": IT, "locales/en.json": EN, ...extra },
+  });
+
+test("pacchetto: immagine di copertina vera e guida dalle lingue complete", async () => {
+  const result = await analyzePackage(URL_OK, { fetcher: serve(withExtras()) });
+  assert.equal(result.image.ext, "png");
+  assert.deepEqual([...result.image.bytes], [...PNG]);
+  assert.deepEqual(Object.keys(result.guide), ["it"]);
+  assert.deepEqual(result.guide.it, [
+    { title: "Primo passo", body: "Apri lo strumento dalla colonna a sinistra." },
+    { title: "Secondo passo", body: "Scegli un testo e mandalo in anteprima." },
+  ]);
+  // Senza immagine ne' guida: niente, e il pacchetto passa lo stesso.
+  const plain = await analyzePackage(URL_OK, { fetcher: serve(makeZip()) });
+  assert.equal(plain.image, undefined);
+  assert.equal(plain.guide, undefined);
+});
+
+test("pacchetto: un'immagine dichiarata ma assente, finta o in formato non ammesso si rifiuta", async () => {
+  const missing = withExtras({}, { image: "media/manca.png" });
+  assert.equal(await codeOf(analyzePackage(URL_OK, { fetcher: serve(missing) })), "noImage");
+  const fake = withExtras({ "media/cover.png": new TextEncoder().encode("non sono un'immagine") });
+  assert.equal(await codeOf(analyzePackage(URL_OK, { fetcher: serve(fake) })), "badImage");
+  const gif = withExtras({ "media/cover.gif": PNG }, { image: "media/cover.gif" });
+  assert.equal(await codeOf(analyzePackage(URL_OK, { fetcher: serve(gif) })), "badImage");
+  const big = withExtras({
+    "media/cover.png": new Uint8Array([...PNG, ...new Uint8Array(160 * 1024)]),
+  });
+  assert.equal(await codeOf(analyzePackage(URL_OK, { fetcher: serve(big) })), "badImage");
+});
+
+test("voce: la guida dell'ultimo pacchetto entra nella voce, l'immagine e' un file a parte", async () => {
+  const analysis = await analyzePackage(URL_OK, { fetcher: serve(withExtras()) });
+  const built = await buildEntry({ submission: submissionOf(), analysis, now: NOW });
+  assert.equal(built.ok, true, JSON.stringify(failing(built)));
+  assert.deepEqual(Object.keys(built.entry.guide), ["it"]);
+  assert.equal("image" in built.entry, false);
+  assert.equal(built.image.ext, "png");
+});
+
+test("pull request: un file binario (l'immagine) va in base64 senza passare dal testo", async () => {
+  const { fetcher, calls } = fakeNetwork(githubRoutes());
+  await open(fetcher, {
+    files: [{ path: "plugins/acme.lyrics-pro.png", bytes: PNG, message: "immagine" }],
+  });
+  const put = calls.find((c) => c.init.method === "PUT");
+  assert.equal(JSON.parse(put.init.body).content, Buffer.from(PNG).toString("base64"));
+});
