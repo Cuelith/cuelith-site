@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "0.6.0",
+      "date": "2026-10-10T11:25:57Z",
+      "notes": {
+        "it": "<p>Parole formattate: in un testo puoi ingrandire, mettere in grassetto, in corsivo o colorare solo alcune parole, e il testo semplice resta com'è.</p>\n<h2>Novità</h2>\n<ul>\n<li><strong>Parole formattate</strong> nell'editor di un testo: seleziona delle parole e, dalla barra sopra la casella, cambia <strong>dimensione</strong> (dal 50% al 300% del resto), <strong>grassetto</strong>, <strong>corsivo</strong> (Ctrl+B e Ctrl+I) e <strong>colore</strong>; <strong>Togli formattazione</strong> le riporta normali. Sotto, «Come lo vede il pubblico» mostra le slide formattate.</li>\n<li><strong>Arriva dappertutto uguale</strong>: anteprima, programma, miniature delle slide e uscite vere. Le righe non si spezzano mai e «Adatta se non entra» rimpicciolisce tutto insieme, parola grande compresa; contorno e ombra valgono anche per le parole formattate.</li>\n<li><strong>La formattazione segue il testo</strong>: scrivendo davanti, in mezzo o dopo una parola formattata si sposta con lei (in fondo a una parola si continua, dopo uno spazio si chiude).</li>\n<li><strong>Il testo resta semplice</strong>: chi legge il testo di una slide (importazioni, esportazioni, altri programmi, plugin che non sanno delle parole formattate) trova il testo di sempre. Le parole formattate stanno accanto, e si possono esportare insieme al testo.</li>\n<li><strong>Formattazione come plugin annesso</strong>: per Brani e per ogni altro plugin con un editor di testo la formattazione è un plugin a parte, <strong>Formattazione</strong> (chi non lo vuole non lo installa). La sua barra compare <strong>in cima alla finestra dell'editor</strong>, solo mentre scrivi: selezioni delle parole e ne cambi dimensione, grassetto, corsivo e colore senza cambiare finestra. I testi del nucleo (<strong>+ Testo</strong>) hanno la barra già dentro.</li>\n<li><strong>Brani 0.7.0</strong>: nelle sezioni di un brano puoi formattare delle parole (con Formattazione installato); «Cosa vede il pubblico» le mostra e sulla slide proiettata restano al loro posto, senza accordi. Un brano senza formattazione resta identico. ChordPro e OpenLyrics si esportano come testo semplice.</li>\n<li><strong>Per chi sviluppa</strong>: protocollo <strong>1.21</strong> (<code>spans</code> nel campo <code>text</code> di una slide, con <code>segmentsOf</code>, <code>plainText</code>, <code>styleRange</code>, <code>shiftSpans</code>, <code>sliceRich</code> e <code>joinRich</code> in <code>@cuelith/protocol</code>) <strong>1.22</strong> (<code>richtext.session</code>, <code>richtext.end</code>, <code>richtext.apply</code>, <code>live.richText</code>; <code>bindRichText</code> e <code>bindTextarea</code> in <code>@cuelith/panel</code>) e <strong>1.23</strong> (pannelli <code>placement: \"editor\"</code>, cioè barre di strumenti in cima agli editor, e <code>remapSpans</code>); vedi la guida per chi sviluppa.</li>\n</ul>\n<h2>Da sapere</h2>\n<ul>\n<li>Uno show con parole formattate, aperto in una versione precedente (0.5.x o prima), può dare errore. I testi senza formattazione si aprono come sempre.</li>\n<li>Il monitor del palco (look Palco) mostra il testo senza formattazione.</li>\n<li>Brani esporta ChordPro e OpenLyrics senza formattazione (testo semplice); le parole formattate restano nei dati di Cuelith.</li>\n<li>Lingue italiano <strong>0.2.8</strong> e inglese <strong>0.1.8</strong> incluse nell'installatore.</li>\n</ul>\n<p>Licenza GPL 3.0 o successiva.</p>",
+        "en": "<p>Formatted words: inside a text you can enlarge, bold, italicise or colour only some words, and the plain text stays as it is.</p>\n<h2>What is new</h2>\n<ul>\n<li><strong>Formatted words</strong> in the editor of a text: select some words and, from the bar above the box, change <strong>size</strong> (50% to 300% of the rest), <strong>bold</strong>, <strong>italic</strong> (Ctrl+B and Ctrl+I) and <strong>colour</strong>; <strong>Clear formatting</strong> brings them back to normal. Below, \"How the audience sees it\" shows the formatted slides.</li>\n<li><strong>The same everywhere</strong>: preview, program, slide thumbnails and the real outputs. Lines never break, and \"Fit if it does not fit\" shrinks everything together, the big word included; outline and shadow apply to formatted words too.</li>\n<li><strong>The formatting follows the text</strong>: typing before, inside or after a formatted word moves it along (at the end of a word it continues, after a space it stops).</li>\n<li><strong>The text stays plain</strong>: whatever reads a slide's text (imports, exports, other programs, plugins that do not know about formatted words) finds the usual text. The formatted words sit next to it and can be exported together with the text.</li>\n<li><strong>Formatting as a companion plugin</strong>: for Songs and any other plugin with a text editor, formatting is a separate plugin, <strong>Formatting</strong> (whoever does not want it does not install it). Its bar appears <strong>on top of the editor window</strong>, only while you write: select some words and change their size, bold, italic and colour without switching windows. The program's own texts (<strong>+ Text</strong>) already have the bar built in.</li>\n<li><strong>Songs 0.7.0</strong>: in a song's sections you can format words (with Formatting installed); \"How the audience sees it\" shows them and on the projected slide they stay in place, without chords. A song without formatting stays identical. ChordPro and OpenLyrics export as plain text.</li>\n<li><strong>For developers</strong>: protocol <strong>1.21</strong> (<code>spans</code> in a slide's <code>text</code> field, with <code>segmentsOf</code>, <code>plainText</code>, <code>styleRange</code>, <code>shiftSpans</code>, <code>sliceRich</code> and <code>joinRich</code> in <code>@cuelith/protocol</code>) <strong>1.22</strong> (<code>richtext.session</code>, <code>richtext.end</code>, <code>richtext.apply</code>, <code>live.richText</code>; <code>bindRichText</code> and <code>bindTextarea</code> in <code>@cuelith/panel</code>) and <strong>1.23</strong> (<code>placement: \"editor\"</code> panels, i.e. toolbars on top of editors, and <code>remapSpans</code>); see the developer guide.</li>\n</ul>\n<h2>Good to know</h2>\n<ul>\n<li>A show with formatted words, opened in an earlier version (0.5.x or before), may give an error. Texts without formatting open as always.</li>\n<li>The stage monitor (Stage look) shows the text without formatting.</li>\n<li>Songs exports ChordPro and OpenLyrics without formatting (plain text); the formatted words stay in Cuelith's own data.</li>\n<li>Languages Italian <strong>0.2.8</strong> and English <strong>0.1.8</strong> are included in the installer.</li>\n</ul>\n<p>GPL 3.0 or later.</p>"
+      }
+    },
+    {
       "version": "0.5.0",
       "date": "2026-10-10T09:09:08Z",
       "notes": {
@@ -70,10 +78,17 @@
       "price": "",
       "buyable": false,
       "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8dGl0bGU+Q2FudGk8L3RpdGxlPgogIDxyZWN0IHg9IjIuNSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0VDRUFFNCIvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTAiIHdpZHRoPSI4IiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0VDRUFFNCIvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTUiIHdpZHRoPSI2IiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0E5QURCNCIvPgogIDxyZWN0IHg9IjE3IiB5PSIzLjUiIHdpZHRoPSIyIiBoZWlnaHQ9IjE0IiByeD0iMSIgZmlsbD0iIzM3RDFCRiIvPgogIDxwYXRoIGQ9Ik0xOSAzLjVjMS42LjYgMi44IDEuOSAyLjggMy44djEuM2MtLjctMS4yLTEuNi0xLjgtMi44LTIuMXoiIGZpbGw9IiMzN0QxQkYiLz4KICA8Y2lyY2xlIGN4PSIxNS4yIiBjeT0iMTcuNiIgcj0iMy4xIiBmaWxsPSIjMzdEMUJGIi8+Cjwvc3ZnPgo=",
-      "version": "0.6.0",
-      "published": "2026-10-08T22:09:51.000Z",
+      "version": "0.7.0",
+      "published": "2026-10-10T11:14:00.000Z",
       "permissions": [],
       "versions": [
+        {
+          "version": "0.7.0",
+          "published": "2026-10-10T11:14:00.000Z",
+          "cuelith": ">=0.1.0 <1.0.0",
+          "protocol": "^1.6.0",
+          "permissions": []
+        },
         {
           "version": "0.6.0",
           "published": "2026-10-08T22:09:51.000Z",
@@ -107,6 +122,31 @@
           "published": "2026-10-01T22:10:41Z",
           "cuelith": "^0.1.0",
           "protocol": "^1.6.0",
+          "permissions": []
+        }
+      ]
+    },
+    {
+      "id": "cuelith.richtext",
+      "name": "Formattazione",
+      "description": "Ingrandisci, metti in grassetto, in corsivo o colora solo alcune parole di un testo, negli editor dei plugin che lo supportano.",
+      "family": "function",
+      "verified": true,
+      "publisher": "Cuelith",
+      "license": "GPL-3.0-or-later",
+      "access": "free",
+      "price": "",
+      "buyable": false,
+      "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8dGl0bGU+Rm9ybWF0dGF6aW9uZTwvdGl0bGU+CiAgPHRleHQgeD0iMiIgeT0iMTgiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0VDRUFFNCI+QTwvdGV4dD4KICA8dGV4dCB4PSIxMy41IiB5PSIxOCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjExIiBmb250LXN0eWxlPSJpdGFsaWMiIGZpbGw9IiNBOUFEQjQiPmE8L3RleHQ+Cjwvc3ZnPgo=",
+      "version": "0.2.0",
+      "published": "2026-10-10T11:14:00.000Z",
+      "permissions": [],
+      "versions": [
+        {
+          "version": "0.2.0",
+          "published": "2026-10-10T11:14:00.000Z",
+          "cuelith": ">=0.1.0 <1.0.0",
+          "protocol": "^1.23.0",
           "permissions": []
         }
       ]

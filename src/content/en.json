@@ -107,6 +107,7 @@
           "Backgrounds per slide, per item or by default, animated ones (GIF) too, with a dim layer for legibility",
           "Text styles you create, with outline and shadow: text shrinks instead of breaking its lines",
           "Twenty-seven real typefaces built into the program, with weight, italic, spacing and position: a sample with your own slide text shows you right away how it looks",
+          "Enlarge, bold, italicise or colour only some words of a text (songs too): formatting is a separate plugin and the plain text stays as it is",
           "\"Background only\": one click hides the text on the outputs and keeps the background"
         ],
         "alt": "Two outputs with the same content: the room shows the text over a background, the stage shows the text with the next slide and the clock.",
