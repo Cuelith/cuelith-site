@@ -121,7 +121,8 @@
           "Librerie con ricerca per titolo, testo, autore e numero",
           "Editor con l'anteprima di cosa vede il pubblico, slide per slide",
           "Ordine di proiezione separato dal testo",
-          "Crediti e autori sempre a posto"
+          "Crediti e autori sempre a posto",
+          "Bordo e ombra sulle singole parole di un brano, e il brano esce da Cuelith e ci rientra con la formattazione restando leggibile da OpenLP e dagli altri programmi"
         ],
         "alt": "Disposizione Band: le sezioni del brano come grandi pulsanti."
       },

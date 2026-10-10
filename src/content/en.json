@@ -121,7 +121,8 @@
           "Libraries searchable by title, lyrics, author and number",
           "Editor with a preview of what the audience sees, slide by slide",
           "Projection order kept separate from the lyrics",
-          "Credits and authors always in place"
+          "Credits and authors always in place",
+          "Outline and shadow on single words of a song, and the song leaves Cuelith and comes back with its formatting while staying readable by OpenLP and other programs"
         ],
         "alt": "Band layout: song sections as large buttons."
       },

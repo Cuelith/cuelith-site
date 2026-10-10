@@ -1,6 +1,14 @@
 {
   "releases": [
     {
+      "version": "0.7.0",
+      "date": "2026-10-10T20:06:44Z",
+      "notes": {
+        "it": "<p>Parole dei brani più personali: bordo e ombra su singole parole, e il brano esce da Cuelith e ci rientra con la formattazione, restando leggibile da tutti.</p>\n<h2>Novità</h2>\n<ul>\n<li><strong>Bordo e ombra sulle parole</strong>: oltre a dimensione, grassetto, corsivo e colore, ogni parola può avere un <strong>bordo</strong> (sottile, medio, spesso, con il suo colore) e un'<strong>ombra</strong> (leggera o forte). La barra dei testi del nucleo li ha; per i brani c'è il plugin <strong>Formattazione 0.3.0</strong>. Sulle uscite e nell'anteprima si vedono allo stesso modo e scalano con lo schermo, e le righe non si spezzano mai.</li>\n<li><strong>Brani 0.8.0: esportare e importare con la formattazione</strong>. «Esporta» resta quello di sempre: un file pulito che apre qualunque programma (OpenLP compreso); se il brano ha parole formattate, un avviso dice che non partono. Con la casella <strong>«Con la formattazione di Cuelith»</strong> il file porta in più un blocco che gli altri programmi ignorano (in ChordPro una riga <code>{meta: cuelith_format …}</code>, in OpenLyrics un elemento tutto nostro) e Cuelith, riaprendolo, ritrova le parole formattate. Le copie di sicurezza di tutti i brani tengono sempre la formattazione.</li>\n<li><strong>Importare da altri programmi</strong>: i brani in OpenLyrics con grassetto, corsivo o colori scritti con i tag di altri programmi (OpenLP e simili) diventano parole formattate; quello che non riconosciamo lascia il testo com'è.</li>\n<li><strong>Per chi sviluppa</strong>: protocollo <strong>1.24</strong> (<code>outline</code> e <code>shadow</code> nelle parole formattate, <code>OUTLINE_PRESETS</code>, <code>SHADOW_PRESETS</code>).</li>\n</ul>\n<h2>Da sapere</h2>\n<ul>\n<li><strong>Non ho potuto provare con OpenLP</strong>: l'«Esporta» normale è pulito apposta. Con «Con la formattazione di Cuelith» il file ha un elemento in più che per lo standard gli altri programmi ignorano; se un programma lo rifiuta, usa l'esportazione normale.</li>\n<li>Uno show con bordo o ombra sulle parole, aperto in una versione precedente (0.6.x o prima), può dare errore.</li>\n<li>Lingue italiano <strong>0.2.9</strong> e inglese <strong>0.1.9</strong> incluse nell'installatore.</li>\n</ul>\n<p>Licenza GPL 3.0 o successiva.</p>",
+        "en": "<p>More personal song words: outline and shadow on single words, and the song leaves Cuelith and comes back in with its formatting, staying readable by everyone.</p>\n<h2>What is new</h2>\n<ul>\n<li><strong>Outline and shadow on words</strong>: besides size, bold, italic and colour, each word can have an <strong>outline</strong> (thin, medium, thick, with its own colour) and a <strong>shadow</strong> (light or strong). The program's own text bar has them; for songs there is the <strong>Formatting 0.3.0</strong> plugin. On the outputs and in the preview they look the same and scale with the screen, and lines never break.</li>\n<li><strong>Songs 0.8.0: exporting and importing with the formatting</strong>. \"Export\" stays the usual one: a clean file any program opens (OpenLP included); if the song has formatted words, a notice says they are not included. With the <strong>\"With Cuelith formatting\"</strong> box the file carries an extra block other programs ignore (a <code>{meta: cuelith_format …}</code> line in ChordPro, an element of our own in OpenLyrics) and Cuelith, reopening it, finds the formatted words again. Backups of all songs always keep the formatting.</li>\n<li><strong>Importing from other programs</strong>: OpenLyrics songs with bold, italic or colours written with other programs' tags (OpenLP and similar) become formatted words; whatever we do not recognise leaves the text as it is.</li>\n<li><strong>For developers</strong>: protocol <strong>1.24</strong> (<code>outline</code> and <code>shadow</code> in formatted words, <code>OUTLINE_PRESETS</code>, <code>SHADOW_PRESETS</code>).</li>\n</ul>\n<h2>Good to know</h2>\n<ul>\n<li><strong>I could not test with OpenLP</strong>: the normal \"Export\" is clean on purpose. With \"With Cuelith formatting\" the file has one extra element that, by the standard, other programs ignore; if a program rejects it, use the normal export.</li>\n<li>A show with outline or shadow on words, opened in an earlier version (0.6.x or before), may give an error.</li>\n<li>Languages Italian <strong>0.2.9</strong> and English <strong>0.1.9</strong> are included in the installer.</li>\n</ul>\n<p>GPL 3.0 or later.</p>"
+      }
+    },
+    {
       "version": "0.6.0",
       "date": "2026-10-10T11:25:57Z",
       "notes": {
@@ -78,10 +86,24 @@
       "price": "",
       "buyable": false,
       "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8dGl0bGU+Q2FudGk8L3RpdGxlPgogIDxyZWN0IHg9IjIuNSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0VDRUFFNCIvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTAiIHdpZHRoPSI4IiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0VDRUFFNCIvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTUiIHdpZHRoPSI2IiBoZWlnaHQ9IjIuMiIgcng9IjEuMSIgZmlsbD0iI0E5QURCNCIvPgogIDxyZWN0IHg9IjE3IiB5PSIzLjUiIHdpZHRoPSIyIiBoZWlnaHQ9IjE0IiByeD0iMSIgZmlsbD0iIzM3RDFCRiIvPgogIDxwYXRoIGQ9Ik0xOSAzLjVjMS42LjYgMi44IDEuOSAyLjggMy44djEuM2MtLjctMS4yLTEuNi0xLjgtMi44LTIuMXoiIGZpbGw9IiMzN0QxQkYiLz4KICA8Y2lyY2xlIGN4PSIxNS4yIiBjeT0iMTcuNiIgcj0iMy4xIiBmaWxsPSIjMzdEMUJGIi8+Cjwvc3ZnPgo=",
-      "version": "0.7.0",
-      "published": "2026-10-10T11:14:00.000Z",
+      "version": "0.8.0",
+      "published": "2026-10-10T19:45:22.000Z",
       "permissions": [],
       "versions": [
+        {
+          "version": "0.8.0",
+          "published": "2026-10-10T19:45:22.000Z",
+          "cuelith": ">=0.1.0 <1.0.0",
+          "protocol": "^1.6.0",
+          "permissions": []
+        },
+        {
+          "version": "0.7.1",
+          "published": "2026-10-10T18:42:24.000Z",
+          "cuelith": ">=0.1.0 <1.0.0",
+          "protocol": "^1.6.0",
+          "permissions": []
+        },
         {
           "version": "0.7.0",
           "published": "2026-10-10T11:14:00.000Z",
@@ -138,10 +160,17 @@
       "price": "",
       "buyable": false,
       "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KICA8dGl0bGU+Rm9ybWF0dGF6aW9uZTwvdGl0bGU+CiAgPHRleHQgeD0iMiIgeT0iMTgiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0VDRUFFNCI+QTwvdGV4dD4KICA8dGV4dCB4PSIxMy41IiB5PSIxOCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsIHNlcmlmIiBmb250LXNpemU9IjExIiBmb250LXN0eWxlPSJpdGFsaWMiIGZpbGw9IiNBOUFEQjQiPmE8L3RleHQ+Cjwvc3ZnPgo=",
-      "version": "0.2.0",
-      "published": "2026-10-10T11:14:00.000Z",
+      "version": "0.3.0",
+      "published": "2026-10-10T19:45:22.000Z",
       "permissions": [],
       "versions": [
+        {
+          "version": "0.3.0",
+          "published": "2026-10-10T19:45:22.000Z",
+          "cuelith": ">=0.1.0 <1.0.0",
+          "protocol": "^1.24.0",
+          "permissions": []
+        },
         {
           "version": "0.2.0",
           "published": "2026-10-10T11:14:00.000Z",
